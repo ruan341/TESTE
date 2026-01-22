@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Airbus A350 - Sistema Completo de Reservas</title>
+    <title>Airbus A350 - Sistema de Reservas</title>
     <style>
         * {
             margin: 0;
@@ -13,8 +13,8 @@
         }
         
         body {
-            background: linear-gradient(135deg, #0a192f, #112240);
-            color: #e6f1ff;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: #f1f5f9;
             min-height: 100vh;
             padding: 20px;
         }
@@ -27,30 +27,128 @@
         
         /* HEADER */
         header {
-            background: rgba(17, 34, 64, 0.9);
+            background: rgba(30, 41, 59, 0.9);
             border-radius: 20px;
             padding: 30px;
             margin-bottom: 30px;
             text-align: center;
-            border: 1px solid rgba(100, 255, 218, 0.2);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
             backdrop-filter: blur(10px);
+            position: relative;
         }
         
         h1 {
             font-size: 3rem;
-            background: linear-gradient(90deg, #64ffda, #00b4d8);
+            background: linear-gradient(90deg, #38bdf8, #0ea5e9);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             margin-bottom: 10px;
-            text-shadow: 0 2px 10px rgba(100, 255, 218, 0.3);
+            text-shadow: 0 2px 10px rgba(56, 189, 248, 0.3);
         }
         
         .subtitle {
-            color: #8892b0;
+            color: #94a3b8;
             font-size: 1.2rem;
             margin-bottom: 20px;
+        }
+        
+        .admin-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 8px 15px;
+            background: rgba(248, 113, 113, 0.1);
+            border: 1px solid #f87171;
+            border-radius: 20px;
+            color: #f87171;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .admin-badge:hover {
+            background: rgba(248, 113, 113, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        /* LOGIN MODAL */
+        .login-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .login-box {
+            background: rgba(30, 41, 59, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            width: 90%;
+            max-width: 400px;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+        
+        .login-title {
+            font-size: 2rem;
+            color: #38bdf8;
+            margin-bottom: 30px;
+        }
+        
+        .login-input {
+            width: 100%;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            border: 2px solid rgba(56, 189, 248, 0.2);
+            background: rgba(15, 23, 42, 0.8);
+            color: #f1f5f9;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .login-input:focus {
+            outline: none;
+            border-color: #38bdf8;
+            background: rgba(56, 189, 248, 0.05);
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(56, 189, 248, 0.4);
+        }
+        
+        .login-error {
+            color: #f87171;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            display: none;
         }
         
         /* ABAS */
@@ -58,19 +156,19 @@
             display: flex;
             gap: 10px;
             margin-bottom: 30px;
-            background: rgba(17, 34, 64, 0.7);
+            background: rgba(30, 41, 59, 0.7);
             padding: 10px;
             border-radius: 15px;
-            border: 1px solid rgba(100, 255, 218, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.1);
         }
         
         .tab-btn {
             flex: 1;
             padding: 15px;
-            background: rgba(23, 42, 69, 0.8);
+            background: rgba(15, 23, 42, 0.8);
             border: none;
             border-radius: 10px;
-            color: #ccd6f6;
+            color: #cbd5e1;
             font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
@@ -82,14 +180,25 @@
         }
         
         .tab-btn:hover {
-            background: rgba(100, 255, 218, 0.1);
+            background: rgba(56, 189, 248, 0.1);
             transform: translateY(-2px);
         }
         
         .tab-btn.active {
-            background: linear-gradient(135deg, #64ffda, #00b4d8);
-            color: #0a192f;
-            box-shadow: 0 5px 15px rgba(100, 255, 218, 0.3);
+            background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+            color: white;
+            box-shadow: 0 5px 15px rgba(56, 189, 248, 0.3);
+        }
+        
+        .tab-btn.locked {
+            background: rgba(148, 163, 184, 0.2);
+            color: #94a3b8;
+            cursor: not-allowed;
+        }
+        
+        .tab-btn.locked:hover {
+            transform: none;
+            background: rgba(148, 163, 184, 0.2);
         }
         
         /* CONTEÚDO DAS ABAS */
@@ -109,20 +218,20 @@
         
         /* AVIÃO */
         .aircraft-section {
-            background: rgba(17, 34, 64, 0.9);
+            background: rgba(30, 41, 59, 0.9);
             border-radius: 20px;
             padding: 30px;
             margin-bottom: 30px;
-            border: 1px solid rgba(100, 255, 218, 0.1);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(56, 189, 248, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
         }
         
         .section-title {
             font-size: 1.8rem;
-            color: #64ffda;
+            color: #38bdf8;
             margin-bottom: 25px;
             padding-bottom: 10px;
-            border-bottom: 2px solid #64ffda;
+            border-bottom: 2px solid #38bdf8;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -146,13 +255,13 @@
             text-align: right;
             font-weight: bold;
             margin-right: 15px;
-            color: #64ffda;
+            color: #38bdf8;
             font-size: 1.1rem;
         }
         
         .seat {
-            width: 50px;
-            height: 50px;
+            width: 48px;
+            height: 48px;
             margin: 5px;
             border-radius: 10px;
             display: flex;
@@ -185,31 +294,31 @@
         }
         
         .seat.first {
-            color: #ff6b6b;
+            color: #f87171;
         }
         
         .seat.business {
-            color: #4ecdc4;
+            color: #34d399;
         }
         
         .seat.economy {
-            color: #ffe66d;
+            color: #fbbf24;
         }
         
         .seat.selected {
-            color: #64ffda;
-            box-shadow: 0 0 30px #64ffda;
+            color: #38bdf8;
+            box-shadow: 0 0 30px #38bdf8;
             animation: pulse 2s infinite;
         }
         
         @keyframes pulse {
-            0% { box-shadow: 0 0 20px #64ffda; }
-            50% { box-shadow: 0 0 40px #64ffda; }
-            100% { box-shadow: 0 0 20px #64ffda; }
+            0% { box-shadow: 0 0 20px #38bdf8; }
+            50% { box-shadow: 0 0 40px #38bdf8; }
+            100% { box-shadow: 0 0 20px #38bdf8; }
         }
         
         .seat.occupied {
-            color: #495670;
+            color: #475569;
             cursor: not-allowed;
             opacity: 0.6;
         }
@@ -217,7 +326,7 @@
         .aisle {
             width: 45px;
             text-align: center;
-            color: #64ffda;
+            color: #38bdf8;
             font-size: 12px;
         }
         
@@ -228,7 +337,7 @@
             gap: 25px;
             margin-top: 30px;
             padding-top: 20px;
-            border-top: 1px solid rgba(100, 255, 218, 0.2);
+            border-top: 1px solid rgba(56, 189, 248, 0.2);
         }
         
         .legend-item {
@@ -245,22 +354,22 @@
         
         /* FORMULÁRIO DE RESERVA */
         .reservation-form {
-            background: rgba(17, 34, 64, 0.9);
+            background: rgba(30, 41, 59, 0.9);
             border-radius: 20px;
             padding: 30px;
-            border: 1px solid rgba(100, 255, 218, 0.1);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(56, 189, 248, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
         }
         
         .selected-info {
-            background: rgba(100, 255, 218, 0.1);
+            background: rgba(56, 189, 248, 0.1);
             padding: 20px;
             border-radius: 15px;
             margin-bottom: 25px;
             text-align: center;
             font-size: 1.3rem;
-            border-left: 5px solid #64ffda;
-            color: #64ffda;
+            border-left: 5px solid #38bdf8;
+            color: #38bdf8;
         }
         
         .form-group {
@@ -270,7 +379,7 @@
         .form-group label {
             display: block;
             margin-bottom: 10px;
-            color: #ccd6f6;
+            color: #cbd5e1;
             font-size: 1.1rem;
             font-weight: 500;
         }
@@ -279,18 +388,18 @@
             width: 100%;
             padding: 15px 20px;
             border-radius: 12px;
-            border: 2px solid rgba(100, 255, 218, 0.2);
-            background: rgba(23, 42, 69, 0.8);
-            color: #e6f1ff;
+            border: 2px solid rgba(56, 189, 248, 0.2);
+            background: rgba(15, 23, 42, 0.8);
+            color: #f1f5f9;
             font-size: 16px;
             transition: all 0.3s;
         }
         
         .form-group input:focus {
             outline: none;
-            border-color: #64ffda;
-            background: rgba(100, 255, 218, 0.05);
-            box-shadow: 0 0 20px rgba(100, 255, 218, 0.2);
+            border-color: #38bdf8;
+            background: rgba(56, 189, 248, 0.05);
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
         }
         
         .button-group {
@@ -315,69 +424,69 @@
         }
         
         .btn-primary {
-            background: linear-gradient(135deg, #64ffda, #00b4d8);
-            color: #0a192f;
+            background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+            color: white;
         }
         
         .btn-primary:hover:not(:disabled) {
             transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(100, 255, 218, 0.4);
+            box-shadow: 0 10px 25px rgba(56, 189, 248, 0.4);
         }
         
         .btn-primary:disabled {
-            background: #495670;
-            color: #8892b0;
+            background: #475569;
+            color: #94a3b8;
             cursor: not-allowed;
             transform: none;
         }
         
         .btn-secondary {
-            background: rgba(255, 107, 107, 0.9);
+            background: rgba(248, 113, 113, 0.9);
             color: white;
         }
         
         .btn-secondary:hover {
-            background: #ff6b6b;
+            background: #f87171;
             transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.4);
+            box-shadow: 0 10px 25px rgba(248, 113, 113, 0.4);
         }
         
         /* MENSAGEM DE SUCESSO */
         .success-message {
-            background: rgba(100, 255, 218, 0.1);
+            background: rgba(56, 189, 248, 0.1);
             padding: 30px;
             border-radius: 15px;
             margin-top: 30px;
-            border: 2px solid #64ffda;
+            border: 2px solid #38bdf8;
             text-align: center;
             display: none;
         }
         
         .success-title {
             font-size: 2rem;
-            color: #64ffda;
+            color: #38bdf8;
             margin-bottom: 20px;
         }
         
         .reservation-code {
             font-size: 2.5rem;
             font-family: 'Courier New', monospace;
-            color: #ffe66d;
+            color: #fbbf24;
             background: rgba(0, 0, 0, 0.3);
             padding: 20px;
             border-radius: 12px;
             margin: 20px 0;
             letter-spacing: 3px;
-            text-shadow: 0 0 10px rgba(255, 230, 109, 0.5);
+            text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
         }
         
-        /* PAINEL ADMIN */
+        /* PAINEL ADMIN (PROTEGIDO) */
         .admin-panel {
-            background: rgba(17, 34, 64, 0.9);
+            background: rgba(30, 41, 59, 0.9);
             border-radius: 20px;
             padding: 30px;
-            border: 1px solid rgba(100, 255, 218, 0.1);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(56, 189, 248, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
         }
         
         .admin-controls {
@@ -389,10 +498,10 @@
         
         .admin-btn {
             padding: 12px 25px;
-            background: rgba(100, 255, 218, 0.1);
-            border: 2px solid #64ffda;
+            background: rgba(56, 189, 248, 0.1);
+            border: 2px solid #38bdf8;
             border-radius: 10px;
-            color: #64ffda;
+            color: #38bdf8;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
@@ -402,28 +511,38 @@
         }
         
         .admin-btn:hover {
-            background: rgba(100, 255, 218, 0.2);
+            background: rgba(56, 189, 248, 0.2);
             transform: translateY(-2px);
+        }
+        
+        .admin-btn.danger {
+            background: rgba(248, 113, 113, 0.1);
+            border-color: #f87171;
+            color: #f87171;
+        }
+        
+        .admin-btn.danger:hover {
+            background: rgba(248, 113, 113, 0.2);
         }
         
         .reservations-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 20px;
             margin-top: 20px;
         }
         
         .reservation-card {
-            background: rgba(23, 42, 69, 0.8);
+            background: rgba(15, 23, 42, 0.8);
             border-radius: 15px;
             padding: 20px;
-            border-left: 5px solid #64ffda;
+            border-left: 5px solid #38bdf8;
             transition: all 0.3s;
         }
         
         .reservation-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
         }
         
         .reservation-header {
@@ -432,26 +551,26 @@
             align-items: center;
             margin-bottom: 15px;
             padding-bottom: 10px;
-            border-bottom: 1px solid rgba(100, 255, 218, 0.2);
+            border-bottom: 1px solid rgba(56, 189, 248, 0.2);
         }
         
         .reservation-seat {
             font-size: 1.5rem;
             font-weight: bold;
-            color: #64ffda;
+            color: #38bdf8;
         }
         
         .reservation-code-small {
             font-family: 'Courier New', monospace;
-            color: #ffe66d;
+            color: #fbbf24;
             font-size: 0.9rem;
-            background: rgba(255, 230, 109, 0.1);
+            background: rgba(251, 191, 36, 0.1);
             padding: 5px 10px;
             border-radius: 5px;
         }
         
         .reservation-details {
-            color: #8892b0;
+            color: #94a3b8;
             font-size: 0.95rem;
         }
         
@@ -462,7 +581,7 @@
         }
         
         .reservation-details span:first-child {
-            color: #ccd6f6;
+            color: #cbd5e1;
         }
         
         /* LOADING */
@@ -473,9 +592,9 @@
         }
         
         .spinner {
-            border: 4px solid rgba(100, 255, 218, 0.2);
+            border: 4px solid rgba(56, 189, 248, 0.2);
             border-radius: 50%;
-            border-top: 4px solid #64ffda;
+            border-top: 4px solid #38bdf8;
             width: 60px;
             height: 60px;
             animation: spin 1s linear infinite;
@@ -499,7 +618,7 @@
             z-index: 1000;
             display: none;
             animation: slideIn 0.5s ease;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
@@ -510,17 +629,17 @@
         }
         
         .notification.success {
-            background: rgba(100, 255, 218, 0.9);
-            color: #0a192f;
+            background: rgba(56, 189, 248, 0.9);
+            color: white;
         }
         
         .notification.error {
-            background: rgba(255, 107, 107, 0.9);
+            background: rgba(248, 113, 113, 0.9);
         }
         
         .notification.info {
-            background: rgba(78, 205, 196, 0.9);
-            color: #0a192f;
+            background: rgba(52, 211, 153, 0.9);
+            color: white;
         }
         
         /* FOOTER */
@@ -528,21 +647,21 @@
             text-align: center;
             margin-top: 50px;
             padding-top: 30px;
-            border-top: 1px solid rgba(100, 255, 218, 0.1);
-            color: #8892b0;
+            border-top: 1px solid rgba(56, 189, 248, 0.1);
+            color: #94a3b8;
             font-size: 0.9rem;
         }
         
         /* RESPONSIVO */
         @media (max-width: 1024px) {
             .seat {
-                width: 40px;
-                height: 40px;
+                width: 42px;
+                height: 42px;
                 font-size: 12px;
             }
             
             .aisle {
-                width: 30px;
+                width: 35px;
             }
         }
         
@@ -562,12 +681,20 @@
             .admin-controls {
                 flex-direction: column;
             }
+            
+            .admin-badge {
+                position: relative;
+                top: 0;
+                right: 0;
+                margin-top: 15px;
+                display: inline-block;
+            }
         }
         
         @media (max-width: 480px) {
             .seat {
-                width: 35px;
-                height: 35px;
+                width: 38px;
+                height: 38px;
                 font-size: 11px;
             }
             
@@ -575,18 +702,54 @@
                 width: 35px;
                 font-size: 1rem;
             }
+            
+            .tabs {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- MODAL DE LOGIN -->
+    <div id="loginModal" class="login-modal">
+        <div class="login-box">
+            <h2 class="login-title">🔐 ACESSO ADMINISTRATIVO</h2>
+            <p style="color: #94a3b8; margin-bottom: 30px;">
+                Área restrita aos administradores do sistema
+            </p>
+            
+            <input type="password" 
+                   id="adminPassword" 
+                   class="login-input" 
+                   placeholder="Digite a senha de administrador"
+                   autocomplete="off">
+            
+            <button class="login-btn" id="submitLogin">
+                🔓 ENTRAR NO PAINEL
+            </button>
+            
+            <div class="login-error" id="loginError">
+                ❌ Senha incorreta. Tente novamente.
+            </div>
+            
+            <p style="color: #64748b; margin-top: 30px; font-size: 0.9rem;">
+                Dica: A senha é definida pelo administrador do sistema
+            </p>
+        </div>
+    </div>
+    
     <!-- NOTIFICAÇÃO -->
     <div id="notification" class="notification"></div>
     
     <div class="container">
         <header>
             <h1>✈️ AIRBUS A350 - SISTEMA DE RESERVAS</h1>
-            <p class="subtitle">Sistema completo de gerenciamento de reservas | Painel de administração integrado</p>
+            <p class="subtitle">Sistema completo de gerenciamento de reservas | Área administrativa protegida</p>
             <p class="subtitle" id="statsDisplay">💺 0 poltronas reservadas | 📊 0 voos ativos</p>
+            
+            <div class="admin-badge" id="adminBadge">
+                🔐 Área Admin
+            </div>
         </header>
         
         <!-- ABAS -->
@@ -594,11 +757,11 @@
             <button class="tab-btn active" data-tab="reservations">
                 <span>🎫</span> Reservar Poltrona
             </button>
-            <button class="tab-btn" data-tab="admin">
-                <span>👨‍✈️</span> Painel Administrativo
+            <button class="tab-btn locked" id="adminTabBtn" data-tab="admin">
+                <span>👨‍✈️</span> Painel Admin
             </button>
-            <button class="tab-btn" data-tab="help">
-                <span>❓</span> Ajuda
+            <button class="tab-btn" data-tab="info">
+                <span>ℹ️</span> Informações
             </button>
         </div>
         
@@ -621,23 +784,23 @@
                 
                 <div class="legend">
                     <div class="legend-item">
-                        <div class="legend-box" style="background: #ff6b6b;"></div>
+                        <div class="legend-box" style="background: #f87171;"></div>
                         <span>First Class</span>
                     </div>
                     <div class="legend-item">
-                        <div class="legend-box" style="background: #4ecdc4;"></div>
+                        <div class="legend-box" style="background: #34d399;"></div>
                         <span>Business Class</span>
                     </div>
                     <div class="legend-item">
-                        <div class="legend-box" style="background: #ffe66d;"></div>
+                        <div class="legend-box" style="background: #fbbf24;"></div>
                         <span>Economy Class</span>
                     </div>
                     <div class="legend-item">
-                        <div class="legend-box" style="background: #64ffda;"></div>
+                        <div class="legend-box" style="background: #38bdf8;"></div>
                         <span>Selecionada</span>
                     </div>
                     <div class="legend-item">
-                        <div class="legend-box" style="background: #495670;"></div>
+                        <div class="legend-box" style="background: #475569;"></div>
                         <span>Ocupada</span>
                     </div>
                 </div>
@@ -696,105 +859,130 @@
             </div>
         </div>
         
-        <!-- ABA 2: PAINEL ADMIN -->
+        <!-- ABA 2: PAINEL ADMIN (PROTEGIDO) -->
         <div id="admin" class="tab-content">
             <div class="admin-panel">
-                <h2 class="section-title">👨‍✈️ PAINEL DE ADMINISTRAÇÃO</h2>
-                <p class="subtitle">Gerencie todas as reservas e visualize os dados em tempo real</p>
-                
-                <div class="admin-controls">
-                    <button class="admin-btn" id="refreshBtn">
-                        <span>🔄</span> Atualizar Dados
-                    </button>
-                    <button class="admin-btn" id="exportBtn">
-                        <span>📥</span> Exportar para Excel
-                    </button>
-                    <button class="admin-btn" id="clearAllBtn">
-                        <span>🗑️</span> Limpar Todas Reservas (Local)
-                    </button>
-                    <button class="admin-btn" id="testFormBtn">
-                        <span>🧪</span> Testar Conexão Google Forms
+                <div style="text-align: center; padding: 40px;">
+                    <h2 class="section-title">🔐 ÁREA RESTRITA</h2>
+                    <p style="color: #94a3b8; margin: 20px 0;">
+                        Esta área requer autenticação administrativa
+                    </p>
+                    <button class="login-btn" id="loginBtn" style="width: auto; padding: 15px 40px;">
+                        🔓 FAZER LOGIN COMO ADMIN
                     </button>
                 </div>
                 
-                <!-- ESTATÍSTICAS -->
-                <div class="selected-info">
-                    <div id="adminStats">
-                        📊 Carregando estatísticas...
+                <!-- CONTEÚDO DO PAINEL (APÓS LOGIN) -->
+                <div id="adminContent" style="display: none;">
+                    <h2 class="section-title">👨‍✈️ PAINEL DE ADMINISTRAÇÃO</h2>
+                    <p class="subtitle">Bem-vindo, Administrador! Gerencie todas as reservas</p>
+                    
+                    <div class="admin-controls">
+                        <button class="admin-btn" id="refreshBtn">
+                            <span>🔄</span> Atualizar Dados
+                        </button>
+                        <button class="admin-btn" id="exportBtn">
+                            <span>📥</span> Exportar para Excel
+                        </button>
+                        <button class="admin-btn danger" id="clearAllBtn">
+                            <span>🗑️</span> Limpar Reservas (Local)
+                        </button>
+                        <button class="admin-btn" id="logoutBtn">
+                            <span>🚪</span> Sair
+                        </button>
                     </div>
-                </div>
-                
-                <!-- LISTA DE RESERVAS -->
-                <h3 class="section-title">📋 RESERVAS ATIVAS</h3>
-                <div class="reservations-grid" id="reservationsList">
-                    <div style="text-align: center; padding: 40px; color: #8892b0;">
-                        Carregando reservas...
+                    
+                    <!-- ESTATÍSTICAS -->
+                    <div class="selected-info">
+                        <div id="adminStats">
+                            📊 Carregando estatísticas...
+                        </div>
                     </div>
-                </div>
-                
-                <!-- LOGS DO SISTEMA -->
-                <h3 class="section-title" style="margin-top: 40px;">📝 LOGS DO SISTEMA</h3>
-                <div style="background: rgba(23, 42, 69, 0.8); padding: 20px; border-radius: 12px; margin-top: 20px;">
-                    <div id="systemLogs" style="font-family: 'Courier New', monospace; font-size: 0.9rem; color: #64ffda; max-height: 200px; overflow-y: auto;">
-                        Sistema inicializado...
+                    
+                    <!-- LISTA DE RESERVAS -->
+                    <h3 class="section-title">📋 RESERVAS ATIVAS</h3>
+                    <div class="reservations-grid" id="reservationsList">
+                        <div style="text-align: center; padding: 40px; color: #94a3b8;">
+                            Nenhuma reserva encontrada
+                        </div>
+                    </div>
+                    
+                    <!-- LOGS DO SISTEMA -->
+                    <h3 class="section-title" style="margin-top: 40px;">📝 LOGS DO SISTEMA</h3>
+                    <div style="background: rgba(15, 23, 42, 0.8); padding: 20px; border-radius: 12px; margin-top: 20px;">
+                        <div id="systemLogs" style="font-family: 'Courier New', monospace; font-size: 0.9rem; color: #38bdf8; max-height: 200px; overflow-y: auto;">
+                            Sistema inicializado...
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         
-        <!-- ABA 3: AJUDA -->
-        <div id="help" class="tab-content">
+        <!-- ABA 3: INFORMAÇÕES -->
+        <div id="info" class="tab-content">
             <div class="admin-panel">
-                <h2 class="section-title">❓ GUIA DO SISTEMA</h2>
+                <h2 class="section-title">ℹ️ INFORMAÇÕES DO SISTEMA</h2>
                 
-                <div class="selected-info">
-                    <h3>Como o sistema funciona:</h3>
-                </div>
-                
-                <div style="background: rgba(23, 42, 69, 0.8); padding: 25px; border-radius: 15px; margin-top: 20px;">
-                    <h4 style="color: #64ffda; margin-bottom: 15px;">🎯 PASSO A PASSO:</h4>
-                    <ol style="color: #ccd6f6; line-height: 1.8; padding-left: 20px; margin-bottom: 25px;">
-                        <li><strong>Selecione uma poltrona</strong> disponível no mapa</li>
-                        <li><strong>Preencha seu e-mail</strong> e nome (opcional)</li>
-                        <li><strong>Clique em "Confirmar Reserva"</strong></li>
-                        <li><strong>Receba seu código</strong> de acesso único</li>
-                        <li><strong>Acesse o Painel Admin</strong> para ver todas as reservas</li>
-                    </ol>
+                <div style="background: rgba(15, 23, 42, 0.8); padding: 25px; border-radius: 15px; margin-top: 20px;">
+                    <h3 style="color: #38bdf8; margin-bottom: 20px;">✨ COMO FUNCIONA:</h3>
                     
-                    <h4 style="color: #64ffda; margin-bottom: 15px;">🔧 FUNCIONALIDADES:</h4>
-                    <ul style="color: #ccd6f6; line-height: 1.8; padding-left: 20px; margin-bottom: 25px;">
-                        <li>✅ <strong>Google Forms:</strong> Dados salvos automaticamente</li>
-                        <li>✅ <strong>Painel Admin:</strong> Visualize todas as reservas</li>
-                        <li>✅ <strong>Bloqueio automático:</strong> Poltronas não podem ser reservadas duas vezes</li>
-                        <li>✅ <strong>Códigos únicos:</strong> Cada reserva gera um código exclusivo</li>
-                        <li>✅ <strong>Exportação:</strong> Baixe os dados em Excel</li>
-                    </ul>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                        <div style="background: rgba(56, 189, 248, 0.1); padding: 20px; border-radius: 10px; border-left: 4px solid #38bdf8;">
+                            <h4 style="color: #38bdf8; margin-bottom: 10px;">🎯 PASSO A PASSO</h4>
+                            <ol style="color: #cbd5e1; line-height: 1.8; padding-left: 20px;">
+                                <li>Selecione uma poltrona disponível</li>
+                                <li>Preencha seu e-mail</li>
+                                <li>Confirme a reserva</li>
+                                <li>Receba seu código de acesso</li>
+                            </ol>
+                        </div>
+                        
+                        <div style="background: rgba(52, 211, 153, 0.1); padding: 20px; border-radius: 10px; border-left: 4px solid #34d399;">
+                            <h4 style="color: #34d399; margin-bottom: 10px;">✅ VANTAGENS</h4>
+                            <ul style="color: #cbd5e1; line-height: 1.8; padding-left: 20px;">
+                                <li>Reserva gratuita</li>
+                                <li>Código único para cada participante</li>
+                                <li>Sistema anti-fraude</li>
+                                <li>Painel administrativo protegido</li>
+                            </ul>
+                        </div>
+                    </div>
                     
-                    <h4 style="color: #64ffda; margin-bottom: 15px;">📊 ACESSO AO GOOGLE SHEETS:</h4>
-                    <p style="color: #ccd6f6; margin-bottom: 15px;">
-                        Seus dados são salvos automaticamente em:
-                        <br>
-                        <a href="https://docs.google.com/spreadsheets/d/1--YOUR-SHEET-ID--/" target="_blank" style="color: #64ffda; text-decoration: none;">
-                            https://docs.google.com/spreadsheets/
-                        </a>
-                    </p>
+                    <h3 style="color: #38bdf8; margin-bottom: 15px;">📊 STATUS DO SISTEMA</h3>
+                    <div style="display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 25px;">
+                        <div style="flex: 1; min-width: 150px; background: rgba(30, 41, 59, 0.9); padding: 15px; border-radius: 10px; text-align: center;">
+                            <div style="font-size: 2rem; color: #38bdf8;" id="infoTotalReservas">0</div>
+                            <div style="color: #94a3b8; font-size: 0.9rem;">Total Reservas</div>
+                        </div>
+                        <div style="flex: 1; min-width: 150px; background: rgba(30, 41, 59, 0.9); padding: 15px; border-radius: 10px; text-align: center;">
+                            <div style="font-size: 2rem; color: #34d399;" id="infoPoltronasLivres">297</div>
+                            <div style="color: #94a3b8; font-size: 0.9rem;">Poltronas Livres</div>
+                        </div>
+                        <div style="flex: 1; min-width: 150px; background: rgba(30, 41, 59, 0.9); padding: 15px; border-radius: 10px; text-align: center;">
+                            <div style="font-size: 2rem; color: #fbbf24;" id="infoOcupacao">0%</div>
+                            <div style="color: #94a3b8; font-size: 0.9rem;">Taxa de Ocupação</div>
+                        </div>
+                    </div>
                     
-                    <div class="admin-controls">
-                        <button class="admin-btn" onclick="window.open('https://docs.google.com/spreadsheets/', '_blank')">
-                            <span>📊</span> Abrir Google Sheets
-                        </button>
-                        <button class="admin-btn" onclick="window.open('https://docs.google.com/forms/', '_blank')">
-                            <span>📝</span> Abrir Google Forms
-                        </button>
+                    <h3 style="color: #38bdf8; margin-bottom: 15px;">❓ PERGUNTAS FREQUENTES</h3>
+                    <div style="color: #cbd5e1; line-height: 1.8;">
+                        <p><strong>Q: Como entro no servidor do Roblox?</strong></p>
+                        <p>A: Use o código que recebeu após a reserva para acessar o servidor privado.</p>
+                        
+                        <p><strong>Q: Posso reservar mais de uma poltrona?</strong></p>
+                        <p>A: Sim, mas precisa usar e-mails diferentes para cada reserva.</p>
+                        
+                        <p><strong>Q: E se eu esquecer meu código?</strong></p>
+                        <p>A: Entre em contato com o administrador do sistema.</p>
                     </div>
                 </div>
             </div>
         </div>
         
         <footer>
-            <p>✈️ Airbus A350 Roleplay System v2.0</p>
-            <p>Sistema desenvolvido com ❤️ para gerenciamento de reservas</p>
-            <p id="versionInfo">Versão 2.0 | Última atualização: <span id="currentDate"></span></p>
+            <p>✈️ Airbus A350 Roleplay System v3.0</p>
+            <p>Sistema desenvolvido com ❤️ | Área administrativa protegida por senha</p>
+            <p id="versionInfo">Versão 3.0 | Última atualização: <span id="currentDate"></span></p>
         </footer>
     </div>
 
@@ -804,27 +992,39 @@
             GOOGLE_FORM: {
                 url: "https://docs.google.com/forms/d/e/1FAIpQLScds85za1whuzZZ56avDTKgbNbkt0zpoWpYoaL5k14j2UfFrg/formResponse",
                 fields: {
-                    timestamp: "entry.2061148944",  // Timestamp
-                    nome: "entry.2020993718",       // Nome
-                    email: "entry.1048032165",      // Email
-                    poltrona: "entry.1376018888",   // Poltrona
-                    codigo: "entry.1413590025"      // Código
+                    timestamp: "entry.2061148944",
+                    nome: "entry.2020993718",
+                    email: "entry.1048032165",
+                    poltrona: "entry.1376018888",
+                    codigo: "entry.1413590025"
                 }
             },
-            LOCAL_STORAGE_KEY: "a350_reservas_completas",
-            VERSION: "2.0"
+            LOCAL_STORAGE_KEY: "a350_reservas_seguras",
+            ADMIN_PASSWORD: "A350Admin2024!", // ⚠️ MUDE ESTA SENHA! ⚠️
+            VERSION: "3.0"
         };
         
         // ==================== VARIÁVEIS GLOBAIS ====================
         let selectedSeat = null;
         let allReservations = JSON.parse(localStorage.getItem(CONFIG.LOCAL_STORAGE_KEY) || '{}');
         let systemLogs = ["Sistema inicializado..."];
+        let isAdminLoggedIn = false;
         
         // ==================== ELEMENTOS DOM ====================
         const elements = {
+            // Login
+            loginModal: document.getElementById('loginModal'),
+            adminPassword: document.getElementById('adminPassword'),
+            submitLogin: document.getElementById('submitLogin'),
+            loginError: document.getElementById('loginError'),
+            adminBadge: document.getElementById('adminBadge'),
+            loginBtn: document.getElementById('loginBtn'),
+            logoutBtn: document.getElementById('logoutBtn'),
+            
             // Abas
             tabs: document.querySelectorAll('.tab-btn'),
             tabContents: document.querySelectorAll('.tab-content'),
+            adminTabBtn: document.getElementById('adminTabBtn'),
             
             // Avião
             firstClass: document.getElementById('firstClass'),
@@ -845,14 +1045,19 @@
             copyBtn: document.getElementById('copyBtn'),
             
             // Admin
+            adminContent: document.getElementById('adminContent'),
             refreshBtn: document.getElementById('refreshBtn'),
             exportBtn: document.getElementById('exportBtn'),
             clearAllBtn: document.getElementById('clearAllBtn'),
-            testFormBtn: document.getElementById('testFormBtn'),
             adminStats: document.getElementById('adminStats'),
             reservationsList: document.getElementById('reservationsList'),
             systemLogs: document.getElementById('systemLogs'),
             statsDisplay: document.getElementById('statsDisplay'),
+            
+            // Info
+            infoTotalReservas: document.getElementById('infoTotalReservas'),
+            infoPoltronasLivres: document.getElementById('infoPoltronasLivres'),
+            infoOcupacao: document.getElementById('infoOcupacao'),
             
             // Outros
             loading: document.getElementById('loading'),
@@ -865,14 +1070,8 @@
             const timestamp = new Date().toLocaleTimeString();
             systemLogs.unshift(`[${timestamp}] ${message}`);
             
-            // Limitar logs a 20 entradas
-            if (systemLogs.length > 20) {
-                systemLogs.pop();
-            }
-            
-            // Atualizar display
+            if (systemLogs.length > 20) systemLogs.pop();
             elements.systemLogs.textContent = systemLogs.join('\n');
-            
             console.log(`📝 ${message}`);
         }
         
@@ -888,9 +1087,98 @@
             addLog(`Notificação: ${message}`);
         }
         
+        // ==================== SISTEMA DE LOGIN ====================
+        function showLoginModal() {
+            elements.loginModal.style.display = 'flex';
+            elements.adminPassword.value = '';
+            elements.loginError.style.display = 'none';
+            elements.adminPassword.focus();
+            addLog('Modal de login aberto');
+        }
+        
+        function hideLoginModal() {
+            elements.loginModal.style.display = 'none';
+        }
+        
+        function attemptLogin() {
+            const password = elements.adminPassword.value.trim();
+            
+            if (password === CONFIG.ADMIN_PASSWORD) {
+                // Login bem-sucedido
+                isAdminLoggedIn = true;
+                hideLoginModal();
+                unlockAdminPanel();
+                showNotification('✅ Login administrativo realizado com sucesso!');
+                addLog('Administrador logou no sistema');
+                
+                // Salvar estado de login (expira em 2 horas)
+                const loginData = {
+                    loggedIn: true,
+                    timestamp: Date.now(),
+                    expires: Date.now() + (2 * 60 * 60 * 1000) // 2 horas
+                };
+                localStorage.setItem('admin_login', JSON.stringify(loginData));
+            } else {
+                // Login falhou
+                elements.loginError.style.display = 'block';
+                elements.adminPassword.value = '';
+                elements.adminPassword.focus();
+                addLog('Tentativa de login falhou (senha incorreta)');
+            }
+        }
+        
+        function checkSavedLogin() {
+            const savedLogin = JSON.parse(localStorage.getItem('admin_login') || '{}');
+            
+            if (savedLogin.loggedIn && savedLogin.expires > Date.now()) {
+                // Login ainda é válido
+                isAdminLoggedIn = true;
+                unlockAdminPanel();
+                addLog('Login administrativo restaurado da sessão anterior');
+            }
+        }
+        
+        function logout() {
+            isAdminLoggedIn = false;
+            lockAdminPanel();
+            localStorage.removeItem('admin_login');
+            showNotification('🚪 Logout realizado com sucesso');
+            addLog('Administrador fez logout');
+            
+            // Voltar para aba de reservas
+            switchTab('reservations');
+        }
+        
+        function unlockAdminPanel() {
+            // Desbloquear aba Admin
+            elements.adminTabBtn.classList.remove('locked');
+            elements.adminTabBtn.classList.add('active');
+            elements.adminTabBtn.innerHTML = '<span>👨‍✈️</span> Painel Admin';
+            
+            // Mostrar conteúdo do painel
+            elements.adminContent.style.display = 'block';
+            
+            // Atualizar dados
+            updateAdminPanel();
+        }
+        
+        function lockAdminPanel() {
+            // Bloquear aba Admin
+            elements.adminTabBtn.classList.add('locked');
+            elements.adminTabBtn.classList.remove('active');
+            elements.adminTabBtn.innerHTML = '<span>🔒</span> Painel Admin';
+            
+            // Esconder conteúdo
+            elements.adminContent.style.display = 'none';
+            
+            // Se estiver na aba admin, voltar para reservas
+            if (document.getElementById('admin').classList.contains('active')) {
+                switchTab('reservations');
+            }
+        }
+        
         // ==================== FUNÇÕES DO AVIÃO ====================
         function buildAircraft() {
-            // Layout do A350
             const layout = {
                 first: {
                     rows: 2,
@@ -928,25 +1216,23 @@
             for (let row = 0; row < layout.business.rows; row++) {
                 const rowDiv = createRow(layout.business.startRow + row);
                 
-                // Bloco 1 (A, C)
+                // Bloco 1
                 [layout.business.seats[0], layout.business.seats[1]].forEach(letter => {
                     const seatNum = (layout.business.startRow + row) + letter;
                     rowDiv.appendChild(createSeatElement(seatNum, 'business'));
                 });
                 
-                // Corredor
                 rowDiv.appendChild(createAisle('ESQ'));
                 
-                // Bloco 2 (D, G)
+                // Bloco 2
                 [layout.business.seats[2], layout.business.seats[3]].forEach(letter => {
                     const seatNum = (layout.business.startRow + row) + letter;
                     rowDiv.appendChild(createSeatElement(seatNum, 'business'));
                 });
                 
-                // Corredor
                 rowDiv.appendChild(createAisle('DIR'));
                 
-                // Bloco 3 (H, K)
+                // Bloco 3
                 [layout.business.seats[4], layout.business.seats[5]].forEach(letter => {
                     const seatNum = (layout.business.startRow + row) + letter;
                     rowDiv.appendChild(createSeatElement(seatNum, 'business'));
@@ -959,25 +1245,23 @@
             for (let row = 0; row < layout.economy.rows; row++) {
                 const rowDiv = createRow(layout.economy.startRow + row);
                 
-                // Bloco 1 (A, B, C)
+                // Bloco 1
                 layout.economy.seats.slice(0, 3).forEach(letter => {
                     const seatNum = (layout.economy.startRow + row) + letter;
                     rowDiv.appendChild(createSeatElement(seatNum, 'economy'));
                 });
                 
-                // Corredor
                 rowDiv.appendChild(createAisle('ESQ'));
                 
-                // Bloco 2 (D, E, F)
+                // Bloco 2
                 layout.economy.seats.slice(3, 6).forEach(letter => {
                     const seatNum = (layout.economy.startRow + row) + letter;
                     rowDiv.appendChild(createSeatElement(seatNum, 'economy'));
                 });
                 
-                // Corredor
                 rowDiv.appendChild(createAisle('DIR'));
                 
-                // Bloco 3 (G, H, J)
+                // Bloco 3
                 layout.economy.seats.slice(6).forEach(letter => {
                     const seatNum = (layout.economy.startRow + row) + letter;
                     rowDiv.appendChild(createSeatElement(seatNum, 'economy'));
@@ -1013,7 +1297,6 @@
             seat.className = `seat ${className}`;
             seat.innerHTML = `<span>${seatNumber}</span>`;
             
-            // Verificar se está reservada
             if (allReservations[seatNumber]) {
                 seat.classList.add('occupied');
                 seat.title = `Reservada por ${allReservations[seatNumber].nome || 'viajante'}`;
@@ -1030,16 +1313,14 @@
                 return;
             }
             
-            // Remover seleção anterior
             document.querySelectorAll('.seat').forEach(s => {
                 s.classList.remove('selected');
             });
             
-            // Selecionar nova
             selectedSeat = seatNumber;
             seatElement.classList.add('selected');
             elements.selectedInfo.innerHTML = `⭐ Poltrona selecionada: <strong>${seatNumber}</strong>`;
-            elements.selectedInfo.style.color = '#64ffda';
+            elements.selectedInfo.style.color = '#38bdf8';
             
             updateReserveButton();
             addLog(`Poltrona ${seatNumber} selecionada`);
@@ -1065,18 +1346,15 @@
         
         async function sendToGoogleForms(data) {
             try {
-                // Criar FormData com todos os campos
                 const formData = new FormData();
-                
-                // Adicionar timestamp
                 const timestamp = new Date().toISOString();
+                
                 formData.append(CONFIG.GOOGLE_FORM.fields.timestamp, timestamp);
                 formData.append(CONFIG.GOOGLE_FORM.fields.nome, data.nome || 'Anônimo');
                 formData.append(CONFIG.GOOGLE_FORM.fields.email, data.email);
                 formData.append(CONFIG.GOOGLE_FORM.fields.poltrona, data.poltrona);
                 formData.append(CONFIG.GOOGLE_FORM.fields.codigo, data.codigo);
                 
-                // Enviar usando fetch com no-cors
                 await fetch(CONFIG.GOOGLE_FORM.url, {
                     method: 'POST',
                     mode: 'no-cors',
@@ -1128,12 +1406,10 @@ Equipe Airbus A350
                 return;
             }
             
-            // Mostrar loading
             elements.loading.style.display = 'block';
             elements.reserveBtn.disabled = true;
             
             try {
-                // Preparar dados
                 const reservationData = {
                     nome: elements.userName.value || 'Anônimo',
                     email: elements.userEmail.value,
@@ -1185,7 +1461,6 @@ Equipe Airbus A350
                 seatElement.title = `Reservada por ${userName}`;
                 seatElement.removeEventListener('click', () => {});
                 
-                // Adicionar data-seat attribute
                 const span = seatElement.querySelector('span');
                 if (span) span.dataset.seat = seatNumber;
             }
@@ -1196,14 +1471,12 @@ Equipe Airbus A350
             elements.finalSeat.textContent = data.poltrona;
             elements.successMessage.style.display = 'block';
             
-            // Botão copiar código
             elements.copyBtn.onclick = () => {
                 navigator.clipboard.writeText(data.codigo).then(() => {
                     showNotification('Código copiado para a área de transferência!');
                 });
             };
             
-            // Rolar para mensagem
             elements.successMessage.scrollIntoView({ behavior: 'smooth' });
         }
         
@@ -1222,13 +1495,19 @@ Equipe Airbus A350
         // ==================== FUNÇÕES DO PAINEL ADMIN ====================
         function updateStats() {
             const totalReservas = Object.keys(allReservations).length;
-            const totalVoos = 1; // Por enquanto só um voo
+            const poltronasLivres = 297 - totalReservas;
+            const ocupacao = Math.floor((totalReservas / 297) * 100);
             
             elements.statsDisplay.textContent = 
-                `💺 ${totalReservas} poltronas reservadas | 📊 ${totalVoos} voo ativo`;
+                `💺 ${totalReservas} poltronas reservadas | 📊 ${poltronasLivres} livres`;
+            
+            // Atualizar aba info
+            elements.infoTotalReservas.textContent = totalReservas;
+            elements.infoPoltronasLivres.textContent = poltronasLivres;
+            elements.infoOcupacao.textContent = `${ocupacao}%`;
             
             // Atualizar painel admin se visível
-            if (document.getElementById('admin').classList.contains('active')) {
+            if (isAdminLoggedIn && document.getElementById('admin').classList.contains('active')) {
                 updateAdminPanel();
             }
         }
@@ -1236,21 +1515,23 @@ Equipe Airbus A350
         function updateAdminPanel() {
             const reservations = Object.values(allReservations);
             const total = reservations.length;
+            const poltronasLivres = 297 - total;
+            const ocupacao = Math.floor((total / 297) * 100);
             
             // Atualizar estatísticas
             elements.adminStats.innerHTML = `
-                <div style="display: flex; justify-content: space-around; text-align: center;">
-                    <div>
-                        <div style="font-size: 2rem; color: #64ffda;">${total}</div>
+                <div style="display: flex; justify-content: space-around; text-align: center; flex-wrap: wrap;">
+                    <div style="margin: 10px;">
+                        <div style="font-size: 2rem; color: #38bdf8;">${total}</div>
                         <div style="font-size: 0.9rem;">Total Reservas</div>
                     </div>
-                    <div>
-                        <div style="font-size: 2rem; color: #4ecdc4;">${Math.floor((total / 297) * 100)}%</div>
-                        <div style="font-size: 0.9rem;">Ocupação</div>
-                    </div>
-                    <div>
-                        <div style="font-size: 2rem; color: #ff6b6b;">${297 - total}</div>
+                    <div style="margin: 10px;">
+                        <div style="font-size: 2rem; color: #34d399;">${poltronasLivres}</div>
                         <div style="font-size: 0.9rem;">Disponíveis</div>
+                    </div>
+                    <div style="margin: 10px;">
+                        <div style="font-size: 2rem; color: ${ocupacao > 80 ? '#f87171' : '#fbbf24'};">${ocupacao}%</div>
+                        <div style="font-size: 0.9rem;">Ocupação</div>
                     </div>
                 </div>
             `;
@@ -1258,14 +1539,14 @@ Equipe Airbus A350
             // Atualizar lista de reservas
             if (reservations.length === 0) {
                 elements.reservationsList.innerHTML = `
-                    <div style="text-align: center; padding: 40px; color: #8892b0; grid-column: 1 / -1;">
+                    <div style="text-align: center; padding: 40px; color: #94a3b8; grid-column: 1 / -1;">
                         📭 Nenhuma reserva encontrada
                     </div>
                 `;
                 return;
             }
             
-            // Ordenar por data (mais recente primeiro)
+            // Ordenar por data
             reservations.sort((a, b) => b.timestamp - a.timestamp);
             
             // Gerar cards
@@ -1282,7 +1563,7 @@ Equipe Airbus A350
                         </div>
                         <div>
                             <span>📧 E-mail:</span>
-                            <span style="color: #64ffda; font-size: 0.9rem;">${res.email}</span>
+                            <span style="color: #38bdf8; font-size: 0.9rem;">${res.email}</span>
                         </div>
                         <div>
                             <span>📅 Data:</span>
@@ -1307,13 +1588,11 @@ Equipe Airbus A350
                 return;
             }
             
-            // Criar CSV
             let csv = 'Nome,Email,Poltrona,Código,Data\n';
             reservations.forEach(res => {
                 csv += `"${res.nome || 'Anônimo'}","${res.email}","${res.poltrona}","${res.codigo}","${new Date(res.data).toLocaleString('pt-BR')}"\n`;
             });
             
-            // Criar blob e download
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement('a');
             const url = URL.createObjectURL(blob);
@@ -1331,48 +1610,38 @@ Equipe Airbus A350
         }
         
         function clearAllReservations() {
-            if (confirm('⚠️ TEM CERTEZA que deseja apagar TODAS as reservas locais?\n\nEsta ação não pode ser desfeita!')) {
+            if (confirm('⚠️ TEM CERTEZA ABSOLUTA que deseja apagar TODAS as reservas locais?\n\nEsta ação NÃO pode ser desfeita e os dados serão PERDIDOS permanentemente!')) {
                 allReservations = {};
                 localStorage.removeItem(CONFIG.LOCAL_STORAGE_KEY);
                 
-                // Reconstruir avião
                 buildAircraft();
                 updateStats();
                 updateAdminPanel();
                 
                 showNotification('🗑️ Todas as reservas locais foram apagadas', 'info');
-                addLog('Todas as reservas locais foram apagadas');
+                addLog('Todas as reservas locais foram apagadas pelo administrador');
             }
         }
         
-        async function testGoogleForms() {
-            elements.loading.style.display = 'block';
-            
-            try {
-                // Teste simples
-                const testData = {
-                    nome: 'Teste Sistema',
-                    email: 'teste@a350.com',
-                    poltrona: 'TEST',
-                    codigo: 'TEST-1234',
-                    timestamp: new Date().toISOString()
-                };
-                
-                const success = await sendToGoogleForms(testData);
-                
-                if (success) {
-                    showNotification('✅ Google Forms está funcionando!', 'success');
-                    addLog('Teste Google Forms: OK');
-                } else {
-                    showNotification('⚠️ Google Forms pode estar com problemas', 'info');
-                    addLog('Teste Google Forms: Possível erro');
+        // ==================== FUNÇÕES DAS ABAS ====================
+        function switchTab(tabId) {
+            // Remover active de todas as abas
+            elements.tabs.forEach(t => {
+                t.classList.remove('active');
+                if (t.id !== 'adminTabBtn' || isAdminLoggedIn) {
+                    t.classList.remove('locked');
                 }
-            } catch (error) {
-                showNotification('❌ Erro ao testar Google Forms', 'error');
-                addLog(`Teste Google Forms erro: ${error.message}`);
-            } finally {
-                elements.loading.style.display = 'none';
+            });
+            elements.tabContents.forEach(tc => tc.classList.remove('active'));
+            
+            // Adicionar active na aba clicada
+            const tabBtn = document.querySelector(`[data-tab="${tabId}"]`);
+            if (tabBtn) {
+                tabBtn.classList.add('active');
             }
+            document.getElementById(tabId).classList.add('active');
+            
+            addLog(`Aba alterada para: ${tabId}`);
         }
         
         // ==================== INICIALIZAÇÃO ====================
@@ -1383,29 +1652,45 @@ Equipe Airbus A350
             // Construir avião
             buildAircraft();
             
+            // Verificar login salvo
+            checkSavedLogin();
+            
             // Atualizar estatísticas
             updateStats();
-            updateAdminPanel();
+            
+            // Event Listeners - Login
+            elements.adminBadge.addEventListener('click', showLoginModal);
+            elements.loginBtn.addEventListener('click', showLoginModal);
+            elements.submitLogin.addEventListener('click', attemptLogin);
+            elements.logoutBtn.addEventListener('click', logout);
+            
+            // Permitir Enter no login
+            elements.adminPassword.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    attemptLogin();
+                }
+            });
+            
+            // Fechar modal ao clicar fora
+            elements.loginModal.addEventListener('click', (e) => {
+                if (e.target === elements.loginModal) {
+                    hideLoginModal();
+                }
+            });
             
             // Event Listeners - Abas
             elements.tabs.forEach(tab => {
                 tab.addEventListener('click', () => {
                     const tabId = tab.dataset.tab;
                     
-                    // Remover active de todas as abas
-                    elements.tabs.forEach(t => t.classList.remove('active'));
-                    elements.tabContents.forEach(tc => tc.classList.remove('active'));
-                    
-                    // Adicionar active na aba clicada
-                    tab.classList.add('active');
-                    document.getElementById(tabId).classList.add('active');
-                    
-                    addLog(`Aba alterada para: ${tabId}`);
-                    
-                    // Se for admin, atualizar dados
-                    if (tabId === 'admin') {
-                        updateAdminPanel();
+                    // Se for aba admin e não está logado, mostrar login
+                    if (tabId === 'admin' && !isAdminLoggedIn) {
+                        showLoginModal();
+                        return;
                     }
+                    
+                    // Se for admin e está logado, ou outra aba, trocar normalmente
+                    switchTab(tabId);
                 });
             });
             
@@ -1423,7 +1708,6 @@ Equipe Airbus A350
             
             elements.exportBtn.addEventListener('click', exportToExcel);
             elements.clearAllBtn.addEventListener('click', clearAllReservations);
-            elements.testFormBtn.addEventListener('click', testGoogleForms);
             
             // Permitir Enter no email
             elements.userEmail.addEventListener('keypress', (e) => {
@@ -1433,8 +1717,19 @@ Equipe Airbus A350
             });
             
             addLog('Sistema completamente inicializado');
-            showNotification('✨ Sistema Airbus A350 pronto!', 'success');
+            showNotification('✨ Sistema Airbus A350 v3.0 pronto!', 'success');
+            
+            // ⚠️ IMPORTANTE: Alerte o usuário sobre a senha padrão
+            console.log('⚠️ ALERTA DE SEGURANÇA ⚠️');
+            console.log('A senha padrão do admin é: ' + CONFIG.ADMIN_PASSWORD);
+            console.log('RECOMENDAÇÃO: Altere a senha na linha 936 do código!');
         }
+        
+        // ⚠️ INSTRUÇÃO IMPORTANTE PARA O USUÁRIO:
+        // 1. Procure por "ADMIN_PASSWORD" no código (linha 936)
+        // 2. Altere "A350Admin2024!" para uma senha SEGURA de sua escolha
+        // 3. Exemplo: "SuaSenhaSuperSecreta123@"
+        // 4. NÃO compartilhe esta senha com ninguém!
         
         // Iniciar quando a página carregar
         document.addEventListener('DOMContentLoaded', init);
