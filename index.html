@@ -1,0 +1,3386 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seleção de Poltronas – Airbus A350</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f3460, #1a1a2e);
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px 0 30px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #00adb5;
+        }
+        
+        .subtitle {
+            color: #b8b8b8;
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .plane-container {
+            background-color: rgba(30, 30, 46, 0.9);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #00adb5;
+            color: #00adb5;
+        }
+        
+        .row {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+        
+        .row-label {
+            width: 40px;
+            text-align: right;
+            margin-right: 10px;
+            font-weight: bold;
+            color: #eeeeee;
+        }
+        
+        .seat {
+            width: 38px;
+            height: 38px;
+            margin: 3px;
+            color: white;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: bold;
+        }
+        
+        .seat:hover:not(.occupied) {
+            transform: scale(1.1);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        
+        .first-class {
+            background-color: #8e44ad;
+        }
+        
+        .business-class {
+            background-color: #2980b9;
+        }
+        
+        .economy-class {
+            background-color: #27ae60;
+        }
+        
+        .occupied {
+            background-color: #e74c3c !important;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        
+        .selected {
+            background-color: #f1c40f !important;
+            color: #2c3e50;
+            box-shadow: 0 0 15px #f1c40f;
+        }
+        
+        .aisle {
+            width: 25px;
+        }
+        
+        .legend {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+        
+        .reservation-panel {
+            background-color: rgba(30, 30, 46, 0.9);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin-top: 20px;
+        }
+        
+        .reservation-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #00adb5;
+        }
+        
+        .selected-seat-display {
+            background-color: #2d3041;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.2rem;
+            border-left: 4px solid #00adb5;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #eeeeee;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 2px solid #393e46;
+            background-color: #2d3041;
+            color: white;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #00adb5;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        
+        .btn-primary {
+            background-color: #00adb5;
+            color: white;
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            background-color: #00969c;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 173, 181, 0.4);
+        }
+        
+        .btn-primary:disabled {
+            background-color: #393e46;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-secondary {
+            background-color: #8e44ad;
+            color: white;
+            margin-top: 15px;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #7d3c98;
+            transform: translateY(-2px);
+        }
+        
+        .success-message {
+            display: none;
+            background-color: #2d3041;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 25px;
+            border-left: 5px solid #00adb5;
+        }
+        
+        .success-message h3 {
+            color: #00adb5;
+            margin-bottom: 15px;
+        }
+        
+        .reservation-code {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #f1c40f;
+            letter-spacing: 3px;
+            margin: 15px 0;
+            padding: 10px;
+            background-color: rgba(241, 196, 15, 0.1);
+            border-radius: 5px;
+            font-family: monospace;
+        }
+        
+        .instructions {
+            background-color: #2d3041;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #b8b8b8;
+        }
+        
+        .instructions h4 {
+            color: #00adb5;
+            margin-bottom: 10px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .plane-container {
+                padding: 15px;
+            }
+            
+            .seat {
+                width: 32px;
+                height: 32px;
+                font-size: 10px;
+            }
+            
+            .aisle {
+                width: 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .seat {
+                width: 28px;
+                height: 28px;
+                font-size: 9px;
+                margin: 2px;
+            }
+            
+            .row-label {
+                width: 30px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Airbus A350 - Seleção de Poltronas</h1>
+            <p class="subtitle">Selecione sua poltrona gratuitamente para participar da sessão de Roleplay. Após a seleção, você receberá um código de check-in para o servidor privado do Roblox.</p>
+        </header>
+        
+        <div class="plane-container">
+            <div class="section-title">First Class</div>
+            <div id="firstClassSection">
+                <!-- First class seats will be generated here -->
+            </div>
+            
+            <div class="section-title">Business Class</div>
+            <div id="businessClassSection">
+                <!-- Business class seats will be generated here -->
+            </div>
+            
+            <div class="section-title">Economy Class</div>
+            <div id="economyClassSection">
+                <!-- Economy class seats will be generated here -->
+            </div>
+            
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color first-class"></div>
+                    <span>First Class</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color business-class"></div>
+                    <span>Business Class</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color economy-class"></div>
+                    <span>Economy Class</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #f1c40f;"></div>
+                    <span>Selecionada</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #e74c3c;"></div>
+                    <span>Ocupada</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="reservation-panel">
+            <h2 class="reservation-title">Reservar Poltrona</h2>
+            
+            <div class="selected-seat-display" id="selectedSeatDisplay">
+                Nenhuma poltrona selecionada
+            </div>
+            
+            <div class="form-group">
+                <label for="userEmail">Seu e-mail:</label>
+                <input type="email" id="userEmail" placeholder="Digite seu e-mail para receber o código de check-in">
+            </div>
+            
+            <div class="form-group">
+                <label for="userName">Seu nome (opcional):</label>
+                <input type="text" id="userName" placeholder="Como gostaria de ser chamado">
+            </div>
+            
+            <button class="btn btn-primary" id="reserveBtn" disabled>Reservar Poltrona</button>
+            
+            <button class="btn btn-secondary" id="resetBtn">Limpar Seleção</button>
+            
+            <div class="success-message" id="successMessage">
+                <h3>Reserva Confirmada! 🎉</h3>
+                <p>Sua poltrona foi reservada com sucesso!</p>
+                <div class="reservation-code" id="reservationCode">A350-XXXX-XXXX</div>
+                <p>Um e-mail com o código de check-in foi enviado para o endereço informado.</p>
+                <p>Use este código para entrar no servidor privado do Roblox.</p>
+                <p><strong>Poltrona:</strong> <span id="confirmedSeat"></span></p>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h4>Como funciona:</h4>
+            <ol>
+                <li>Selecione uma poltrona disponível no mapa acima</li>
+                <li>Preencha seu e-mail no formulário</li>
+                <li>Clique em "Reservar Poltrona" para confirmar</li>
+                <li>Você receberá um código de check-in exclusivo</li>
+                <li>Use esse código para acessar o servidor privado do Roblox no horário da sessão</li>
+                <li>Poltronas reservadas ficam bloqueadas para outros participantes</li>
+            </ol>
+        </div>
+        
+        <footer>
+            <p>Sistema de Reservas Airbus A350 &copy; 2023 - Roleplay Session</p>
+            <p>Esta é uma reserva gratuita para participação em sessão de roleplay</p>
+        </footer>
+    </div>
+
+    <script>
+        // Configuração do layout do A350
+        const seatConfig = {
+            firstClass: {
+                rows: 2,
+                seatsPerRow: 6,
+                layout: [1, 0, 2, 2, 0, 1], // 1-0-2-2-0-1 layout
+                letters: ['A', '', 'D', 'G', '', 'K']
+            },
+            businessClass: {
+                rows: 6, // fileiras 3-8
+                seatsPerRow: 7,
+                layout: [1, 1, 0, 2, 0, 1, 1], // 2-2-2 layout
+                letters: ['A', 'C', '', 'D', 'G', '', 'H', 'K']
+            },
+            economyClass: {
+                rows: 33, // fileiras 9-41
+                seatsPerRow: 10,
+                layout: [1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1], // 3-3-3 layout
+                letters: ['A', 'B', 'C', '', 'D', 'E', 'F', '', 'G', 'H', 'J']
+            }
+        };
+
+        // Estado da aplicação
+        let selectedSeat = null;
+        let occupiedSeats = JSON.parse(localStorage.getItem('a350OccupiedSeats') || '{}');
+        let userEmail = '';
+        let userName = '';
+
+        // Elementos DOM
+        const firstClassSection = document.getElementById('firstClassSection');
+        const businessClassSection = document.getElementById('businessClassSection');
+        const economyClassSection = document.getElementById('economyClassSection');
+        const selectedSeatDisplay = document.getElementById('selectedSeatDisplay');
+        const reserveBtn = document.getElementById('reserveBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const userEmailInput = document.getElementById('userEmail');
+        const userNameInput = document.getElementById('userName');
+        const successMessage = document.getElementById('successMessage');
+        const reservationCodeElement = document.getElementById('reservationCode');
+        const confirmedSeatElement = document.getElementById('confirmedSeat');
+
+        // Função para gerar código de reserva
+        function generateReservationCode() {
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ0123456789';
+            let code = 'A350-';
+            for (let i = 0; i < 8; i++) {
+                if (i === 4) code += '-';
+                code += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return code;
+        }
+
+        // Função para criar uma poltrona
+        function createSeat(row, letter, seatClass) {
+            const seatId = `${row}${letter}`;
+            const seat = document.createElement('div');
+            
+            seat.className = `seat ${seatClass}`;
+            seat.textContent = seatId;
+            seat.dataset.seatId = seatId;
+            
+            // Verificar se está ocupada
+            if (occupiedSeats[seatId]) {
+                seat.classList.add('occupied');
+                seat.title = `Ocupada por ${occupiedSeats[seatId].name || 'outro usuário'}`;
+            } else {
+                seat.addEventListener('click', () => selectSeat(seatId, seat));
+            }
+            
+            return seat;
+        }
+
+        // Função para selecionar uma poltrona
+        function selectSeat(seatId, seatElement) {
+            // Desselecionar poltrona anterior
+            document.querySelectorAll('.seat').forEach(s => {
+                s.classList.remove('selected');
+            });
+            
+            // Selecionar nova poltrona
+            selectedSeat = seatId;
+            seatElement.classList.add('selected');
+            
+            // Atualizar display
+            selectedSeatDisplay.textContent = `Poltrona selecionada: ${seatId}`;
+            selectedSeatDisplay.style.color = '#f1c40f';
+            
+            // Verificar se pode reservar
+            updateReserveButton();
+        }
+
+        // Função para atualizar estado do botão de reserva
+        function updateReserveButton() {
+            const emailValid = userEmailInput.value.includes('@') && userEmailInput.value.includes('.');
+            reserveBtn.disabled = !(selectedSeat && emailValid);
+        }
+
+        // Função para reservar poltrona
+        function reserveSeat() {
+            if (!selectedSeat || !userEmailInput.value) return;
+            
+            // Gerar código de reserva
+            const reservationCode = generateReservationCode();
+            
+            // Salvar no localStorage (simulando banco de dados)
+            occupiedSeats[selectedSeat] = {
+                email: userEmailInput.value,
+                name: userNameInput.value || 'Anônimo',
+                reservationCode: reservationCode,
+                date: new Date().toISOString()
+            };
+            
+            localStorage.setItem('a350OccupiedSeats', JSON.stringify(occupiedSeats));
+            
+            // Atualizar visual da poltrona
+            const seatElement = document.querySelector(`[data-seat-id="${selectedSeat}"]`);
+            seatElement.classList.remove('selected');
+            seatElement.classList.add('occupied');
+            seatElement.removeEventListener('click', () => {});
+            seatElement.title = `Ocupada por ${userNameInput.value || 'você'}`;
+            
+            // Mostrar mensagem de sucesso
+            reservationCodeElement.textContent = reservationCode;
+            confirmedSeatElement.textContent = selectedSeat;
+            successMessage.style.display = 'block';
+            
+            // Simular envio de e-mail
+            console.log(`E-mail enviado para ${userEmailInput.value}`);
+            console.log(`Código de check-in: ${reservationCode}`);
+            console.log(`Poltrona: ${selectedSeat}`);
+            
+            // Resetar formulário
+            selectedSeat = null;
+            selectedSeatDisplay.textContent = 'Nenhuma poltrona selecionada';
+            selectedSeatDisplay.style.color = 'inherit';
+            userEmailInput.value = '';
+            userNameInput.value = '';
+            updateReserveButton();
+            
+            // Rolar para a mensagem de sucesso
+            successMessage.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Função para limpar seleção
+        function resetSelection() {
+            selectedSeat = null;
+            document.querySelectorAll('.seat').forEach(s => {
+                s.classList.remove('selected');
+            });
+            selectedSeatDisplay.textContent = 'Nenhuma poltrona selecionada';
+            selectedSeatDisplay.style.color = 'inherit';
+            updateReserveButton();
+        }
+
+        // Gerar First Class (fileiras 1-2)
+        function generateFirstClass() {
+            for (let row = 1; row <= seatConfig.firstClass.rows; row++) {
+                const rowElement = document.createElement('div');
+                rowElement.className = 'row';
+                
+                const rowLabel = document.createElement('div');
+                rowLabel.className = 'row-label';
+                rowLabel.textContent = row;
+                rowElement.appendChild(rowLabel);
+                
+                for (let i = 0; i < seatConfig.firstClass.layout.length; i++) {
+                    if (seatConfig.firstClass.layout[i] === 0) {
+                        const aisle = document.createElement('div');
+                        aisle.className = 'aisle';
+                        rowElement.appendChild(aisle);
+                    } else {
+                        const letter = seatConfig.firstClass.letters[i];
+                        if (letter) {
+                            rowElement.appendChild(createSeat(row, letter, 'first-class'));
+                        }
+                    }
+                }
+                
+                firstClassSection.appendChild(rowElement);
+            }
+        }
+
+        // Gerar Business Class (fileiras 3-8)
+        function generateBusinessClass() {
+            for (let row = 3; row <= 3 + seatConfig.businessClass.rows - 1; row++) {
+                const rowElement = document.createElement('div');
+                rowElement.className = 'row';
+                
+                const rowLabel = document.createElement('div');
+                rowLabel.className = 'row-label';
+                rowLabel.textContent = row;
+                rowElement.appendChild(rowLabel);
+                
+                for (let i = 0; i < seatConfig.businessClass.layout.length; i++) {
+                    if (seatConfig.businessClass.layout[i] === 0) {
+                        const aisle = document.createElement('div');
+                        aisle.className = 'aisle';
+                        rowElement.appendChild(aisle);
+                    } else {
+                        const letter = seatConfig.businessClass.letters[i];
+                        if (letter) {
+                            rowElement.appendChild(createSeat(row, letter, 'business-class'));
+                        }
+                    }
+                }
+                
+                businessClassSection.appendChild(rowElement);
+            }
+        }
+
+        // Gerar Economy Class (fileiras 9-41)
+        function generateEconomyClass() {
+            for (let row = 9; row <= 9 + seatConfig.economyClass.rows - 1; row++) {
+                const rowElement = document.createElement('div');
+                rowElement.className = 'row';
+                
+                const rowLabel = document.createElement('div');
+                rowLabel.className = 'row-label';
+                rowLabel.textContent = row;
+                rowElement.appendChild(rowLabel);
+                
+                for (let i = 0; i < seatConfig.economyClass.layout.length; i++) {
+                    if (seatConfig.economyClass.layout[i] === 0) {
+                        const aisle = document.createElement('div');
+                        aisle.className = 'aisle';
+                        rowElement.appendChild(aisle);
+                    } else {
+                        const letter = seatConfig.economyClass.letters[i];
+                        if (letter) {
+                            rowElement.appendChild(createSeat(row, letter, 'economy-class'));
+                        }
+                    }
+                }
+                
+                economyClassSection.appendChild(rowElement);
+            }
+        }
+
+        // Inicializar eventos
+        function init() {
+            // Gerar poltronas
+            generateFirstClass();
+            generateBusinessClass();
+            generateEconomyClass();
+            
+            // Eventos
+            userEmailInput.addEventListener('input', updateReserveButton);
+            reserveBtn.addEventListener('click', reserveSeat);
+            resetBtn.addEventListener('click', resetSelection);
+            
+            // Verificar se há poltronas ocupadas pré-existentes
+            console.log('Poltronas ocupadas:', occupiedSeats);
+        }
+
+        // Inicializar quando o DOM estiver carregado
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seleção de Poltronas – Airbus A350</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f3460, #1a1a2e);
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px 0 30px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #00adb5;
+        }
+        
+        .subtitle {
+            color: #b8b8b8;
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .plane-container {
+            background-color: rgba(30, 30, 46, 0.9);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #00adb5;
+            color: #00adb5;
+        }
+        
+        .row {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+        
+        .row-label {
+            width: 40px;
+            text-align: right;
+            margin-right: 10px;
+            font-weight: bold;
+            color: #eeeeee;
+        }
+        
+        .seat {
+            width: 38px;
+            height: 38px;
+            margin: 3px;
+            color: white;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: bold;
+        }
+        
+        .seat:hover:not(.occupied) {
+            transform: scale(1.1);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        
+        .first-class {
+            background-color: #8e44ad;
+        }
+        
+        .business-class {
+            background-color: #2980b9;
+        }
+        
+        .economy-class {
+            background-color: #27ae60;
+        }
+        
+        .occupied {
+            background-color: #e74c3c !important;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        
+        .selected {
+            background-color: #f1c40f !important;
+            color: #2c3e50;
+            box-shadow: 0 0 15px #f1c40f;
+        }
+        
+        .aisle {
+            width: 25px;
+        }
+        
+        .legend {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+        
+        .reservation-panel {
+            background-color: rgba(30, 30, 46, 0.9);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin-top: 20px;
+        }
+        
+        .reservation-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #00adb5;
+        }
+        
+        .selected-seat-display {
+            background-color: #2d3041;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.2rem;
+            border-left: 4px solid #00adb5;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #eeeeee;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 2px solid #393e46;
+            background-color: #2d3041;
+            color: white;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #00adb5;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        
+        .btn-primary {
+            background-color: #00adb5;
+            color: white;
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            background-color: #00969c;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 173, 181, 0.4);
+        }
+        
+        .btn-primary:disabled {
+            background-color: #393e46;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-secondary {
+            background-color: #8e44ad;
+            color: white;
+            margin-top: 15px;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #7d3c98;
+            transform: translateY(-2px);
+        }
+        
+        .success-message {
+            display: none;
+            background-color: #2d3041;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 25px;
+            border-left: 5px solid #00adb5;
+        }
+        
+        .success-message h3 {
+            color: #00adb5;
+            margin-bottom: 15px;
+        }
+        
+        .reservation-code {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #f1c40f;
+            letter-spacing: 3px;
+            margin: 15px 0;
+            padding: 10px;
+            background-color: rgba(241, 196, 15, 0.1);
+            border-radius: 5px;
+            font-family: monospace;
+        }
+        
+        .instructions {
+            background-color: #2d3041;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #b8b8b8;
+        }
+        
+        .instructions h4 {
+            color: #00adb5;
+            margin-bottom: 10px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .plane-container {
+                padding: 15px;
+            }
+            
+            .seat {
+                width: 32px;
+                height: 32px;
+                font-size: 10px;
+            }
+            
+            .aisle {
+                width: 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .seat {
+                width: 28px;
+                height: 28px;
+                font-size: 9px;
+                margin: 2px;
+            }
+            
+            .row-label {
+                width: 30px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Airbus A350 - Seleção de Poltronas</h1>
+            <p class="subtitle">Selecione sua poltrona gratuitamente para participar da sessão de Roleplay. Após a seleção, você receberá um código de check-in para o servidor privado do Roblox.</p>
+        </header>
+        
+        <div class="plane-container">
+            <div class="section-title">First Class</div>
+            <div id="firstClassSection">
+                <!-- First class seats will be generated here -->
+            </div>
+            
+            <div class="section-title">Business Class</div>
+            <div id="businessClassSection">
+                <!-- Business class seats will be generated here -->
+            </div>
+            
+            <div class="section-title">Economy Class</div>
+            <div id="economyClassSection">
+                <!-- Economy class seats will be generated here -->
+            </div>
+            
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color first-class"></div>
+                    <span>First Class</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color business-class"></div>
+                    <span>Business Class</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color economy-class"></div>
+                    <span>Economy Class</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #f1c40f;"></div>
+                    <span>Selecionada</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #e74c3c;"></div>
+                    <span>Ocupada</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="reservation-panel">
+            <h2 class="reservation-title">Reservar Poltrona</h2>
+            
+            <div class="selected-seat-display" id="selectedSeatDisplay">
+                Nenhuma poltrona selecionada
+            </div>
+            
+            <div class="form-group">
+                <label for="userEmail">Seu e-mail:</label>
+                <input type="email" id="userEmail" placeholder="Digite seu e-mail para receber o código de check-in">
+            </div>
+            
+            <div class="form-group">
+                <label for="userName">Seu nome (opcional):</label>
+                <input type="text" id="userName" placeholder="Como gostaria de ser chamado">
+            </div>
+            
+            <button class="btn btn-primary" id="reserveBtn" disabled>Reservar Poltrona</button>
+            
+            <button class="btn btn-secondary" id="resetBtn">Limpar Seleção</button>
+            
+            <div class="success-message" id="successMessage">
+                <h3>Reserva Confirmada! 🎉</h3>
+                <p>Sua poltrona foi reservada com sucesso!</p>
+                <div class="reservation-code" id="reservationCode">A350-XXXX-XXXX</div>
+                <p>Um e-mail com o código de check-in foi enviado para o endereço informado.</p>
+                <p>Use este código para entrar no servidor privado do Roblox.</p>
+                <p><strong>Poltrona:</strong> <span id="confirmedSeat"></span></p>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h4>Como funciona:</h4>
+            <ol>
+                <li>Selecione uma poltrona disponível no mapa acima</li>
+                <li>Preencha seu e-mail no formulário</li>
+                <li>Clique em "Reservar Poltrona" para confirmar</li>
+                <li>Você receberá um código de check-in exclusivo</li>
+                <li>Use esse código para acessar o servidor privado do Roblox no horário da sessão</li>
+                <li>Poltronas reservadas ficam bloqueadas para outros participantes</li>
+            </ol>
+        </div>
+        
+        <footer>
+            <p>Sistema de Reservas Airbus A350 &copy; 2023 - Roleplay Session</p>
+            <p>Esta é uma reserva gratuita para participação em sessão de roleplay</p>
+        </footer>
+    </div>
+
+    <script>
+        // Configuração do layout do A350
+        const seatConfig = {
+            firstClass: {
+                rows: 2,
+                seatsPerRow: 6,
+                layout: [1, 0, 2, 2, 0, 1], // 1-0-2-2-0-1 layout
+                letters: ['A', '', 'D', 'G', '', 'K']
+            },
+            businessClass: {
+                rows: 6, // fileiras 3-8
+                seatsPerRow: 7,
+                layout: [1, 1, 0, 2, 0, 1, 1], // 2-2-2 layout
+                letters: ['A', 'C', '', 'D', 'G', '', 'H', 'K']
+            },
+            economyClass: {
+                rows: 33, // fileiras 9-41
+                seatsPerRow: 10,
+                layout: [1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1], // 3-3-3 layout
+                letters: ['A', 'B', 'C', '', 'D', 'E', 'F', '', 'G', 'H', 'J']
+            }
+        };
+
+        // Estado da aplicação
+        let selectedSeat = null;
+        let occupiedSeats = JSON.parse(localStorage.getItem('a350OccupiedSeats') || '{}');
+        let userEmail = '';
+        let userName = '';
+
+        // Elementos DOM
+        const firstClassSection = document.getElementById('firstClassSection');
+        const businessClassSection = document.getElementById('businessClassSection');
+        const economyClassSection = document.getElementById('economyClassSection');
+        const selectedSeatDisplay = document.getElementById('selectedSeatDisplay');
+        const reserveBtn = document.getElementById('reserveBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const userEmailInput = document.getElementById('userEmail');
+        const userNameInput = document.getElementById('userName');
+        const successMessage = document.getElementById('successMessage');
+        const reservationCodeElement = document.getElementById('reservationCode');
+        const confirmedSeatElement = document.getElementById('confirmedSeat');
+
+        // Função para gerar código de reserva
+        function generateReservationCode() {
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ0123456789';
+            let code = 'A350-';
+            for (let i = 0; i < 8; i++) {
+                if (i === 4) code += '-';
+                code += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return code;
+        }
+
+        // Função para criar uma poltrona
+        function createSeat(row, letter, seatClass) {
+            const seatId = `${row}${letter}`;
+            const seat = document.createElement('div');
+            
+            seat.className = `seat ${seatClass}`;
+            seat.textContent = seatId;
+            seat.dataset.seatId = seatId;
+            
+            // Verificar se está ocupada
+            if (occupiedSeats[seatId]) {
+                seat.classList.add('occupied');
+                seat.title = `Ocupada por ${occupiedSeats[seatId].name || 'outro usuário'}`;
+            } else {
+                seat.addEventListener('click', () => selectSeat(seatId, seat));
+            }
+            
+            return seat;
+        }
+
+        // Função para selecionar uma poltrona
+        function selectSeat(seatId, seatElement) {
+            // Desselecionar poltrona anterior
+            document.querySelectorAll('.seat').forEach(s => {
+                s.classList.remove('selected');
+            });
+            
+            // Selecionar nova poltrona
+            selectedSeat = seatId;
+            seatElement.classList.add('selected');
+            
+            // Atualizar display
+            selectedSeatDisplay.textContent = `Poltrona selecionada: ${seatId}`;
+            selectedSeatDisplay.style.color = '#f1c40f';
+            
+            // Verificar se pode reservar
+            updateReserveButton();
+        }
+
+        // Função para atualizar estado do botão de reserva
+        function updateReserveButton() {
+            const emailValid = userEmailInput.value.includes('@') && userEmailInput.value.includes('.');
+            reserveBtn.disabled = !(selectedSeat && emailValid);
+        }
+
+        // Função para reservar poltrona
+        function reserveSeat() {
+            if (!selectedSeat || !userEmailInput.value) return;
+            
+            // Gerar código de reserva
+            const reservationCode = generateReservationCode();
+            
+            // Salvar no localStorage (simulando banco de dados)
+            occupiedSeats[selectedSeat] = {
+                email: userEmailInput.value,
+                name: userNameInput.value || 'Anônimo',
+                reservationCode: reservationCode,
+                date: new Date().toISOString()
+            };
+            
+            localStorage.setItem('a350OccupiedSeats', JSON.stringify(occupiedSeats));
+            
+            // Atualizar visual da poltrona
+            const seatElement = document.querySelector(`[data-seat-id="${selectedSeat}"]`);
+            seatElement.classList.remove('selected');
+            seatElement.classList.add('occupied');
+            seatElement.removeEventListener('click', () => {});
+            seatElement.title = `Ocupada por ${userNameInput.value || 'você'}`;
+            
+            // Mostrar mensagem de sucesso
+            reservationCodeElement.textContent = reservationCode;
+            confirmedSeatElement.textContent = selectedSeat;
+            successMessage.style.display = 'block';
+            
+            // Simular envio de e-mail
+            console.log(`E-mail enviado para ${userEmailInput.value}`);
+            console.log(`Código de check-in: ${reservationCode}`);
+            console.log(`Poltrona: ${selectedSeat}`);
+            
+            // Resetar formulário
+            selectedSeat = null;
+            selectedSeatDisplay.textContent = 'Nenhuma poltrona selecionada';
+            selectedSeatDisplay.style.color = 'inherit';
+            userEmailInput.value = '';
+            userNameInput.value = '';
+            updateReserveButton();
+            
+            // Rolar para a mensagem de sucesso
+            successMessage.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Função para limpar seleção
+        function resetSelection() {
+            selectedSeat = null;
+            document.querySelectorAll('.seat').forEach(s => {
+                s.classList.remove('selected');
+            });
+            selectedSeatDisplay.textContent = 'Nenhuma poltrona selecionada';
+            selectedSeatDisplay.style.color = 'inherit';
+            updateReserveButton();
+        }
+
+        // Gerar First Class (fileiras 1-2)
+        function generateFirstClass() {
+            for (let row = 1; row <= seatConfig.firstClass.rows; row++) {
+                const rowElement = document.createElement('div');
+                rowElement.className = 'row';
+                
+                const rowLabel = document.createElement('div');
+                rowLabel.className = 'row-label';
+                rowLabel.textContent = row;
+                rowElement.appendChild(rowLabel);
+                
+                for (let i = 0; i < seatConfig.firstClass.layout.length; i++) {
+                    if (seatConfig.firstClass.layout[i] === 0) {
+                        const aisle = document.createElement('div');
+                        aisle.className = 'aisle';
+                        rowElement.appendChild(aisle);
+                    } else {
+                        const letter = seatConfig.firstClass.letters[i];
+                        if (letter) {
+                            rowElement.appendChild(createSeat(row, letter, 'first-class'));
+                        }
+                    }
+                }
+                
+                firstClassSection.appendChild(rowElement);
+            }
+        }
+
+        // Gerar Business Class (fileiras 3-8)
+        function generateBusinessClass() {
+            for (let row = 3; row <= 3 + seatConfig.businessClass.rows - 1; row++) {
+                const rowElement = document.createElement('div');
+                rowElement.className = 'row';
+                
+                const rowLabel = document.createElement('div');
+                rowLabel.className = 'row-label';
+                rowLabel.textContent = row;
+                rowElement.appendChild(rowLabel);
+                
+                for (let i = 0; i < seatConfig.businessClass.layout.length; i++) {
+                    if (seatConfig.businessClass.layout[i] === 0) {
+                        const aisle = document.createElement('div');
+                        aisle.className = 'aisle';
+                        rowElement.appendChild(aisle);
+                    } else {
+                        const letter = seatConfig.businessClass.letters[i];
+                        if (letter) {
+                            rowElement.appendChild(createSeat(row, letter, 'business-class'));
+                        }
+                    }
+                }
+                
+                businessClassSection.appendChild(rowElement);
+            }
+        }
+
+        // Gerar Economy Class (fileiras 9-41)
+        function generateEconomyClass() {
+            for (let row = 9; row <= 9 + seatConfig.economyClass.rows - 1; row++) {
+                const rowElement = document.createElement('div');
+                rowElement.className = 'row';
+                
+                const rowLabel = document.createElement('div');
+                rowLabel.className = 'row-label';
+                rowLabel.textContent = row;
+                rowElement.appendChild(rowLabel);
+                
+                for (let i = 0; i < seatConfig.economyClass.layout.length; i++) {
+                    if (seatConfig.economyClass.layout[i] === 0) {
+                        const aisle = document.createElement('div');
+                        aisle.className = 'aisle';
+                        rowElement.appendChild(aisle);
+                    } else {
+                        const letter = seatConfig.economyClass.letters[i];
+                        if (letter) {
+                            rowElement.appendChild(createSeat(row, letter, 'economy-class'));
+                        }
+                    }
+                }
+                
+                economyClassSection.appendChild(rowElement);
+            }
+        }
+
+        // Inicializar eventos
+        function init() {
+            // Gerar poltronas
+            generateFirstClass();
+            generateBusinessClass();
+            generateEconomyClass();
+            
+            // Eventos
+            userEmailInput.addEventListener('input', updateReserveButton);
+            reserveBtn.addEventListener('click', reserveSeat);
+            resetBtn.addEventListener('click', resetSelection);
+            
+            // Verificar se há poltronas ocupadas pré-existentes
+            console.log('Poltronas ocupadas:', occupiedSeats);
+        }
+
+        // Inicializar quando o DOM estiver carregado
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seleção de Poltronas – Airbus A350</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f3460, #1a1a2e);
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px 0 30px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #00adb5;
+        }
+        
+        .subtitle {
+            color: #b8b8b8;
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .plane-container {
+            background-color: rgba(30, 30, 46, 0.9);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #00adb5;
+            color: #00adb5;
+        }
+        
+        .row {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+        
+        .row-label {
+            width: 40px;
+            text-align: right;
+            margin-right: 10px;
+            font-weight: bold;
+            color: #eeeeee;
+        }
+        
+        .seat {
+            width: 38px;
+            height: 38px;
+            margin: 3px;
+            color: white;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: bold;
+        }
+        
+        .seat:hover:not(.occupied) {
+            transform: scale(1.1);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        
+        .first-class {
+            background-color: #8e44ad;
+        }
+        
+        .business-class {
+            background-color: #2980b9;
+        }
+        
+        .economy-class {
+            background-color: #27ae60;
+        }
+        
+        .occupied {
+            background-color: #e74c3c !important;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        
+        .selected {
+            background-color: #f1c40f !important;
+            color: #2c3e50;
+            box-shadow: 0 0 15px #f1c40f;
+        }
+        
+        .aisle {
+            width: 25px;
+        }
+        
+        .legend {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+        
+        .reservation-panel {
+            background-color: rgba(30, 30, 46, 0.9);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin-top: 20px;
+        }
+        
+        .reservation-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #00adb5;
+        }
+        
+        .selected-seat-display {
+            background-color: #2d3041;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.2rem;
+            border-left: 4px solid #00adb5;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #eeeeee;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 2px solid #393e46;
+            background-color: #2d3041;
+            color: white;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #00adb5;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        
+        .btn-primary {
+            background-color: #00adb5;
+            color: white;
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            background-color: #00969c;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 173, 181, 0.4);
+        }
+        
+        .btn-primary:disabled {
+            background-color: #393e46;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-secondary {
+            background-color: #8e44ad;
+            color: white;
+            margin-top: 15px;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #7d3c98;
+            transform: translateY(-2px);
+        }
+        
+        .success-message {
+            display: none;
+            background-color: #2d3041;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 25px;
+            border-left: 5px solid #00adb5;
+        }
+        
+        .success-message h3 {
+            color: #00adb5;
+            margin-bottom: 15px;
+        }
+        
+        .reservation-code {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #f1c40f;
+            letter-spacing: 3px;
+            margin: 15px 0;
+            padding: 10px;
+            background-color: rgba(241, 196, 15, 0.1);
+            border-radius: 5px;
+            font-family: monospace;
+        }
+        
+        .instructions {
+            background-color: #2d3041;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #b8b8b8;
+        }
+        
+        .instructions h4 {
+            color: #00adb5;
+            margin-bottom: 10px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .plane-container {
+                padding: 15px;
+            }
+            
+            .seat {
+                width: 32px;
+                height: 32px;
+                font-size: 10px;
+            }
+            
+            .aisle {
+                width: 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .seat {
+                width: 28px;
+                height: 28px;
+                font-size: 9px;
+                margin: 2px;
+            }
+            
+            .row-label {
+                width: 30px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Airbus A350 - Seleção de Poltronas</h1>
+            <p class="subtitle">Selecione sua poltrona gratuitamente para participar da sessão de Roleplay. Após a seleção, você receberá um código de check-in para o servidor privado do Roblox.</p>
+        </header>
+        
+        <div class="plane-container">
+            <div class="section-title">First Class</div>
+            <div id="firstClassSection">
+                <!-- First class seats will be generated here -->
+            </div>
+            
+            <div class="section-title">Business Class</div>
+            <div id="businessClassSection">
+                <!-- Business class seats will be generated here -->
+            </div>
+            
+            <div class="section-title">Economy Class</div>
+            <div id="economyClassSection">
+                <!-- Economy class seats will be generated here -->
+            </div>
+            
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color first-class"></div>
+                    <span>First Class</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color business-class"></div>
+                    <span>Business Class</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color economy-class"></div>
+                    <span>Economy Class</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #f1c40f;"></div>
+                    <span>Selecionada</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #e74c3c;"></div>
+                    <span>Ocupada</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="reservation-panel">
+            <h2 class="reservation-title">Reservar Poltrona</h2>
+            
+            <div class="selected-seat-display" id="selectedSeatDisplay">
+                Nenhuma poltrona selecionada
+            </div>
+            
+            <div class="form-group">
+                <label for="userEmail">Seu e-mail:</label>
+                <input type="email" id="userEmail" placeholder="Digite seu e-mail para receber o código de check-in">
+            </div>
+            
+            <div class="form-group">
+                <label for="userName">Seu nome (opcional):</label>
+                <input type="text" id="userName" placeholder="Como gostaria de ser chamado">
+            </div>
+            
+            <button class="btn btn-primary" id="reserveBtn" disabled>Reservar Poltrona</button>
+            
+            <button class="btn btn-secondary" id="resetBtn">Limpar Seleção</button>
+            
+            <div class="success-message" id="successMessage">
+                <h3>Reserva Confirmada! 🎉</h3>
+                <p>Sua poltrona foi reservada com sucesso!</p>
+                <div class="reservation-code" id="reservationCode">A350-XXXX-XXXX</div>
+                <p>Um e-mail com o código de check-in foi enviado para o endereço informado.</p>
+                <p>Use este código para entrar no servidor privado do Roblox.</p>
+                <p><strong>Poltrona:</strong> <span id="confirmedSeat"></span></p>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h4>Como funciona:</h4>
+            <ol>
+                <li>Selecione uma poltrona disponível no mapa acima</li>
+                <li>Preencha seu e-mail no formulário</li>
+                <li>Clique em "Reservar Poltrona" para confirmar</li>
+                <li>Você receberá um código de check-in exclusivo</li>
+                <li>Use esse código para acessar o servidor privado do Roblox no horário da sessão</li>
+                <li>Poltronas reservadas ficam bloqueadas para outros participantes</li>
+            </ol>
+        </div>
+        
+        <footer>
+            <p>Sistema de Reservas Airbus A350 &copy; 2023 - Roleplay Session</p>
+            <p>Esta é uma reserva gratuita para participação em sessão de roleplay</p>
+        </footer>
+    </div>
+
+    <script>
+        // Configuração do layout do A350
+        const seatConfig = {
+            firstClass: {
+                rows: 2,
+                seatsPerRow: 6,
+                layout: [1, 0, 2, 2, 0, 1], // 1-0-2-2-0-1 layout
+                letters: ['A', '', 'D', 'G', '', 'K']
+            },
+            businessClass: {
+                rows: 6, // fileiras 3-8
+                seatsPerRow: 7,
+                layout: [1, 1, 0, 2, 0, 1, 1], // 2-2-2 layout
+                letters: ['A', 'C', '', 'D', 'G', '', 'H', 'K']
+            },
+            economyClass: {
+                rows: 33, // fileiras 9-41
+                seatsPerRow: 10,
+                layout: [1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1], // 3-3-3 layout
+                letters: ['A', 'B', 'C', '', 'D', 'E', 'F', '', 'G', 'H', 'J']
+            }
+        };
+
+        // Estado da aplicação
+        let selectedSeat = null;
+        let occupiedSeats = JSON.parse(localStorage.getItem('a350OccupiedSeats') || '{}');
+        let userEmail = '';
+        let userName = '';
+
+        // Elementos DOM
+        const firstClassSection = document.getElementById('firstClassSection');
+        const businessClassSection = document.getElementById('businessClassSection');
+        const economyClassSection = document.getElementById('economyClassSection');
+        const selectedSeatDisplay = document.getElementById('selectedSeatDisplay');
+        const reserveBtn = document.getElementById('reserveBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const userEmailInput = document.getElementById('userEmail');
+        const userNameInput = document.getElementById('userName');
+        const successMessage = document.getElementById('successMessage');
+        const reservationCodeElement = document.getElementById('reservationCode');
+        const confirmedSeatElement = document.getElementById('confirmedSeat');
+
+        // Função para gerar código de reserva
+        function generateReservationCode() {
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ0123456789';
+            let code = 'A350-';
+            for (let i = 0; i < 8; i++) {
+                if (i === 4) code += '-';
+                code += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return code;
+        }
+
+        // Função para criar uma poltrona
+        function createSeat(row, letter, seatClass) {
+            const seatId = `${row}${letter}`;
+            const seat = document.createElement('div');
+            
+            seat.className = `seat ${seatClass}`;
+            seat.textContent = seatId;
+            seat.dataset.seatId = seatId;
+            
+            // Verificar se está ocupada
+            if (occupiedSeats[seatId]) {
+                seat.classList.add('occupied');
+                seat.title = `Ocupada por ${occupiedSeats[seatId].name || 'outro usuário'}`;
+            } else {
+                seat.addEventListener('click', () => selectSeat(seatId, seat));
+            }
+            
+            return seat;
+        }
+
+        // Função para selecionar uma poltrona
+        function selectSeat(seatId, seatElement) {
+            // Desselecionar poltrona anterior
+            document.querySelectorAll('.seat').forEach(s => {
+                s.classList.remove('selected');
+            });
+            
+            // Selecionar nova poltrona
+            selectedSeat = seatId;
+            seatElement.classList.add('selected');
+            
+            // Atualizar display
+            selectedSeatDisplay.textContent = `Poltrona selecionada: ${seatId}`;
+            selectedSeatDisplay.style.color = '#f1c40f';
+            
+            // Verificar se pode reservar
+            updateReserveButton();
+        }
+
+        // Função para atualizar estado do botão de reserva
+        function updateReserveButton() {
+            const emailValid = userEmailInput.value.includes('@') && userEmailInput.value.includes('.');
+            reserveBtn.disabled = !(selectedSeat && emailValid);
+        }
+
+        // Função para reservar poltrona
+        function reserveSeat() {
+            if (!selectedSeat || !userEmailInput.value) return;
+            
+            // Gerar código de reserva
+            const reservationCode = generateReservationCode();
+            
+            // Salvar no localStorage (simulando banco de dados)
+            occupiedSeats[selectedSeat] = {
+                email: userEmailInput.value,
+                name: userNameInput.value || 'Anônimo',
+                reservationCode: reservationCode,
+                date: new Date().toISOString()
+            };
+            
+            localStorage.setItem('a350OccupiedSeats', JSON.stringify(occupiedSeats));
+            
+            // Atualizar visual da poltrona
+            const seatElement = document.querySelector(`[data-seat-id="${selectedSeat}"]`);
+            seatElement.classList.remove('selected');
+            seatElement.classList.add('occupied');
+            seatElement.removeEventListener('click', () => {});
+            seatElement.title = `Ocupada por ${userNameInput.value || 'você'}`;
+            
+            // Mostrar mensagem de sucesso
+            reservationCodeElement.textContent = reservationCode;
+            confirmedSeatElement.textContent = selectedSeat;
+            successMessage.style.display = 'block';
+            
+            // Simular envio de e-mail
+            console.log(`E-mail enviado para ${userEmailInput.value}`);
+            console.log(`Código de check-in: ${reservationCode}`);
+            console.log(`Poltrona: ${selectedSeat}`);
+            
+            // Resetar formulário
+            selectedSeat = null;
+            selectedSeatDisplay.textContent = 'Nenhuma poltrona selecionada';
+            selectedSeatDisplay.style.color = 'inherit';
+            userEmailInput.value = '';
+            userNameInput.value = '';
+            updateReserveButton();
+            
+            // Rolar para a mensagem de sucesso
+            successMessage.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Função para limpar seleção
+        function resetSelection() {
+            selectedSeat = null;
+            document.querySelectorAll('.seat').forEach(s => {
+                s.classList.remove('selected');
+            });
+            selectedSeatDisplay.textContent = 'Nenhuma poltrona selecionada';
+            selectedSeatDisplay.style.color = 'inherit';
+            updateReserveButton();
+        }
+
+        // Gerar First Class (fileiras 1-2)
+        function generateFirstClass() {
+            for (let row = 1; row <= seatConfig.firstClass.rows; row++) {
+                const rowElement = document.createElement('div');
+                rowElement.className = 'row';
+                
+                const rowLabel = document.createElement('div');
+                rowLabel.className = 'row-label';
+                rowLabel.textContent = row;
+                rowElement.appendChild(rowLabel);
+                
+                for (let i = 0; i < seatConfig.firstClass.layout.length; i++) {
+                    if (seatConfig.firstClass.layout[i] === 0) {
+                        const aisle = document.createElement('div');
+                        aisle.className = 'aisle';
+                        rowElement.appendChild(aisle);
+                    } else {
+                        const letter = seatConfig.firstClass.letters[i];
+                        if (letter) {
+                            rowElement.appendChild(createSeat(row, letter, 'first-class'));
+                        }
+                    }
+                }
+                
+                firstClassSection.appendChild(rowElement);
+            }
+        }
+
+        // Gerar Business Class (fileiras 3-8)
+        function generateBusinessClass() {
+            for (let row = 3; row <= 3 + seatConfig.businessClass.rows - 1; row++) {
+                const rowElement = document.createElement('div');
+                rowElement.className = 'row';
+                
+                const rowLabel = document.createElement('div');
+                rowLabel.className = 'row-label';
+                rowLabel.textContent = row;
+                rowElement.appendChild(rowLabel);
+                
+                for (let i = 0; i < seatConfig.businessClass.layout.length; i++) {
+                    if (seatConfig.businessClass.layout[i] === 0) {
+                        const aisle = document.createElement('div');
+                        aisle.className = 'aisle';
+                        rowElement.appendChild(aisle);
+                    } else {
+                        const letter = seatConfig.businessClass.letters[i];
+                        if (letter) {
+                            rowElement.appendChild(createSeat(row, letter, 'business-class'));
+                        }
+                    }
+                }
+                
+                businessClassSection.appendChild(rowElement);
+            }
+        }
+
+        // Gerar Economy Class (fileiras 9-41)
+        function generateEconomyClass() {
+            for (let row = 9; row <= 9 + seatConfig.economyClass.rows - 1; row++) {
+                const rowElement = document.createElement('div');
+                rowElement.className = 'row';
+                
+                const rowLabel = document.createElement('div');
+                rowLabel.className = 'row-label';
+                rowLabel.textContent = row;
+                rowElement.appendChild(rowLabel);
+                
+                for (let i = 0; i < seatConfig.economyClass.layout.length; i++) {
+                    if (seatConfig.economyClass.layout[i] === 0) {
+                        const aisle = document.createElement('div');
+                        aisle.className = 'aisle';
+                        rowElement.appendChild(aisle);
+                    } else {
+                        const letter = seatConfig.economyClass.letters[i];
+                        if (letter) {
+                            rowElement.appendChild(createSeat(row, letter, 'economy-class'));
+                        }
+                    }
+                }
+                
+                economyClassSection.appendChild(rowElement);
+            }
+        }
+
+        // Inicializar eventos
+        function init() {
+            // Gerar poltronas
+            generateFirstClass();
+            generateBusinessClass();
+            generateEconomyClass();
+            
+            // Eventos
+            userEmailInput.addEventListener('input', updateReserveButton);
+            reserveBtn.addEventListener('click', reserveSeat);
+            resetBtn.addEventListener('click', resetSelection);
+            
+            // Verificar se há poltronas ocupadas pré-existentes
+            console.log('Poltronas ocupadas:', occupiedSeats);
+        }
+
+        // Inicializar quando o DOM estiver carregado
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seleção de Poltronas – Airbus A350</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f3460, #1a1a2e);
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px 0 30px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #00adb5;
+        }
+        
+        .subtitle {
+            color: #b8b8b8;
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .plane-container {
+            background-color: rgba(30, 30, 46, 0.9);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #00adb5;
+            color: #00adb5;
+        }
+        
+        .row {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+        
+        .row-label {
+            width: 40px;
+            text-align: right;
+            margin-right: 10px;
+            font-weight: bold;
+            color: #eeeeee;
+        }
+        
+        .seat {
+            width: 38px;
+            height: 38px;
+            margin: 3px;
+            color: white;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: bold;
+        }
+        
+        .seat:hover:not(.occupied) {
+            transform: scale(1.1);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        
+        .first-class {
+            background-color: #8e44ad;
+        }
+        
+        .business-class {
+            background-color: #2980b9;
+        }
+        
+        .economy-class {
+            background-color: #27ae60;
+        }
+        
+        .occupied {
+            background-color: #e74c3c !important;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        
+        .selected {
+            background-color: #f1c40f !important;
+            color: #2c3e50;
+            box-shadow: 0 0 15px #f1c40f;
+        }
+        
+        .aisle {
+            width: 25px;
+        }
+        
+        .legend {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+        
+        .reservation-panel {
+            background-color: rgba(30, 30, 46, 0.9);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin-top: 20px;
+        }
+        
+        .reservation-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #00adb5;
+        }
+        
+        .selected-seat-display {
+            background-color: #2d3041;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.2rem;
+            border-left: 4px solid #00adb5;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #eeeeee;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 2px solid #393e46;
+            background-color: #2d3041;
+            color: white;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #00adb5;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        
+        .btn-primary {
+            background-color: #00adb5;
+            color: white;
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            background-color: #00969c;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 173, 181, 0.4);
+        }
+        
+        .btn-primary:disabled {
+            background-color: #393e46;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-secondary {
+            background-color: #8e44ad;
+            color: white;
+            margin-top: 15px;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #7d3c98;
+            transform: translateY(-2px);
+        }
+        
+        .success-message {
+            display: none;
+            background-color: #2d3041;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 25px;
+            border-left: 5px solid #00adb5;
+        }
+        
+        .success-message h3 {
+            color: #00adb5;
+            margin-bottom: 15px;
+        }
+        
+        .reservation-code {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #f1c40f;
+            letter-spacing: 3px;
+            margin: 15px 0;
+            padding: 10px;
+            background-color: rgba(241, 196, 15, 0.1);
+            border-radius: 5px;
+            font-family: monospace;
+        }
+        
+        .instructions {
+            background-color: #2d3041;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #b8b8b8;
+        }
+        
+        .instructions h4 {
+            color: #00adb5;
+            margin-bottom: 10px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .plane-container {
+                padding: 15px;
+            }
+            
+            .seat {
+                width: 32px;
+                height: 32px;
+                font-size: 10px;
+            }
+            
+            .aisle {
+                width: 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .seat {
+                width: 28px;
+                height: 28px;
+                font-size: 9px;
+                margin: 2px;
+            }
+            
+            .row-label {
+                width: 30px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Airbus A350 - Seleção de Poltronas</h1>
+            <p class="subtitle">Selecione sua poltrona gratuitamente para participar da sessão de Roleplay. Após a seleção, você receberá um código de check-in para o servidor privado do Roblox.</p>
+        </header>
+        
+        <div class="plane-container">
+            <div class="section-title">First Class</div>
+            <div id="firstClassSection">
+                <!-- First class seats will be generated here -->
+            </div>
+            
+            <div class="section-title">Business Class</div>
+            <div id="businessClassSection">
+                <!-- Business class seats will be generated here -->
+            </div>
+            
+            <div class="section-title">Economy Class</div>
+            <div id="economyClassSection">
+                <!-- Economy class seats will be generated here -->
+            </div>
+            
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color first-class"></div>
+                    <span>First Class</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color business-class"></div>
+                    <span>Business Class</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color economy-class"></div>
+                    <span>Economy Class</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #f1c40f;"></div>
+                    <span>Selecionada</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #e74c3c;"></div>
+                    <span>Ocupada</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="reservation-panel">
+            <h2 class="reservation-title">Reservar Poltrona</h2>
+            
+            <div class="selected-seat-display" id="selectedSeatDisplay">
+                Nenhuma poltrona selecionada
+            </div>
+            
+            <div class="form-group">
+                <label for="userEmail">Seu e-mail:</label>
+                <input type="email" id="userEmail" placeholder="Digite seu e-mail para receber o código de check-in">
+            </div>
+            
+            <div class="form-group">
+                <label for="userName">Seu nome (opcional):</label>
+                <input type="text" id="userName" placeholder="Como gostaria de ser chamado">
+            </div>
+            
+            <button class="btn btn-primary" id="reserveBtn" disabled>Reservar Poltrona</button>
+            
+            <button class="btn btn-secondary" id="resetBtn">Limpar Seleção</button>
+            
+            <div class="success-message" id="successMessage">
+                <h3>Reserva Confirmada! 🎉</h3>
+                <p>Sua poltrona foi reservada com sucesso!</p>
+                <div class="reservation-code" id="reservationCode">A350-XXXX-XXXX</div>
+                <p>Um e-mail com o código de check-in foi enviado para o endereço informado.</p>
+                <p>Use este código para entrar no servidor privado do Roblox.</p>
+                <p><strong>Poltrona:</strong> <span id="confirmedSeat"></span></p>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h4>Como funciona:</h4>
+            <ol>
+                <li>Selecione uma poltrona disponível no mapa acima</li>
+                <li>Preencha seu e-mail no formulário</li>
+                <li>Clique em "Reservar Poltrona" para confirmar</li>
+                <li>Você receberá um código de check-in exclusivo</li>
+                <li>Use esse código para acessar o servidor privado do Roblox no horário da sessão</li>
+                <li>Poltronas reservadas ficam bloqueadas para outros participantes</li>
+            </ol>
+        </div>
+        
+        <footer>
+            <p>Sistema de Reservas Airbus A350 &copy; 2023 - Roleplay Session</p>
+            <p>Esta é uma reserva gratuita para participação em sessão de roleplay</p>
+        </footer>
+    </div>
+
+    <script>
+        // Configuração do layout do A350
+        const seatConfig = {
+            firstClass: {
+                rows: 2,
+                seatsPerRow: 6,
+                layout: [1, 0, 2, 2, 0, 1], // 1-0-2-2-0-1 layout
+                letters: ['A', '', 'D', 'G', '', 'K']
+            },
+            businessClass: {
+                rows: 6, // fileiras 3-8
+                seatsPerRow: 7,
+                layout: [1, 1, 0, 2, 0, 1, 1], // 2-2-2 layout
+                letters: ['A', 'C', '', 'D', 'G', '', 'H', 'K']
+            },
+            economyClass: {
+                rows: 33, // fileiras 9-41
+                seatsPerRow: 10,
+                layout: [1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1], // 3-3-3 layout
+                letters: ['A', 'B', 'C', '', 'D', 'E', 'F', '', 'G', 'H', 'J']
+            }
+        };
+
+        // Estado da aplicação
+        let selectedSeat = null;
+        let occupiedSeats = JSON.parse(localStorage.getItem('a350OccupiedSeats') || '{}');
+        let userEmail = '';
+        let userName = '';
+
+        // Elementos DOM
+        const firstClassSection = document.getElementById('firstClassSection');
+        const businessClassSection = document.getElementById('businessClassSection');
+        const economyClassSection = document.getElementById('economyClassSection');
+        const selectedSeatDisplay = document.getElementById('selectedSeatDisplay');
+        const reserveBtn = document.getElementById('reserveBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const userEmailInput = document.getElementById('userEmail');
+        const userNameInput = document.getElementById('userName');
+        const successMessage = document.getElementById('successMessage');
+        const reservationCodeElement = document.getElementById('reservationCode');
+        const confirmedSeatElement = document.getElementById('confirmedSeat');
+
+        // Função para gerar código de reserva
+        function generateReservationCode() {
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ0123456789';
+            let code = 'A350-';
+            for (let i = 0; i < 8; i++) {
+                if (i === 4) code += '-';
+                code += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return code;
+        }
+
+        // Função para criar uma poltrona
+        function createSeat(row, letter, seatClass) {
+            const seatId = `${row}${letter}`;
+            const seat = document.createElement('div');
+            
+            seat.className = `seat ${seatClass}`;
+            seat.textContent = seatId;
+            seat.dataset.seatId = seatId;
+            
+            // Verificar se está ocupada
+            if (occupiedSeats[seatId]) {
+                seat.classList.add('occupied');
+                seat.title = `Ocupada por ${occupiedSeats[seatId].name || 'outro usuário'}`;
+            } else {
+                seat.addEventListener('click', () => selectSeat(seatId, seat));
+            }
+            
+            return seat;
+        }
+
+        // Função para selecionar uma poltrona
+        function selectSeat(seatId, seatElement) {
+            // Desselecionar poltrona anterior
+            document.querySelectorAll('.seat').forEach(s => {
+                s.classList.remove('selected');
+            });
+            
+            // Selecionar nova poltrona
+            selectedSeat = seatId;
+            seatElement.classList.add('selected');
+            
+            // Atualizar display
+            selectedSeatDisplay.textContent = `Poltrona selecionada: ${seatId}`;
+            selectedSeatDisplay.style.color = '#f1c40f';
+            
+            // Verificar se pode reservar
+            updateReserveButton();
+        }
+
+        // Função para atualizar estado do botão de reserva
+        function updateReserveButton() {
+            const emailValid = userEmailInput.value.includes('@') && userEmailInput.value.includes('.');
+            reserveBtn.disabled = !(selectedSeat && emailValid);
+        }
+
+        // Função para reservar poltrona
+        function reserveSeat() {
+            if (!selectedSeat || !userEmailInput.value) return;
+            
+            // Gerar código de reserva
+            const reservationCode = generateReservationCode();
+            
+            // Salvar no localStorage (simulando banco de dados)
+            occupiedSeats[selectedSeat] = {
+                email: userEmailInput.value,
+                name: userNameInput.value || 'Anônimo',
+                reservationCode: reservationCode,
+                date: new Date().toISOString()
+            };
+            
+            localStorage.setItem('a350OccupiedSeats', JSON.stringify(occupiedSeats));
+            
+            // Atualizar visual da poltrona
+            const seatElement = document.querySelector(`[data-seat-id="${selectedSeat}"]`);
+            seatElement.classList.remove('selected');
+            seatElement.classList.add('occupied');
+            seatElement.removeEventListener('click', () => {});
+            seatElement.title = `Ocupada por ${userNameInput.value || 'você'}`;
+            
+            // Mostrar mensagem de sucesso
+            reservationCodeElement.textContent = reservationCode;
+            confirmedSeatElement.textContent = selectedSeat;
+            successMessage.style.display = 'block';
+            
+            // Simular envio de e-mail
+            console.log(`E-mail enviado para ${userEmailInput.value}`);
+            console.log(`Código de check-in: ${reservationCode}`);
+            console.log(`Poltrona: ${selectedSeat}`);
+            
+            // Resetar formulário
+            selectedSeat = null;
+            selectedSeatDisplay.textContent = 'Nenhuma poltrona selecionada';
+            selectedSeatDisplay.style.color = 'inherit';
+            userEmailInput.value = '';
+            userNameInput.value = '';
+            updateReserveButton();
+            
+            // Rolar para a mensagem de sucesso
+            successMessage.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Função para limpar seleção
+        function resetSelection() {
+            selectedSeat = null;
+            document.querySelectorAll('.seat').forEach(s => {
+                s.classList.remove('selected');
+            });
+            selectedSeatDisplay.textContent = 'Nenhuma poltrona selecionada';
+            selectedSeatDisplay.style.color = 'inherit';
+            updateReserveButton();
+        }
+
+        // Gerar First Class (fileiras 1-2)
+        function generateFirstClass() {
+            for (let row = 1; row <= seatConfig.firstClass.rows; row++) {
+                const rowElement = document.createElement('div');
+                rowElement.className = 'row';
+                
+                const rowLabel = document.createElement('div');
+                rowLabel.className = 'row-label';
+                rowLabel.textContent = row;
+                rowElement.appendChild(rowLabel);
+                
+                for (let i = 0; i < seatConfig.firstClass.layout.length; i++) {
+                    if (seatConfig.firstClass.layout[i] === 0) {
+                        const aisle = document.createElement('div');
+                        aisle.className = 'aisle';
+                        rowElement.appendChild(aisle);
+                    } else {
+                        const letter = seatConfig.firstClass.letters[i];
+                        if (letter) {
+                            rowElement.appendChild(createSeat(row, letter, 'first-class'));
+                        }
+                    }
+                }
+                
+                firstClassSection.appendChild(rowElement);
+            }
+        }
+
+        // Gerar Business Class (fileiras 3-8)
+        function generateBusinessClass() {
+            for (let row = 3; row <= 3 + seatConfig.businessClass.rows - 1; row++) {
+                const rowElement = document.createElement('div');
+                rowElement.className = 'row';
+                
+                const rowLabel = document.createElement('div');
+                rowLabel.className = 'row-label';
+                rowLabel.textContent = row;
+                rowElement.appendChild(rowLabel);
+                
+                for (let i = 0; i < seatConfig.businessClass.layout.length; i++) {
+                    if (seatConfig.businessClass.layout[i] === 0) {
+                        const aisle = document.createElement('div');
+                        aisle.className = 'aisle';
+                        rowElement.appendChild(aisle);
+                    } else {
+                        const letter = seatConfig.businessClass.letters[i];
+                        if (letter) {
+                            rowElement.appendChild(createSeat(row, letter, 'business-class'));
+                        }
+                    }
+                }
+                
+                businessClassSection.appendChild(rowElement);
+            }
+        }
+
+        // Gerar Economy Class (fileiras 9-41)
+        function generateEconomyClass() {
+            for (let row = 9; row <= 9 + seatConfig.economyClass.rows - 1; row++) {
+                const rowElement = document.createElement('div');
+                rowElement.className = 'row';
+                
+                const rowLabel = document.createElement('div');
+                rowLabel.className = 'row-label';
+                rowLabel.textContent = row;
+                rowElement.appendChild(rowLabel);
+                
+                for (let i = 0; i < seatConfig.economyClass.layout.length; i++) {
+                    if (seatConfig.economyClass.layout[i] === 0) {
+                        const aisle = document.createElement('div');
+                        aisle.className = 'aisle';
+                        rowElement.appendChild(aisle);
+                    } else {
+                        const letter = seatConfig.economyClass.letters[i];
+                        if (letter) {
+                            rowElement.appendChild(createSeat(row, letter, 'economy-class'));
+                        }
+                    }
+                }
+                
+                economyClassSection.appendChild(rowElement);
+            }
+        }
+
+        // Inicializar eventos
+        function init() {
+            // Gerar poltronas
+            generateFirstClass();
+            generateBusinessClass();
+            generateEconomyClass();
+            
+            // Eventos
+            userEmailInput.addEventListener('input', updateReserveButton);
+            reserveBtn.addEventListener('click', reserveSeat);
+            resetBtn.addEventListener('click', resetSelection);
+            
+            // Verificar se há poltronas ocupadas pré-existentes
+            console.log('Poltronas ocupadas:', occupiedSeats);
+        }
+
+        // Inicializar quando o DOM estiver carregado
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seleção de Poltronas – Airbus A350</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f3460, #1a1a2e);
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px 0 30px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #00adb5;
+        }
+        
+        .subtitle {
+            color: #b8b8b8;
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .plane-container {
+            background-color: rgba(30, 30, 46, 0.9);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #00adb5;
+            color: #00adb5;
+        }
+        
+        .row {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+        
+        .row-label {
+            width: 40px;
+            text-align: right;
+            margin-right: 10px;
+            font-weight: bold;
+            color: #eeeeee;
+        }
+        
+        .seat {
+            width: 38px;
+            height: 38px;
+            margin: 3px;
+            color: white;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: bold;
+        }
+        
+        .seat:hover:not(.occupied) {
+            transform: scale(1.1);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        
+        .first-class {
+            background-color: #8e44ad;
+        }
+        
+        .business-class {
+            background-color: #2980b9;
+        }
+        
+        .economy-class {
+            background-color: #27ae60;
+        }
+        
+        .occupied {
+            background-color: #e74c3c !important;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        
+        .selected {
+            background-color: #f1c40f !important;
+            color: #2c3e50;
+            box-shadow: 0 0 15px #f1c40f;
+        }
+        
+        .aisle {
+            width: 25px;
+        }
+        
+        .legend {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+        
+        .reservation-panel {
+            background-color: rgba(30, 30, 46, 0.9);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin-top: 20px;
+        }
+        
+        .reservation-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #00adb5;
+        }
+        
+        .selected-seat-display {
+            background-color: #2d3041;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.2rem;
+            border-left: 4px solid #00adb5;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #eeeeee;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 2px solid #393e46;
+            background-color: #2d3041;
+            color: white;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #00adb5;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        
+        .btn-primary {
+            background-color: #00adb5;
+            color: white;
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            background-color: #00969c;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 173, 181, 0.4);
+        }
+        
+        .btn-primary:disabled {
+            background-color: #393e46;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-secondary {
+            background-color: #8e44ad;
+            color: white;
+            margin-top: 15px;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #7d3c98;
+            transform: translateY(-2px);
+        }
+        
+        .success-message {
+            display: none;
+            background-color: #2d3041;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 25px;
+            border-left: 5px solid #00adb5;
+        }
+        
+        .success-message h3 {
+            color: #00adb5;
+            margin-bottom: 15px;
+        }
+        
+        .reservation-code {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #f1c40f;
+            letter-spacing: 3px;
+            margin: 15px 0;
+            padding: 10px;
+            background-color: rgba(241, 196, 15, 0.1);
+            border-radius: 5px;
+            font-family: monospace;
+        }
+        
+        .instructions {
+            background-color: #2d3041;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #b8b8b8;
+        }
+        
+        .instructions h4 {
+            color: #00adb5;
+            margin-bottom: 10px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .plane-container {
+                padding: 15px;
+            }
+            
+            .seat {
+                width: 32px;
+                height: 32px;
+                font-size: 10px;
+            }
+            
+            .aisle {
+                width: 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .seat {
+                width: 28px;
+                height: 28px;
+                font-size: 9px;
+                margin: 2px;
+            }
+            
+            .row-label {
+                width: 30px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Airbus A350 - Seleção de Poltronas</h1>
+            <p class="subtitle">Selecione sua poltrona gratuitamente para participar da sessão de Roleplay. Após a seleção, você receberá um código de check-in para o servidor privado do Roblox.</p>
+        </header>
+        
+        <div class="plane-container">
+            <div class="section-title">First Class</div>
+            <div id="firstClassSection">
+                <!-- First class seats will be generated here -->
+            </div>
+            
+            <div class="section-title">Business Class</div>
+            <div id="businessClassSection">
+                <!-- Business class seats will be generated here -->
+            </div>
+            
+            <div class="section-title">Economy Class</div>
+            <div id="economyClassSection">
+                <!-- Economy class seats will be generated here -->
+            </div>
+            
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color first-class"></div>
+                    <span>First Class</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color business-class"></div>
+                    <span>Business Class</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color economy-class"></div>
+                    <span>Economy Class</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #f1c40f;"></div>
+                    <span>Selecionada</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #e74c3c;"></div>
+                    <span>Ocupada</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="reservation-panel">
+            <h2 class="reservation-title">Reservar Poltrona</h2>
+            
+            <div class="selected-seat-display" id="selectedSeatDisplay">
+                Nenhuma poltrona selecionada
+            </div>
+            
+            <div class="form-group">
+                <label for="userEmail">Seu e-mail:</label>
+                <input type="email" id="userEmail" placeholder="Digite seu e-mail para receber o código de check-in">
+            </div>
+            
+            <div class="form-group">
+                <label for="userName">Seu nome (opcional):</label>
+                <input type="text" id="userName" placeholder="Como gostaria de ser chamado">
+            </div>
+            
+            <button class="btn btn-primary" id="reserveBtn" disabled>Reservar Poltrona</button>
+            
+            <button class="btn btn-secondary" id="resetBtn">Limpar Seleção</button>
+            
+            <div class="success-message" id="successMessage">
+                <h3>Reserva Confirmada! 🎉</h3>
+                <p>Sua poltrona foi reservada com sucesso!</p>
+                <div class="reservation-code" id="reservationCode">A350-XXXX-XXXX</div>
+                <p>Um e-mail com o código de check-in foi enviado para o endereço informado.</p>
+                <p>Use este código para entrar no servidor privado do Roblox.</p>
+                <p><strong>Poltrona:</strong> <span id="confirmedSeat"></span></p>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h4>Como funciona:</h4>
+            <ol>
+                <li>Selecione uma poltrona disponível no mapa acima</li>
+                <li>Preencha seu e-mail no formulário</li>
+                <li>Clique em "Reservar Poltrona" para confirmar</li>
+                <li>Você receberá um código de check-in exclusivo</li>
+                <li>Use esse código para acessar o servidor privado do Roblox no horário da sessão</li>
+                <li>Poltronas reservadas ficam bloqueadas para outros participantes</li>
+            </ol>
+        </div>
+        
+        <footer>
+            <p>Sistema de Reservas Airbus A350 &copy; 2023 - Roleplay Session</p>
+            <p>Esta é uma reserva gratuita para participação em sessão de roleplay</p>
+        </footer>
+    </div>
+
+    <script>
+        // Configuração do layout do A350
+        const seatConfig = {
+            firstClass: {
+                rows: 2,
+                seatsPerRow: 6,
+                layout: [1, 0, 2, 2, 0, 1], // 1-0-2-2-0-1 layout
+                letters: ['A', '', 'D', 'G', '', 'K']
+            },
+            businessClass: {
+                rows: 6, // fileiras 3-8
+                seatsPerRow: 7,
+                layout: [1, 1, 0, 2, 0, 1, 1], // 2-2-2 layout
+                letters: ['A', 'C', '', 'D', 'G', '', 'H', 'K']
+            },
+            economyClass: {
+                rows: 33, // fileiras 9-41
+                seatsPerRow: 10,
+                layout: [1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1], // 3-3-3 layout
+                letters: ['A', 'B', 'C', '', 'D', 'E', 'F', '', 'G', 'H', 'J']
+            }
+        };
+
+        // Estado da aplicação
+        let selectedSeat = null;
+        let occupiedSeats = JSON.parse(localStorage.getItem('a350OccupiedSeats') || '{}');
+        let userEmail = '';
+        let userName = '';
+
+        // Elementos DOM
+        const firstClassSection = document.getElementById('firstClassSection');
+        const businessClassSection = document.getElementById('businessClassSection');
+        const economyClassSection = document.getElementById('economyClassSection');
+        const selectedSeatDisplay = document.getElementById('selectedSeatDisplay');
+        const reserveBtn = document.getElementById('reserveBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const userEmailInput = document.getElementById('userEmail');
+        const userNameInput = document.getElementById('userName');
+        const successMessage = document.getElementById('successMessage');
+        const reservationCodeElement = document.getElementById('reservationCode');
+        const confirmedSeatElement = document.getElementById('confirmedSeat');
+
+        // Função para gerar código de reserva
+        function generateReservationCode() {
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ0123456789';
+            let code = 'A350-';
+            for (let i = 0; i < 8; i++) {
+                if (i === 4) code += '-';
+                code += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return code;
+        }
+
+        // Função para criar uma poltrona
+        function createSeat(row, letter, seatClass) {
+            const seatId = `${row}${letter}`;
+            const seat = document.createElement('div');
+            
+            seat.className = `seat ${seatClass}`;
+            seat.textContent = seatId;
+            seat.dataset.seatId = seatId;
+            
+            // Verificar se está ocupada
+            if (occupiedSeats[seatId]) {
+                seat.classList.add('occupied');
+                seat.title = `Ocupada por ${occupiedSeats[seatId].name || 'outro usuário'}`;
+            } else {
+                seat.addEventListener('click', () => selectSeat(seatId, seat));
+            }
+            
+            return seat;
+        }
+
+        // Função para selecionar uma poltrona
+        function selectSeat(seatId, seatElement) {
+            // Desselecionar poltrona anterior
+            document.querySelectorAll('.seat').forEach(s => {
+                s.classList.remove('selected');
+            });
+            
+            // Selecionar nova poltrona
+            selectedSeat = seatId;
+            seatElement.classList.add('selected');
+            
+            // Atualizar display
+            selectedSeatDisplay.textContent = `Poltrona selecionada: ${seatId}`;
+            selectedSeatDisplay.style.color = '#f1c40f';
+            
+            // Verificar se pode reservar
+            updateReserveButton();
+        }
+
+        // Função para atualizar estado do botão de reserva
+        function updateReserveButton() {
+            const emailValid = userEmailInput.value.includes('@') && userEmailInput.value.includes('.');
+            reserveBtn.disabled = !(selectedSeat && emailValid);
+        }
+
+        // Função para reservar poltrona
+        function reserveSeat() {
+            if (!selectedSeat || !userEmailInput.value) return;
+            
+            // Gerar código de reserva
+            const reservationCode = generateReservationCode();
+            
+            // Salvar no localStorage (simulando banco de dados)
+            occupiedSeats[selectedSeat] = {
+                email: userEmailInput.value,
+                name: userNameInput.value || 'Anônimo',
+                reservationCode: reservationCode,
+                date: new Date().toISOString()
+            };
+            
+            localStorage.setItem('a350OccupiedSeats', JSON.stringify(occupiedSeats));
+            
+            // Atualizar visual da poltrona
+            const seatElement = document.querySelector(`[data-seat-id="${selectedSeat}"]`);
+            seatElement.classList.remove('selected');
+            seatElement.classList.add('occupied');
+            seatElement.removeEventListener('click', () => {});
+            seatElement.title = `Ocupada por ${userNameInput.value || 'você'}`;
+            
+            // Mostrar mensagem de sucesso
+            reservationCodeElement.textContent = reservationCode;
+            confirmedSeatElement.textContent = selectedSeat;
+            successMessage.style.display = 'block';
+            
+            // Simular envio de e-mail
+            console.log(`E-mail enviado para ${userEmailInput.value}`);
+            console.log(`Código de check-in: ${reservationCode}`);
+            console.log(`Poltrona: ${selectedSeat}`);
+            
+            // Resetar formulário
+            selectedSeat = null;
+            selectedSeatDisplay.textContent = 'Nenhuma poltrona selecionada';
+            selectedSeatDisplay.style.color = 'inherit';
+            userEmailInput.value = '';
+            userNameInput.value = '';
+            updateReserveButton();
+            
+            // Rolar para a mensagem de sucesso
+            successMessage.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Função para limpar seleção
+        function resetSelection() {
+            selectedSeat = null;
+            document.querySelectorAll('.seat').forEach(s => {
+                s.classList.remove('selected');
+            });
+            selectedSeatDisplay.textContent = 'Nenhuma poltrona selecionada';
+            selectedSeatDisplay.style.color = 'inherit';
+            updateReserveButton();
+        }
+
+        // Gerar First Class (fileiras 1-2)
+        function generateFirstClass() {
+            for (let row = 1; row <= seatConfig.firstClass.rows; row++) {
+                const rowElement = document.createElement('div');
+                rowElement.className = 'row';
+                
+                const rowLabel = document.createElement('div');
+                rowLabel.className = 'row-label';
+                rowLabel.textContent = row;
+                rowElement.appendChild(rowLabel);
+                
+                for (let i = 0; i < seatConfig.firstClass.layout.length; i++) {
+                    if (seatConfig.firstClass.layout[i] === 0) {
+                        const aisle = document.createElement('div');
+                        aisle.className = 'aisle';
+                        rowElement.appendChild(aisle);
+                    } else {
+                        const letter = seatConfig.firstClass.letters[i];
+                        if (letter) {
+                            rowElement.appendChild(createSeat(row, letter, 'first-class'));
+                        }
+                    }
+                }
+                
+                firstClassSection.appendChild(rowElement);
+            }
+        }
+
+        // Gerar Business Class (fileiras 3-8)
+        function generateBusinessClass() {
+            for (let row = 3; row <= 3 + seatConfig.businessClass.rows - 1; row++) {
+                const rowElement = document.createElement('div');
+                rowElement.className = 'row';
+                
+                const rowLabel = document.createElement('div');
+                rowLabel.className = 'row-label';
+                rowLabel.textContent = row;
+                rowElement.appendChild(rowLabel);
+                
+                for (let i = 0; i < seatConfig.businessClass.layout.length; i++) {
+                    if (seatConfig.businessClass.layout[i] === 0) {
+                        const aisle = document.createElement('div');
+                        aisle.className = 'aisle';
+                        rowElement.appendChild(aisle);
+                    } else {
+                        const letter = seatConfig.businessClass.letters[i];
+                        if (letter) {
+                            rowElement.appendChild(createSeat(row, letter, 'business-class'));
+                        }
+                    }
+                }
+                
+                businessClassSection.appendChild(rowElement);
+            }
+        }
+
+        // Gerar Economy Class (fileiras 9-41)
+        function generateEconomyClass() {
+            for (let row = 9; row <= 9 + seatConfig.economyClass.rows - 1; row++) {
+                const rowElement = document.createElement('div');
+                rowElement.className = 'row';
+                
+                const rowLabel = document.createElement('div');
+                rowLabel.className = 'row-label';
+                rowLabel.textContent = row;
+                rowElement.appendChild(rowLabel);
+                
+                for (let i = 0; i < seatConfig.economyClass.layout.length; i++) {
+                    if (seatConfig.economyClass.layout[i] === 0) {
+                        const aisle = document.createElement('div');
+                        aisle.className = 'aisle';
+                        rowElement.appendChild(aisle);
+                    } else {
+                        const letter = seatConfig.economyClass.letters[i];
+                        if (letter) {
+                            rowElement.appendChild(createSeat(row, letter, 'economy-class'));
+                        }
+                    }
+                }
+                
+                economyClassSection.appendChild(rowElement);
+            }
+        }
+
+        // Inicializar eventos
+        function init() {
+            // Gerar poltronas
+            generateFirstClass();
+            generateBusinessClass();
+            generateEconomyClass();
+            
+            // Eventos
+            userEmailInput.addEventListener('input', updateReserveButton);
+            reserveBtn.addEventListener('click', reserveSeat);
+            resetBtn.addEventListener('click', resetSelection);
+            
+            // Verificar se há poltronas ocupadas pré-existentes
+            console.log('Poltronas ocupadas:', occupiedSeats);
+        }
+
+        // Inicializar quando o DOM estiver carregado
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
