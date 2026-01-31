@@ -3,20 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Poltronas | Airbus A350</title>
+    <title>Sistema Completo de Poltronas A350</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --primary-color: #1a237e;
-            --secondary-color: #311b92;
-            --accent-color: #bb86fc;
-            --success-color: #4caf50;
-            --info-color: #2196f3;
-            --warning-color: #ff9800;
-            --danger-color: #f44336;
-            --occupied-color: #757575;
-        }
-        
         * {
             margin: 0;
             padding: 0;
@@ -25,326 +14,194 @@
         }
         
         body {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            background: linear-gradient(135deg, #1a237e 0%, #311b92 100%);
             color: white;
             min-height: 100vh;
             padding: 20px;
         }
         
         .container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
         }
         
-        /* Header Styles */
+        /* Header */
         .header {
             text-align: center;
-            padding: 25px;
+            padding: 20px;
             margin-bottom: 30px;
             background-color: rgba(0, 0, 0, 0.3);
             border-radius: 15px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            position: relative;
-        }
-        
-        .airline-logo {
-            position: absolute;
-            top: 20px;
-            left: 30px;
-            font-size: 2.5rem;
-            color: var(--accent-color);
         }
         
         h1 {
-            font-size: 2.8rem;
+            font-size: 2.5rem;
             margin-bottom: 10px;
-            color: var(--accent-color);
-            text-shadow: 0 2px 10px rgba(187, 134, 252, 0.3);
+            color: #bb86fc;
         }
         
         .subtitle {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             opacity: 0.9;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
         
-        .flight-info {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-top: 20px;
-            flex-wrap: wrap;
-        }
-        
-        .info-item {
-            background-color: rgba(255, 255, 255, 0.1);
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-size: 1.1rem;
-        }
-        
-        /* Status Legend */
-        .status-legend {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin: 25px 0;
-            flex-wrap: wrap;
-        }
-        
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1rem;
-        }
-        
-        .legend-box {
-            width: 25px;
-            height: 25px;
-            border-radius: 4px;
-        }
-        
-        /* Main Content Layout */
+        /* Main Content */
         .main-content {
             display: grid;
-            grid-template-columns: 2fr 1fr;
+            grid-template-columns: 1fr 1fr;
             gap: 30px;
             margin-bottom: 40px;
         }
         
-        @media (max-width: 1100px) {
+        @media (max-width: 900px) {
             .main-content {
                 grid-template-columns: 1fr;
             }
         }
         
-        /* Seat Map Section */
+        /* Seat Map */
         .seat-map-section {
             background-color: rgba(0, 0, 0, 0.4);
             border-radius: 15px;
-            padding: 25px;
+            padding: 20px;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
-        .section-title {
-            text-align: center;
-            font-size: 1.8rem;
-            margin-bottom: 25px;
-            color: var(--accent-color);
-            position: relative;
-            padding-bottom: 10px;
-        }
-        
-        .section-title:after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 25%;
-            width: 50%;
-            height: 3px;
-            background-color: var(--accent-color);
-            border-radius: 2px;
-        }
-        
-        /* A350 Layout */
-        .airplane-container {
-            position: relative;
-            margin: 0 auto;
-            max-width: 900px;
-        }
-        
-        .cockpit {
-            width: 120px;
-            height: 80px;
-            background: linear-gradient(to right, #333, #555);
-            border-radius: 100px 100px 0 0;
-            margin: 0 auto 15px;
-            position: relative;
-            left: -25px;
-            box-shadow: inset 0 -5px 10px rgba(0,0,0,0.5);
-        }
-        
-        .fuselage {
-            background: linear-gradient(to bottom, #222, #333);
-            border-radius: 25px;
-            padding: 30px 25px;
-            position: relative;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        
-        .fuselage:before {
-            content: '';
-            position: absolute;
-            top: 10px;
-            left: 20px;
-            right: 20px;
-            height: 5px;
-            background-color: var(--accent-color);
-            border-radius: 5px;
-            opacity: 0.3;
-        }
-        
-        .exit-row {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 25px;
-            height: 70px;
-            background-color: #f44336;
-            border-radius: 5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 0.8rem;
-            z-index: 2;
-        }
-        
-        .exit-left {
-            left: 10px;
-        }
-        
-        .exit-right {
-            right: 10px;
-        }
-        
-        /* Seat Grid */
         .seat-grid {
             display: grid;
-            grid-template-columns: repeat(10, 1fr);
-            gap: 15px 12px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(9, 1fr);
+            gap: 10px;
+            margin: 20px 0;
         }
         
         .seat {
-            width: 55px;
-            height: 55px;
+            width: 45px;
+            height: 45px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 8px;
+            border-radius: 6px;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
-            user-select: none;
-            position: relative;
-            font-size: 1rem;
-            box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+            font-size: 0.9rem;
         }
         
         .seat.available {
-            background-color: var(--success-color);
+            background-color: #4caf50;
             color: white;
         }
         
         .seat.selected {
-            background-color: var(--info-color);
+            background-color: #2196f3;
             color: white;
-            transform: scale(1.08);
-            box-shadow: 0 0 20px rgba(33, 150, 243, 0.7);
-            z-index: 1;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(33, 150, 243, 0.7);
         }
         
         .seat.occupied {
-            background-color: var(--occupied-color);
+            background-color: #757575;
             color: white;
             cursor: not-allowed;
         }
         
         .seat.business {
-            background-color: var(--warning-color);
+            background-color: #ff9800;
             color: white;
         }
         
-        .seat.available:hover {
-            background-color: #3d8b40;
-            transform: scale(1.05);
-        }
-        
-        .seat-label {
-            font-size: 0.95rem;
-        }
-        
-        .aisle {
-            grid-column: span 2;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: #aaa;
-            font-size: 0.9rem;
-        }
-        
-        .seat-section {
-            margin-bottom: 40px;
-        }
-        
-        .section-label {
-            font-size: 1.3rem;
-            margin-bottom: 15px;
-            color: var(--accent-color);
-            text-align: center;
-            background-color: rgba(187, 134, 252, 0.1);
-            padding: 8px;
-            border-radius: 8px;
-        }
-        
-        /* Selection Panel */
-        .selection-panel {
+        /* Form Section */
+        .form-section {
             background-color: rgba(0, 0, 0, 0.4);
             border-radius: 15px;
             padding: 25px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            flex-direction: column;
         }
         
-        .selected-seat-display {
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #bb86fc;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #bb86fc;
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+        
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        /* Passenger Info */
+        .passenger-info {
             background: linear-gradient(135deg, rgba(33, 150, 243, 0.2), rgba(33, 150, 243, 0.05));
             border-radius: 10px;
-            padding: 25px;
-            text-align: center;
-            margin-bottom: 30px;
-            border: 2px solid var(--info-color);
-            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.2);
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 2px solid #2196f3;
         }
         
-        .selected-seat-label {
+        .passenger-title {
             font-size: 1.3rem;
-            margin-bottom: 10px;
-            color: var(--accent-color);
+            margin-bottom: 15px;
+            color: #bb86fc;
+            text-align: center;
         }
         
-        .selected-seat-value {
-            font-size: 3.5rem;
-            font-weight: bold;
-            color: var(--info-color);
-            min-height: 70px;
+        .passenger-detail {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            text-shadow: 0 2px 10px rgba(33, 150, 243, 0.5);
+            justify-content: space-between;
+            margin-bottom: 8px;
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .detail-label {
+            font-weight: bold;
+            color: #bb86fc;
+        }
+        
+        .detail-value {
+            color: white;
         }
         
         .no-seat {
-            font-size: 1.3rem;
             color: #aaa;
+            font-style: italic;
         }
         
+        /* Buttons */
         .action-buttons {
             display: flex;
             flex-direction: column;
             gap: 15px;
-            margin-bottom: 30px;
         }
         
         .btn {
-            padding: 18px;
+            padding: 16px;
             border: none;
             border-radius: 10px;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -352,29 +209,28 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
         
         .btn-confirm {
-            background: linear-gradient(135deg, var(--success-color), #3d8b40);
+            background: linear-gradient(135deg, #4caf50, #3d8b40);
             color: white;
         }
         
-        .btn-confirm:hover {
+        .btn-confirm:hover:not(:disabled) {
             background: linear-gradient(135deg, #3d8b40, #2e6b31);
             transform: translateY(-3px);
             box-shadow: 0 8px 20px rgba(76, 175, 80, 0.3);
         }
         
         .btn-confirm:disabled {
-            background: var(--occupied-color);
+            background: #757575;
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
         }
         
         .btn-reset {
-            background: linear-gradient(135deg, var(--danger-color), #d32f2f);
+            background: linear-gradient(135deg, #f44336, #d32f2f);
             color: white;
         }
         
@@ -382,91 +238,6 @@
             background: linear-gradient(135deg, #d32f2f, #b71c1c);
             transform: translateY(-3px);
             box-shadow: 0 8px 20px rgba(244, 67, 54, 0.3);
-        }
-        
-        .btn-check-status {
-            background: linear-gradient(135deg, var(--warning-color), #f57c00);
-            color: white;
-        }
-        
-        .btn-check-status:hover {
-            background: linear-gradient(135deg, #f57c00, #e65100);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(255, 152, 0, 0.3);
-        }
-        
-        /* Instructions */
-        .instructions {
-            margin-top: auto;
-            padding: 20px;
-            background-color: rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
-            font-size: 1rem;
-            line-height: 1.6;
-        }
-        
-        .instructions h3 {
-            color: var(--accent-color);
-            margin-bottom: 15px;
-            font-size: 1.3rem;
-        }
-        
-        .instructions ol {
-            padding-left: 20px;
-            margin-bottom: 15px;
-        }
-        
-        .instructions li {
-            margin-bottom: 10px;
-        }
-        
-        .system-flow {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 20px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        
-        .flow-step {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 0.9rem;
-        }
-        
-        .flow-arrow {
-            color: var(--accent-color);
-        }
-        
-        /* Status Indicators */
-        .status-indicators {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-            padding: 15px;
-            background-color: rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-        }
-        
-        .status-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-        
-        .status-value {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--accent-color);
-        }
-        
-        .status-label {
-            font-size: 0.9rem;
-            margin-top: 5px;
-            opacity: 0.8;
         }
         
         /* Footer */
@@ -479,327 +250,132 @@
             font-size: 0.9rem;
         }
         
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 15px;
-        }
-        
-        .footer-link {
-            color: var(--accent-color);
-            text-decoration: none;
-            cursor: pointer;
-        }
-        
-        .footer-link:hover {
-            text-decoration: underline;
-        }
-        
-        /* Loading Animation */
+        /* Loading */
         .loading {
             text-align: center;
-            padding: 40px;
-            font-size: 1.2rem;
+            padding: 30px;
         }
         
-        .loading-spinner {
-            font-size: 2rem;
-            margin-bottom: 15px;
-            color: var(--accent-color);
-        }
-        
-        /* Responsive Design */
+        /* Responsive */
         @media (max-width: 768px) {
             h1 {
                 font-size: 2rem;
             }
             
-            .airline-logo {
-                position: static;
-                margin-bottom: 15px;
-            }
-            
             .seat-grid {
                 grid-template-columns: repeat(6, 1fr);
-                gap: 10px;
             }
             
             .seat {
-                width: 45px;
-                height: 45px;
-                font-size: 0.9rem;
+                width: 40px;
+                height: 40px;
+                font-size: 0.8rem;
             }
-            
-            .aisle {
-                grid-column: span 1;
-            }
-            
-            .selected-seat-value {
-                font-size: 2.8rem;
-            }
-            
-            .status-indicators {
-                flex-direction: column;
-                gap: 15px;
-            }
-        }
-        
-        @media (max-width: 576px) {
-            .seat-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
-            
-            .status-legend {
-                flex-direction: column;
-                align-items: center;
-                gap: 15px;
-            }
-            
-            .flight-info {
-                flex-direction: column;
-                align-items: center;
-                gap: 15px;
-            }
-        }
-        
-        /* Animation for seat selection */
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        
-        .seat.pulse {
-            animation: pulse 1.5s infinite;
-        }
-        
-        /* API Status Indicator */
-        .api-status {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            backdrop-filter: blur(10px);
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-        
-        .api-status.online {
-            color: #4caf50;
-            border: 1px solid #4caf50;
-        }
-        
-        .api-status.offline {
-            color: #f44336;
-            border: 1px solid #f44336;
-        }
-        
-        .api-status.connecting {
-            color: #ff9800;
-            border: 1px solid #ff9800;
         }
     </style>
 </head>
 <body>
-    <!-- API Status Indicator -->
-    <div class="api-status connecting" id="api-status">
-        <i class="fas fa-circle"></i>
-        <span>Conectando à API...</span>
-    </div>
-    
     <div class="container">
         <header class="header">
-            <div class="airline-logo">
-                <i class="fas fa-plane"></i>
-            </div>
-            <h1>Airbus A350 - Seleção de Poltronas</h1>
-            <p class="subtitle">Sistema integrado com Google Forms e envio automático de email</p>
-            
+            <h1><i class="fas fa-plane"></i> Sistema de Poltronas A350</h1>
+            <p class="subtitle">Preencha seus dados, escolha a poltrona e envie automaticamente</p>
             <div class="flight-info">
                 <div class="info-item">
-                    <i class="fas fa-plane-departure"></i> Voo: LA350
+                    <i class="fas fa-plane-departure"></i> Voo: LA350 | GRU → JFK
                 </div>
                 <div class="info-item">
-                    <i class="fas fa-map-marker-alt"></i> GRU → JFK
-                </div>
-                <div class="info-item">
-                    <i class="fas fa-calendar-alt"></i> 15 Dez 2023
-                </div>
-                <div class="info-item">
-                    <i class="fas fa-clock"></i> 10:30 → 20:15
-                </div>
-            </div>
-            
-            <div class="status-legend">
-                <div class="legend-item">
-                    <div class="legend-box available"></div>
-                    <span>Disponível</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-box business"></div>
-                    <span>Classe Executiva</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-box selected"></div>
-                    <span>Selecionada</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-box occupied"></div>
-                    <span>Ocupada</span>
+                    <i class="fas fa-calendar-alt"></i> 15 Dez 2023 | 10:30h
                 </div>
             </div>
         </header>
         
         <div class="main-content">
+            <!-- Seat Map -->
             <div class="seat-map-section">
-                <h2 class="section-title">Mapa de Poltronas - Airbus A350</h2>
-                
-                <div class="airplane-container">
-                    <div class="cockpit"></div>
-                    
-                    <div class="fuselage">
-                        <div class="exit-row exit-left">
-                            <span>SAÍDA</span>
-                        </div>
-                        <div class="exit-row exit-right">
-                            <span>SAÍDA</span>
-                        </div>
-                        
-                        <!-- Seção Business Class (Linhas 1-6) -->
-                        <div class="seat-section">
-                            <div class="section-label">Classe Executiva (Linhas 1-6)</div>
-                            <div class="seat-grid" id="business-section">
-                                <!-- Poltronas serão geradas por JavaScript -->
-                            </div>
-                        </div>
-                        
-                        <!-- Seção Premium Economy (Linhas 7-12) -->
-                        <div class="seat-section">
-                            <div class="section-label">Economia Premium (Linhas 7-12)</div>
-                            <div class="seat-grid" id="premium-section">
-                                <!-- Poltronas serão geradas por JavaScript -->
-                            </div>
-                        </div>
-                        
-                        <!-- Seção Economy (Linhas 13-40) -->
-                        <div class="seat-section">
-                            <div class="section-label">Classe Econômica (Linhas 13-40)</div>
-                            <div class="seat-grid" id="economy-section">
-                                <!-- Poltronas serão geradas por JavaScript -->
-                            </div>
-                        </div>
-                    </div>
+                <h2 class="section-title">Selecione sua Poltrona</h2>
+                <div class="seat-grid" id="seat-grid">
+                    <!-- Seats will be generated by JavaScript -->
                 </div>
-                
                 <div class="loading" id="loading-seats">
-                    <div class="loading-spinner">
-                        <i class="fas fa-spinner fa-spin"></i>
-                    </div>
-                    <p>Conectando ao banco de dados...</p>
-                </div>
-                
-                <!-- Status Indicators -->
-                <div class="status-indicators" id="status-indicators" style="display: none;">
-                    <div class="status-item">
-                        <div class="status-value" id="total-seats">0</div>
-                        <div class="status-label">Total de Poltronas</div>
-                    </div>
-                    <div class="status-item">
-                        <div class="status-value" id="available-seats">0</div>
-                        <div class="status-label">Disponíveis</div>
-                    </div>
-                    <div class="status-item">
-                        <div class="status-value" id="occupied-seats">0</div>
-                        <div class="status-label">Ocupadas</div>
-                    </div>
-                    <div class="status-item">
-                        <div class="status-value" id="last-update">Agora</div>
-                        <div class="status-label">Última Atualização</div>
-                    </div>
+                    <i class="fas fa-spinner fa-spin"></i> Carregando poltronas...
                 </div>
             </div>
             
-            <div class="selection-panel">
-                <h2 class="section-title">Sua Seleção</h2>
+            <!-- Passenger Form -->
+            <div class="form-section">
+                <h2 class="section-title">Seus Dados</h2>
                 
-                <div class="selected-seat-display">
-                    <div class="selected-seat-label">POLTRONA SELECIONADA:</div>
-                    <div class="selected-seat-value" id="selected-seat">
-                        <span class="no-seat">Nenhuma selecionada</span>
+                <!-- Passenger Info Display -->
+                <div class="passenger-info" id="passenger-display">
+                    <div class="passenger-title">Resumo da Reserva</div>
+                    <div class="passenger-detail">
+                        <span class="detail-label">Poltrona:</span>
+                        <span class="detail-value" id="display-seat">
+                            <span class="no-seat">Não selecionada</span>
+                        </span>
                     </div>
+                    <div class="passenger-detail">
+                        <span class="detail-label">Nome:</span>
+                        <span class="detail-value" id="display-name">-</span>
+                    </div>
+                    <div class="passenger-detail">
+                        <span class="detail-label">Email:</span>
+                        <span class="detail-value" id="display-email">-</span>
+                    </div>
+                    <div class="passenger-detail">
+                        <span class="detail-label">CPF:</span>
+                        <span class="detail-value" id="display-cpf">-</span>
+                    </div>
+                    <div class="passenger-detail">
+                        <span class="detail-label">Telefone:</span>
+                        <span class="detail-value" id="display-phone">-</span>
+                    </div>
+                </div>
+                
+                <!-- Input Form -->
+                <div class="form-group">
+                    <label class="form-label" for="name">
+                        <i class="fas fa-user"></i> Nome Completo *
+                    </label>
+                    <input type="text" id="name" class="form-input" placeholder="Digite seu nome completo" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="email">
+                        <i class="fas fa-envelope"></i> Email *
+                    </label>
+                    <input type="email" id="email" class="form-input" placeholder="seu@email.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="cpf">
+                        <i class="fas fa-id-card"></i> CPF *
+                    </label>
+                    <input type="text" id="cpf" class="form-input" placeholder="000.000.000-00" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="phone">
+                        <i class="fas fa-phone"></i> Telefone *
+                    </label>
+                    <input type="tel" id="phone" class="form-input" placeholder="(11) 99999-9999" required>
                 </div>
                 
                 <div class="action-buttons">
                     <button class="btn btn-confirm" id="confirm-btn" disabled>
-                        <i class="fas fa-check-circle"></i> Confirmar Poltrona
+                        <i class="fas fa-paper-plane"></i> Gerar Formulário Completo
                     </button>
                     
                     <button class="btn btn-reset" id="reset-btn">
-                        <i class="fas fa-redo"></i> Limpar Seleção
+                        <i class="fas fa-redo"></i> Limpar Tudo
                     </button>
-                    
-                    <button class="btn btn-check-status" id="status-btn">
-                        <i class="fas fa-sync-alt"></i> Atualizar Status
-                    </button>
-                </div>
-                
-                <div class="instructions">
-                    <h3>Como funciona o sistema:</h3>
-                    <ol>
-                        <li>Selecione uma poltrona disponível no mapa</li>
-                        <li>Clique em "Confirmar Poltrona" para abrir o formulário</li>
-                        <li>Preencha seus dados no Google Forms</li>
-                        <li>Um código de check-in será enviado para seu email</li>
-                        <li>A poltrona será automaticamente bloqueada no sistema</li>
-                    </ol>
-                    
-                    <div class="system-flow">
-                        <div class="flow-step">
-                            <i class="fas fa-mouse-pointer"></i> Selecionar
-                        </div>
-                        <div class="flow-arrow">
-                            <i class="fas fa-arrow-right"></i>
-                        </div>
-                        <div class="flow-step">
-                            <i class="fab fa-google"></i> Formulário
-                        </div>
-                        <div class="flow-arrow">
-                            <i class="fas fa-arrow-right"></i>
-                        </div>
-                        <div class="flow-step">
-                            <i class="fas fa-table"></i> Planilha
-                        </div>
-                        <div class="flow-arrow">
-                            <i class="fas fa-arrow-right"></i>
-                        </div>
-                        <div class="flow-step">
-                            <i class="fas fa-envelope"></i> Email
-                        </div>
-                        <div class="flow-arrow">
-                            <i class="fas fa-arrow-right"></i>
-                        </div>
-                        <div class="flow-step">
-                            <i class="fas fa-lock"></i> Bloqueada
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
         
         <footer>
-            <p>Sistema Integrado de Reservas - Airbus A350 | Google Forms + Google Sheets + Apps Script</p>
-            <div class="footer-links">
-                <a class="footer-link" id="view-sheet-link">Ver Planilha</a>
-                <a class="footer-link" id="test-api-link">Testar API</a>
-                <a class="footer-link" id="help-link">Ajuda</a>
-            </div>
-            <p style="margin-top: 15px;">Atualização automática a cada 30 segundos</p>
+            <p>Sistema Automático de Reservas A350 | Google Forms + Google Sheets + Email Automático</p>
+            <p>Dados pré-preenchidos automaticamente no formulário</p>
         </footer>
     </div>
 
@@ -808,334 +384,202 @@
         // CONFIGURAÇÃO DO SISTEMA
         // ============================================
         
-        // LINK DO GOOGLE FORMS (PRÉ-PREENCHIDO)
-        const FORM_LINK = "https://docs.google.com/forms/d/e/1FAIpQLSf0wYXE6i7JPQCBkKR5LqyRdwxRscpSmclDMQJXTs_llonIbA/viewform?usp=pp_url&entry.1796450485=SEAT_AQUI";
+        // LINK BASE DO GOOGLE FORMS
+        const FORM_BASE_URL = "https://docs.google.com/forms/d/e/1FAIpQLSf0wYXE6i7JPQCBkKR5LqyRdwxRscpSmclDMQJXTs_llonIbA/viewform";
         
-        // API DO GOOGLE APPS SCRIPT (SEU LINK)
+        // IDs DOS CAMPOS DO FORMULÁRIO (PRECISA CONFIRMAR ESSES IDs!)
+        // Substitua pelos IDs reais dos seus campos no Google Forms
+        const FIELD_IDS = {
+            SEAT: "entry.1796450485",      // Poltrona (já sabemos que é esse)
+            NAME: "entry.1234567890",      // Nome - SUBSTITUIR PELO ID REAL
+            EMAIL: "entry.0987654321",     // Email - SUBSTITUIR PELO ID REAL
+            CPF: "entry.1122334455",       // CPF - SUBSTITUIR PELO ID REAL
+            PHONE: "entry.5566778899"      // Telefone - SUBSTITUIR PELO ID REAL
+        };
+        
+        // API para verificar poltronas ocupadas
         const API_URL = "https://script.google.com/macros/s/AKfycbyi3dJoWMIJBY_YUuGlsKHJQ2lnPamVXsVOYOoQK_NEso0dbbmjP_S5DBuI9fRcSwOnLw/exec";
-        
-        // LINK DA PLANILHA DE RESPOSTAS
-        const SHEET_URL = "https://docs.google.com/spreadsheets/d/1FAIpQLSf0wYXE6i7JPQCBkKR5LqyRdwxRscpSmclDMQJXTs_llonIbA/edit";
         
         // ============================================
         // VARIÁVEIS DO SISTEMA
         // ============================================
         let selectedSeat = null;
         let occupiedSeats = [];
-        let allSeats = [];
-        let isLoading = true;
-        let lastUpdateTime = new Date();
+        let passengerData = {
+            name: "",
+            email: "",
+            cpf: "",
+            phone: ""
+        };
         
         // ============================================
-        // INICIALIZAÇÃO DO SISTEMA
+        // INICIALIZAÇÃO
         // ============================================
         document.addEventListener('DOMContentLoaded', function() {
             initializeSeatMap();
             loadOccupiedSeats();
             setupEventListeners();
-            setupFooterLinks();
-            updateStatusDisplay();
+            setupFormValidation();
         });
         
         // ============================================
-        // CONFIGURA O MAPA DE POLTRONAS DO A350
+        // INICIALIZA MAPA DE POLTRONAS
         // ============================================
         function initializeSeatMap() {
-            const businessSection = document.getElementById('business-section');
-            const premiumSection = document.getElementById('premium-section');
-            const economySection = document.getElementById('economy-section');
+            const seatGrid = document.getElementById('seat-grid');
+            seatGrid.innerHTML = '';
             
-            // Limpa as seções
-            businessSection.innerHTML = '';
-            premiumSection.innerHTML = '';
-            economySection.innerHTML = '';
-            
-            // CONFIGURAÇÃO DO LAYOUT A350 (Layout realístico)
-            // Business Class: Linhas 1-6 (Layout 1-2-1)
-            for (let row = 1; row <= 6; row++) {
-                // Esquerda: A
-                createAndAddSeat(businessSection, `${row}A`, 'business');
-                
-                // Meio: D, E (com corredor)
-                createAndAddSeat(businessSection, `${row}D`, 'business');
-                createAndAddSeat(businessSection, `${row}E`, 'business');
-                
-                // Direita: H
-                createAndAddSeat(businessSection, `${row}H`, 'business');
-                
-                // Adiciona espaçadores
-                for (let i = 0; i < 2; i++) {
-                    businessSection.appendChild(createAisleSpacer());
+            // Layout A350 - 40 linhas, 9 assentos por fila (A-K)
+            for (let row = 1; row <= 40; row++) {
+                // Economy Class (linhas 13-40)
+                if (row >= 13) {
+                    // Layout 3-3-3
+                    for (let col = 0; col < 9; col++) {
+                        if (col === 3) {
+                            // Corredor
+                            const aisle = document.createElement('div');
+                            aisle.className = 'aisle';
+                            if (row === 13) aisle.textContent = 'Corredor';
+                            seatGrid.appendChild(aisle);
+                            continue;
+                        }
+                        
+                        const seatLetter = getSeatLetterEconomy(col);
+                        const seatId = `${row}${seatLetter}`;
+                        createSeatElement(seatId, 'available');
+                    }
+                }
+                // Premium Economy (linhas 7-12)
+                else if (row >= 7) {
+                    // Layout 2-4-2
+                    for (let col = 0; col < 9; col++) {
+                        if (col === 3) {
+                            // Corredor
+                            const aisle = document.createElement('div');
+                            aisle.className = 'aisle';
+                            if (row === 7) aisle.textContent = 'Corredor';
+                            seatGrid.appendChild(aisle);
+                            continue;
+                        }
+                        
+                        const seatLetter = getSeatLetterPremium(col);
+                        const seatId = `${row}${seatLetter}`;
+                        createSeatElement(seatId, 'available');
+                    }
+                }
+                // Business Class (linhas 1-6)
+                else {
+                    // Layout 1-2-1
+                    for (let col = 0; col < 9; col++) {
+                        if (col < 1 || col > 7) continue;
+                        if (col === 3 || col === 4) continue;
+                        
+                        const seatLetter = getSeatLetterBusiness(col);
+                        const seatId = `${row}${seatLetter}`;
+                        createSeatElement(seatId, 'business');
+                    }
+                    
+                    // Espaçadores
+                    for (let i = 0; i < 2; i++) {
+                        seatGrid.appendChild(document.createElement('div'));
+                    }
                 }
             }
-            
-            // Premium Economy: Linhas 7-12 (Layout 2-4-2)
-            for (let row = 7; row <= 12; row++) {
-                // Esquerda: A, B
-                createAndAddSeat(premiumSection, `${row}A`, 'available');
-                createAndAddSeat(premiumSection, `${row}B`, 'available');
-                
-                // Meio: D, E, F, G (com corredor)
-                createAndAddSeat(premiumSection, `${row}D`, 'available');
-                createAndAddSeat(premiumSection, `${row}E`, 'available');
-                createAndAddSeat(premiumSection, `${row}F`, 'available');
-                createAndAddSeat(premiumSection, `${row}G`, 'available');
-                
-                // Direita: J, K
-                createAndAddSeat(premiumSection, `${row}J`, 'available');
-                createAndAddSeat(premiumSection, `${row}K`, 'available');
-                
-                // Adiciona corredor
-                const aisle = document.createElement('div');
-                aisle.className = 'aisle';
-                if (row === 7) aisle.textContent = 'Corredor';
-                premiumSection.appendChild(aisle);
-            }
-            
-            // Economy Class: Linhas 13-40 (Layout 3-3-3)
-            for (let row = 13; row <= 40; row++) {
-                // Esquerda: A, B, C
-                createAndAddSeat(economySection, `${row}A`, 'available');
-                createAndAddSeat(economySection, `${row}B`, 'available');
-                createAndAddSeat(economySection, `${row}C`, 'available');
-                
-                // Meio: D, E, F
-                createAndAddSeat(economySection, `${row}D`, 'available');
-                createAndAddSeat(economySection, `${row}E`, 'available');
-                createAndAddSeat(economySection, `${row}F`, 'available');
-                
-                // Direita: H, J, K
-                createAndAddSeat(economySection, `${row}H`, 'available');
-                createAndAddSeat(economySection, `${row}J`, 'available');
-                createAndAddSeat(economySection, `${row}K`, 'available');
-                
-                // Adiciona corredor
-                const aisle = document.createElement('div');
-                aisle.className = 'aisle';
-                if (row === 13) aisle.textContent = 'Corredor';
-                economySection.appendChild(aisle);
-            }
         }
         
         // ============================================
-        // FUNÇÕES AUXILIARES
+        // FUNÇÕES AUXILIARES PARA LETRAS DAS POLTRONAS
         // ============================================
-        function createAndAddSeat(section, seatId, seatType) {
-            const seatElement = createSeatElement(seatId, seatType);
-            section.appendChild(seatElement);
-            allSeats.push(seatId);
-            return seatElement;
+        function getSeatLetterBusiness(col) {
+            const letters = ['A', 'D', 'E', 'H'];
+            return letters[col - 1];
         }
         
-        function createAisleSpacer() {
-            return document.createElement('div');
+        function getSeatLetterPremium(col) {
+            const letters = ['A', 'B', 'D', 'E', 'F', 'G', 'J', 'K'];
+            const index = col < 3 ? col : col - 1;
+            return letters[index];
         }
         
+        function getSeatLetterEconomy(col) {
+            const letters = ['A', 'B', 'C', 'E', 'F', 'G', 'H', 'J', 'K'];
+            const index = col < 3 ? col : col - 1;
+            return letters[index];
+        }
+        
+        // ============================================
+        // CRIA ELEMENTO DE POLTRONA
+        // ============================================
         function createSeatElement(seatId, seatType) {
+            const seatGrid = document.getElementById('seat-grid');
+            
             const seatElement = document.createElement('div');
             seatElement.className = `seat ${seatType}`;
             seatElement.dataset.seatId = seatId;
-            seatElement.title = `Poltrona ${seatId} - ${seatType === 'business' ? 'Classe Executiva' : 'Disponível'}`;
+            seatElement.textContent = seatId;
             
-            const seatLabel = document.createElement('div');
-            seatLabel.className = 'seat-label';
-            seatLabel.textContent = seatId;
-            
-            seatElement.appendChild(seatLabel);
-            
-            // Evento de clique para seleção
             seatElement.addEventListener('click', function() {
                 selectSeat(seatId);
             });
             
+            seatGrid.appendChild(seatElement);
             return seatElement;
         }
         
         // ============================================
-        // CARREGA POLTRONAS OCUPADAS DA API
+        // CARREGA POLTRONAS OCUPADAS
         // ============================================
         function loadOccupiedSeats() {
-            isLoading = true;
-            updateApiStatus('connecting', 'Conectando à API...');
-            const loadingElement = document.getElementById('loading-seats');
-            
-            // Adiciona timestamp para evitar cache
-            const url = API_URL + '?t=' + new Date().getTime();
-            
-            fetch(url)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`Erro HTTP: ${response.status}`);
-                    }
-                    return response.json();
-                })
+            fetch(API_URL + '?t=' + new Date().getTime())
+                .then(response => response.json())
                 .then(data => {
-                    if (Array.isArray(data)) {
-                        occupiedSeats = data;
-                        updateApiStatus('online', 'API Conectada');
-                    } else if (data && Array.isArray(data.seats)) {
-                        occupiedSeats = data.seats;
-                        updateApiStatus('online', 'API Conectada');
-                    } else {
-                        throw new Error('Formato de dados inválido');
-                    }
-                    
+                    occupiedSeats = Array.isArray(data) ? data : [];
                     updateSeatStatus();
-                    isLoading = false;
-                    lastUpdateTime = new Date();
-                    updateStatusDisplay();
-                    
-                    // Mostra indicadores de status
-                    document.getElementById('status-indicators').style.display = 'flex';
-                    loadingElement.style.display = 'none';
-                    
-                    console.log(`✅ API conectada: ${occupiedSeats.length} poltrona(s) ocupada(s)`);
+                    document.getElementById('loading-seats').style.display = 'none';
                 })
                 .catch(error => {
-                    console.error('❌ Erro ao carregar poltronas:', error);
-                    
-                    updateApiStatus('offline', 'API Offline - Modo Demo');
-                    
-                    // Modo de demonstração com dados de exemplo
-                    occupiedSeats = ["1A", "2D", "5H", "7B", "9G", "12A", "15C", "18F", 
-                                    "22B", "25E", "30G", "35J", "38K", "40A"];
-                    
+                    console.log('Usando dados de demonstração');
+                    occupiedSeats = ["1A", "2D", "5H", "7B", "9G", "12A", "15C", "18F", "22B"];
                     updateSeatStatus();
-                    isLoading = false;
-                    lastUpdateTime = new Date();
-                    updateStatusDisplay();
-                    
-                    // Mostra indicadores mesmo no modo demo
-                    document.getElementById('status-indicators').style.display = 'flex';
-                    
-                    loadingElement.innerHTML = `
-                        <div style="color: #ff9800;">
-                            <i class="fas fa-exclamation-triangle"></i>
-                            <p>Modo de demonstração ativado</p>
-                            <p style="font-size: 0.9rem; margin-top: 10px;">API offline - usando dados de exemplo</p>
-                        </div>
-                    `;
-                    
-                    // Esconde o loading após um tempo
-                    setTimeout(() => {
-                        loadingElement.style.display = 'none';
-                    }, 3000);
+                    document.getElementById('loading-seats').style.display = 'none';
                 });
         }
         
         // ============================================
-        // ATUALIZA O STATUS DAS POLTRONAS
+        // ATUALIZA STATUS DAS POLTRONAS
         // ============================================
         function updateSeatStatus() {
-            let availableCount = 0;
-            let occupiedCount = occupiedSeats.length;
-            
-            document.querySelectorAll('.seat').forEach(seatElement => {
-                const seatId = seatElement.dataset.seatId;
+            document.querySelectorAll('.seat').forEach(seat => {
+                const seatId = seat.dataset.seatId;
                 
-                // Remove todas as classes de status
-                seatElement.classList.remove('available', 'selected', 'occupied', 'business', 'pulse');
-                
-                // Verifica se está ocupada
                 if (occupiedSeats.includes(seatId)) {
-                    seatElement.classList.add('occupied');
-                    seatElement.title = `Poltrona ${seatId} - OCUPADA`;
+                    seat.classList.remove('available', 'business', 'selected');
+                    seat.classList.add('occupied');
                     
-                    // Se era a selecionada, limpa seleção
                     if (selectedSeat === seatId) {
-                        resetSelection();
-                    }
-                } else {
-                    // Conta como disponível
-                    availableCount++;
-                    
-                    // Restaura classe original
-                    if (seatId.match(/^[1-6]/)) {
-                        seatElement.classList.add('business');
-                        seatElement.title = `Poltrona ${seatId} - CLASSE EXECUTIVA`;
-                    } else {
-                        seatElement.classList.add('available');
-                        seatElement.title = `Poltrona ${seatId} - DISPONÍVEL`;
-                    }
-                    
-                    // Mantém seleção se for a poltrona selecionada
-                    if (selectedSeat === seatId) {
-                        seatElement.classList.add('selected', 'pulse');
-                        seatElement.title = `Poltrona ${seatId} - SELECIONADA`;
+                        selectedSeat = null;
+                        updatePassengerDisplay();
+                        checkFormCompletion();
                     }
                 }
             });
-            
-            // Atualiza botão de confirmação
-            const confirmBtn = document.getElementById('confirm-btn');
-            confirmBtn.disabled = !selectedSeat || occupiedSeats.includes(selectedSeat);
-            
-            // Atualiza contadores
-            document.getElementById('total-seats').textContent = allSeats.length;
-            document.getElementById('available-seats').textContent = availableCount;
-            document.getElementById('occupied-seats').textContent = occupiedCount;
-            
-            // Atualiza título com contador
-            const title = document.querySelector('.seat-map-section .section-title');
-            if (title) {
-                title.innerHTML = `Mapa de Poltronas - Airbus A350 <span style="font-size: 1rem; color: #bb86fc;">(${availableCount}/${allSeats.length} disponíveis)</span>`;
-            }
         }
         
         // ============================================
-        // ATUALIZA DISPLAY DE STATUS
-        // ============================================
-        function updateStatusDisplay() {
-            const now = new Date();
-            const diff = Math.floor((now - lastUpdateTime) / 1000);
-            
-            let timeText;
-            if (diff < 60) {
-                timeText = 'Agora';
-            } else if (diff < 3600) {
-                const minutes = Math.floor(diff / 60);
-                timeText = `${minutes} min atrás`;
-            } else {
-                const hours = Math.floor(diff / 3600);
-                timeText = `${hours} h atrás`;
-            }
-            
-            document.getElementById('last-update').textContent = timeText;
-        }
-        
-        // ============================================
-        // ATUALIZA STATUS DA API
-        // ============================================
-        function updateApiStatus(status, message) {
-            const apiStatus = document.getElementById('api-status');
-            apiStatus.className = `api-status ${status}`;
-            apiStatus.innerHTML = `<i class="fas fa-circle"></i> <span>${message}</span>`;
-        }
-        
-        // ============================================
-        // SELECIONA UMA POLTRONA
+        // SELECIONA POLTRONA
         // ============================================
         function selectSeat(seatId) {
-            // Verifica se está ocupada
             if (occupiedSeats.includes(seatId)) {
-                showMessage(`A poltrona ${seatId} já está ocupada. Escolha outra.`, 'warning');
+                alert(`A poltrona ${seatId} já está ocupada. Escolha outra.`);
                 return;
             }
             
             // Remove seleção anterior
             if (selectedSeat) {
-                const previousSeat = document.querySelector(`.seat[data-seat-id="${selectedSeat}"]`);
-                if (previousSeat && !occupiedSeats.includes(selectedSeat)) {
-                    previousSeat.classList.remove('selected', 'pulse');
-                    
-                    // Restaura classe original
-                    if (selectedSeat.match(/^[1-6]/)) {
-                        previousSeat.classList.add('business');
-                        previousSeat.title = `Poltrona ${selectedSeat} - CLASSE EXECUTIVA`;
-                    } else {
-                        previousSeat.classList.add('available');
-                        previousSeat.title = `Poltrona ${selectedSeat} - DISPONÍVEL`;
-                    }
+                const prevSeat = document.querySelector(`.seat[data-seat-id="${selectedSeat}"]`);
+                if (prevSeat && !occupiedSeats.includes(selectedSeat)) {
+                    prevSeat.classList.remove('selected');
+                    prevSeat.classList.add(prevSeat.classList.contains('business') ? 'business' : 'available');
                 }
             }
             
@@ -1145,20 +589,65 @@
             
             if (newSeat) {
                 newSeat.classList.remove('available', 'business');
-                newSeat.classList.add('selected', 'pulse');
-                newSeat.title = `Poltrona ${seatId} - SELECIONADA`;
+                newSeat.classList.add('selected');
             }
             
-            // Atualiza display
-            const selectedSeatDisplay = document.getElementById('selected-seat');
-            selectedSeatDisplay.innerHTML = `<span>${seatId}</span>`;
+            updatePassengerDisplay();
+            checkFormCompletion();
+        }
+        
+        // ============================================
+        // ATUALIZA DISPLAY DO PASSAGEIRO
+        // ============================================
+        function updatePassengerDisplay() {
+            // Atualiza poltrona
+            const seatDisplay = document.getElementById('display-seat');
+            if (selectedSeat) {
+                seatDisplay.innerHTML = `<strong style="color: #2196f3;">${selectedSeat}</strong>`;
+            } else {
+                seatDisplay.innerHTML = '<span class="no-seat">Não selecionada</span>';
+            }
             
-            // Habilita botão de confirmação
+            // Atualiza dados do formulário
+            passengerData.name = document.getElementById('name').value;
+            passengerData.email = document.getElementById('email').value;
+            passengerData.cpf = document.getElementById('cpf').value;
+            passengerData.phone = document.getElementById('phone').value;
+            
+            document.getElementById('display-name').textContent = passengerData.name || "-";
+            document.getElementById('display-email').textContent = passengerData.email || "-";
+            document.getElementById('display-cpf').textContent = passengerData.cpf || "-";
+            document.getElementById('display-phone').textContent = passengerData.phone || "-";
+        }
+        
+        // ============================================
+        // CONFIGURA VALIDAÇÃO DO FORMULÁRIO
+        // ============================================
+        function setupFormValidation() {
+            const inputs = ['name', 'email', 'cpf', 'phone'];
+            
+            inputs.forEach(inputId => {
+                const input = document.getElementById(inputId);
+                input.addEventListener('input', function() {
+                    updatePassengerDisplay();
+                    checkFormCompletion();
+                });
+            });
+        }
+        
+        // ============================================
+        // VERIFICA SE FORMULÁRIO ESTÁ COMPLETO
+        // ============================================
+        function checkFormCompletion() {
+            const isFormValid = 
+                passengerData.name.trim() !== "" &&
+                passengerData.email.trim() !== "" &&
+                passengerData.cpf.trim() !== "" &&
+                passengerData.phone.trim() !== "" &&
+                selectedSeat !== null;
+            
             const confirmBtn = document.getElementById('confirm-btn');
-            confirmBtn.disabled = false;
-            
-            // Feedback visual
-            showMessage(`Poltrona ${seatId} selecionada. Clique em "Confirmar" para prosseguir.`, 'info');
+            confirmBtn.disabled = !isFormValid;
         }
         
         // ============================================
@@ -1167,387 +656,122 @@
         function setupEventListeners() {
             // Botão de confirmação
             document.getElementById('confirm-btn').addEventListener('click', function() {
-                if (selectedSeat) {
-                    openFormWithSeat(selectedSeat);
-                }
+                generateAndOpenForm();
             });
             
             // Botão de reset
-            document.getElementById('reset-btn').addEventListener('click', resetSelection);
-            
-            // Botão de atualizar status
-            document.getElementById('status-btn').addEventListener('click', function() {
-                if (isLoading) {
-                    showMessage('Aguarde a conclusão da atualização atual.', 'warning');
-                    return;
-                }
-                
-                showMessage('Atualizando status das poltronas...', 'info');
-                loadOccupiedSeats();
-            });
-            
-            // Atualização automática a cada 30 segundos
-            setInterval(() => {
-                if (!isLoading && document.visibilityState === 'visible') {
-                    loadOccupiedSeats();
-                }
-            }, 30000);
-            
-            // Atualiza o tempo da última atualização a cada minuto
-            setInterval(updateStatusDisplay, 60000);
-        }
-        
-        // ============================================
-        // CONFIGURA LINKS DO FOOTER
-        // ============================================
-        function setupFooterLinks() {
-            // Link para planilha
-            document.getElementById('view-sheet-link').addEventListener('click', function(e) {
-                e.preventDefault();
-                window.open(SHEET_URL, '_blank');
-                showMessage('Abrindo planilha de dados...', 'info');
-            });
-            
-            // Link para testar API
-            document.getElementById('test-api-link').addEventListener('click', function(e) {
-                e.preventDefault();
-                testAPI();
-            });
-            
-            // Link de ajuda
-            document.getElementById('help-link').addEventListener('click', function(e) {
-                e.preventDefault();
-                showHelp();
+            document.getElementById('reset-btn').addEventListener('click', function() {
+                resetEverything();
             });
         }
         
         // ============================================
-        // ABRE FORMULÁRIO COM POLTRONA PRÉ-PREENCHIDA
+        // GERA E ABRE FORMULÁRIO PRÉ-PREENCHIDO
         // ============================================
-        function openFormWithSeat(seatNumber) {
+        function generateAndOpenForm() {
             // Verifica se a poltrona ainda está disponível
-            if (occupiedSeats.includes(seatNumber)) {
-                showMessage(`A poltrona ${seatNumber} acabou de ser ocupada. Por favor, escolha outra.`, 'danger');
-                resetSelection();
+            if (occupiedSeats.includes(selectedSeat)) {
+                alert(`A poltrona ${selectedSeat} acabou de ser ocupada. Por favor, escolha outra.`);
                 loadOccupiedSeats();
                 return;
             }
             
-            // Substitui SEAT_AQUI pelo número da poltrona
-            const formUrl = FORM_LINK.replace('SEAT_AQUI', encodeURIComponent(seatNumber));
+            // Monta URL com todos os campos pré-preenchidos
+            let formUrl = FORM_BASE_URL + "?usp=pp_url";
             
-            // Abre em nova aba
-            const formWindow = window.open(formUrl, '_blank', 'noopener,noreferrer');
+            // ADICIONE OS PARÂMETROS COM OS IDs CORRETOS
+            formUrl += `&${FIELD_IDS.SEAT}=${encodeURIComponent(selectedSeat)}`;
+            formUrl += `&${FIELD_IDS.NAME}=${encodeURIComponent(passengerData.name)}`;
+            formUrl += `&${FIELD_IDS.EMAIL}=${encodeURIComponent(passengerData.email)}`;
+            formUrl += `&${FIELD_IDS.CPF}=${encodeURIComponent(passengerData.cpf)}`;
+            formUrl += `&${FIELD_IDS.PHONE}=${encodeURIComponent(passengerData.phone)}`;
+            
+            console.log("URL gerada:", formUrl);
+            
+            // Abre o formulário em nova aba
+            const formWindow = window.open(formUrl, '_blank');
             
             if (formWindow) {
-                showMessage(`Formulário aberto para a poltrona ${seatNumber}. Complete seus dados para receber o código de check-in por email.`, 'success');
+                alert("✅ Formulário gerado com sucesso!\n\nTODOS os campos já estão preenchidos.\n\nBasta clicar em 'ENVIAR' no Google Forms.\n\nApós enviar, você receberá um email com seu código de check-in.");
                 
-                // Monitora se a janela foi fechada (aproximação)
-                const checkFormClosed = setInterval(() => {
+                // Monitora se o formulário foi fechado
+                const checkClosed = setInterval(() => {
                     if (formWindow.closed) {
-                        clearInterval(checkFormClosed);
-                        showMessage('Formulário enviado! Verifique seu email para o código de check-in.', 'success');
+                        clearInterval(checkClosed);
                         
-                        // Atualiza status após possível envio (com delay)
-                        setTimeout(() => {
-                            loadOccupiedSeats();
-                        }, 5000);
+                        // Pergunta se enviou o formulário
+                        const didSubmit = confirm("Você já enviou o formulário?\n\nSe SIM, sua poltrona será bloqueada.\nSe NÃO, ainda pode editar.");
+                        
+                        if (didSubmit) {
+                            // Atualiza lista de poltronas ocupadas
+                            setTimeout(() => {
+                                loadOccupiedSeats();
+                                alert("🎉 Formulário enviado com sucesso!\n\nVerifique seu email para o código de check-in.");
+                            }, 2000);
+                        }
                     }
                 }, 1000);
-            } else {
-                showMessage('Não foi possível abrir o formulário. Verifique os bloqueadores de pop-up.', 'danger');
             }
         }
         
         // ============================================
-        // RESETA A SELEÇÃO
+        // RESETA TUDO
         // ============================================
-        function resetSelection() {
+        function resetEverything() {
+            // Limpa seleção de poltrona
             if (selectedSeat) {
                 const seatElement = document.querySelector(`.seat[data-seat-id="${selectedSeat}"]`);
                 if (seatElement && !occupiedSeats.includes(selectedSeat)) {
-                    seatElement.classList.remove('selected', 'pulse');
-                    
-                    // Restaura classe original
-                    if (selectedSeat.match(/^[1-6]/)) {
-                        seatElement.classList.add('business');
-                        seatElement.title = `Poltrona ${selectedSeat} - CLASSE EXECUTIVA`;
-                    } else {
-                        seatElement.classList.add('available');
-                        seatElement.title = `Poltrona ${selectedSeat} - DISPONÍVEL`;
-                    }
+                    seatElement.classList.remove('selected');
+                    seatElement.classList.add(seatElement.classList.contains('business') ? 'business' : 'available');
                 }
+                selectedSeat = null;
             }
             
-            selectedSeat = null;
-            const selectedSeatDisplay = document.getElementById('selected-seat');
-            selectedSeatDisplay.innerHTML = '<span class="no-seat">Nenhuma selecionada</span>';
+            // Limpa campos do formulário
+            document.getElementById('name').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('cpf').value = '';
+            document.getElementById('phone').value = '';
             
-            const confirmBtn = document.getElementById('confirm-btn');
-            confirmBtn.disabled = true;
+            // Limpa dados
+            passengerData = { name: "", email: "", cpf: "", phone: "" };
             
-            showMessage('Seleção limpa. Escolha uma nova poltrona.', 'info');
+            // Atualiza display
+            updatePassengerDisplay();
+            checkFormCompletion();
+            
+            alert("Formulário limpo. Pode começar uma nova reserva.");
         }
         
         // ============================================
-        // TESTA A CONEXÃO COM A API
+        // FUNÇÕES DE TESTE
         // ============================================
-        function testAPI() {
-            showMessage('Testando conexão com a API...', 'info');
-            updateApiStatus('connecting', 'Testando conexão...');
-            
-            const testUrl = API_URL + '?test=' + new Date().getTime();
-            
-            fetch(testUrl)
-                .then(response => {
-                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                    return response.json();
-                })
-                .then(data => {
-                    const seatCount = Array.isArray(data) ? data.length : (data.seats ? data.seats.length : 0);
-                    updateApiStatus('online', 'API Funcionando');
-                    showMessage(`✅ API conectada com sucesso! ${seatCount} poltrona(s) ocupada(s) no banco de dados.`, 'success');
-                })
-                .catch(error => {
-                    updateApiStatus('offline', 'API Offline');
-                    showMessage(`❌ Erro ao conectar com a API: ${error.message}`, 'danger');
-                });
-        }
-        
-        // ============================================
-        // MOSTRA MENSAGENS DO SISTEMA
-        // ============================================
-        function showMessage(message, type = 'info') {
-            // Remove mensagem anterior se existir
-            const existingMessage = document.querySelector('.system-message');
-            if (existingMessage) {
-                existingMessage.remove();
+        window.testFormURL = function() {
+            if (!selectedSeat) {
+                alert("Selecione uma poltrona primeiro");
+                return;
             }
             
-            // Ícone baseado no tipo
-            let icon = 'info-circle';
-            if (type === 'success') icon = 'check-circle';
-            if (type === 'warning') icon = 'exclamation-triangle';
-            if (type === 'danger') icon = 'times-circle';
+            // Teste com dados de exemplo
+            const testData = {
+                seat: selectedSeat,
+                name: "João Silva Teste",
+                email: "teste@exemplo.com",
+                cpf: "123.456.789-00",
+                phone: "(11) 99999-9999"
+            };
             
-            // Cria nova mensagem
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `system-message`;
-            messageDiv.innerHTML = `
-                <div style="
-                    position: fixed;
-                    top: 20px;
-                    right: 20px;
-                    background-color: ${type === 'success' ? '#4caf50' : 
-                                     type === 'warning' ? '#ff9800' : 
-                                     type === 'danger' ? '#f44336' : '#2196f3'};
-                    color: white;
-                    padding: 15px 25px;
-                    border-radius: 8px;
-                    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-                    z-index: 1000;
-                    max-width: 400px;
-                    animation: slideIn 0.3s ease;
-                ">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <i class="fas fa-${icon}"></i>
-                        <span>${message}</span>
-                    </div>
-                </div>
-            `;
+            let testUrl = FORM_BASE_URL + "?usp=pp_url";
+            testUrl += `&${FIELD_IDS.SEAT}=${encodeURIComponent(testData.seat)}`;
+            testUrl += `&${FIELD_IDS.NAME}=${encodeURIComponent(testData.name)}`;
+            testUrl += `&${FIELD_IDS.EMAIL}=${encodeURIComponent(testData.email)}`;
+            testUrl += `&${FIELD_IDS.CPF}=${encodeURIComponent(testData.cpf)}`;
+            testUrl += `&${FIELD_IDS.PHONE}=${encodeURIComponent(testData.phone)}`;
             
-            document.body.appendChild(messageDiv);
-            
-            // Remove após 5 segundos
-            setTimeout(() => {
-                if (messageDiv.parentNode) {
-                    messageDiv.style.animation = 'slideOut 0.3s ease';
-                    setTimeout(() => {
-                        if (messageDiv.parentNode) {
-                            messageDiv.remove();
-                        }
-                    }, 300);
-                }
-            }, 5000);
-            
-            // Adiciona estilos de animação se não existirem
-            if (!document.querySelector('#message-styles')) {
-                const style = document.createElement('style');
-                style.id = 'message-styles';
-                style.textContent = `
-                    @keyframes slideIn {
-                        from { transform: translateX(100%); opacity: 0; }
-                        to { transform: translateX(0); opacity: 1; }
-                    }
-                    @keyframes slideOut {
-                        from { transform: translateX(0); opacity: 1; }
-                        to { transform: translateX(100%); opacity: 0; }
-                    }
-                `;
-                document.head.appendChild(style);
-            }
-        }
-        
-        // ============================================
-        // MOSTRA AJUDA
-        // ============================================
-        function showHelp() {
-            const helpContent = `
-                <div style="padding: 20px;">
-                    <h3 style="color: var(--accent-color); margin-bottom: 15px;">Ajuda do Sistema</h3>
-                    
-                    <h4>Como funciona:</h4>
-                    <ol style="margin-bottom: 15px;">
-                        <li>Selecione uma poltrona disponível (verde ou laranja)</li>
-                        <li>Clique em "Confirmar Poltrona" para abrir o formulário</li>
-                        <li>Preencha seus dados (nome, email, etc.)</li>
-                        <li>Envie o formulário</li>
-                    </ol>
-                    
-                    <h4>O que acontece depois:</h4>
-                    <ul style="margin-bottom: 15px;">
-                        <li>Seus dados são salvos na planilha do Google Sheets</li>
-                        <li>Um código de check-in é gerado automaticamente</li>
-                        <li>O código é enviado para o email cadastrado</li>
-                        <li>A poltrona fica bloqueada para novas reservas</li>
-                    </ul>
-                    
-                    <h4>Informações técnicas:</h4>
-                    <ul>
-                        <li><strong>API URL:</strong> ${API_URL}</li>
-                        <li><strong>Google Forms:</strong> ${FORM_LINK.split('?')[0]}</li>
-                        <li><strong>Atualização automática:</strong> A cada 30 segundos</li>
-                    </ul>
-                    
-                    <h4>Dúvidas frequentes:</h4>
-                    <ul>
-                        <li><strong>Não recebi o email:</strong> Verifique a pasta de spam</li>
-                        <li><strong>Poltrona não bloqueou:</strong> Atualize a página (F5)</li>
-                        <li><strong>Erro no formulário:</strong> Tente novamente em alguns minutos</li>
-                    </ul>
-                </div>
-            `;
-            
-            // Cria modal de ajuda
-            const modal = document.createElement('div');
-            modal.innerHTML = `
-                <div style="
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    background-color: rgba(0,0,0,0.8);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    z-index: 2000;
-                    animation: fadeIn 0.3s ease;
-                ">
-                    <div style="
-                        background: linear-gradient(135deg, #1a237e 0%, #311b92 100%);
-                        border-radius: 15px;
-                        padding: 0;
-                        max-width: 600px;
-                        width: 90%;
-                        max-height: 80vh;
-                        overflow-y: auto;
-                        border: 1px solid rgba(255,255,255,0.1);
-                        box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-                    ">
-                        ${helpContent}
-                        <div style="text-align: center; padding: 15px; border-top: 1px solid rgba(255,255,255,0.1);">
-                            <button id="close-help" style="
-                                background-color: var(--accent-color);
-                                color: white;
-                                border: none;
-                                padding: 10px 25px;
-                                border-radius: 8px;
-                                cursor: pointer;
-                                font-weight: bold;
-                            ">Fechar</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            document.body.appendChild(modal);
-            
-            // Fecha modal ao clicar no botão
-            document.getElementById('close-help').addEventListener('click', function() {
-                modal.remove();
-            });
-            
-            // Fecha modal ao clicar fora
-            modal.addEventListener('click', function(e) {
-                if (e.target === modal) {
-                    modal.remove();
-                }
-            });
-            
-            // Adiciona animação de fade se não existir
-            if (!document.querySelector('#modal-styles')) {
-                const style = document.createElement('style');
-                style.id = 'modal-styles';
-                style.textContent = `
-                    @keyframes fadeIn {
-                        from { opacity: 0; }
-                        to { opacity: 1; }
-                    }
-                `;
-                document.head.appendChild(style);
-            }
-        }
-        
-        // ============================================
-        // FUNÇÕES DE DEMONSTRAÇÃO (APENAS PARA TESTES)
-        // ============================================
-        window.demoAddOccupiedSeat = function(seatId) {
-            if (!occupiedSeats.includes(seatId)) {
-                occupiedSeats.push(seatId);
-                updateSeatStatus();
-                updateStatusDisplay();
-                
-                if (selectedSeat === seatId) {
-                    resetSelection();
-                }
-                
-                showMessage(`Poltrona ${seatId} marcada como ocupada (demonstração).`, 'warning');
-            }
+            console.log("URL de teste:", testUrl);
+            window.open(testUrl, '_blank');
         };
-        
-        window.demoClearOccupiedSeats = function() {
-            occupiedSeats = [];
-            updateSeatStatus();
-            updateStatusDisplay();
-            showMessage('Todas as poltronas liberadas (demonstração).', 'success');
-        };
-        
-        // Inicialização final com timeout de segurança
-        setTimeout(() => {
-            if (isLoading) {
-                document.getElementById('loading-seats').innerHTML = `
-                    <div style="color: #ff9800;">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <p>Conexão demorando mais que o esperado...</p>
-                        <p style="font-size: 0.9rem; margin-top: 10px;">Ativando modo de demonstração</p>
-                    </div>
-                `;
-                
-                // Força o modo de demonstração
-                setTimeout(() => {
-                    if (isLoading) {
-                        occupiedSeats = ["1A", "2D", "5H", "7B", "9G", "12A", "15C", "18F", 
-                                        "22B", "25E", "30G", "35J", "38K", "40A"];
-                        updateSeatStatus();
-                        isLoading = false;
-                        updateApiStatus('offline', 'Modo Demo');
-                        document.getElementById('loading-seats').style.display = 'none';
-                        document.getElementById('status-indicators').style.display = 'flex';
-                    }
-                }, 2000);
-            }
-        }, 8000);
     </script>
 </body>
 </html>
