@@ -3,22 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema A350 - GitHub Pages</title>
+    <title>Sistema A350 - Reservas Automáticas</title>
     <style>
-        /* RESET BÁSICO */
+        /* ESTILOS SIMPLES E FUNCIONAIS */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: Arial, sans-serif;
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: linear-gradient(135deg, #0d1b2a 0%, #1b263b 100%);
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             color: white;
-            line-height: 1.6;
             min-height: 100vh;
-            padding: 10px;
+            padding: 15px;
         }
         
         .container {
@@ -29,76 +28,49 @@
         /* HEADER */
         .header {
             text-align: center;
-            padding: 15px 0;
+            padding: 20px;
             margin-bottom: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
         }
         
-        .header h1 {
-            color: #00a8e8;
-            font-size: 1.8rem;
-            margin-bottom: 5px;
-        }
-        
-        .header p {
-            color: #8d99ae;
+        h1 {
+            color: #00a8ff;
             margin-bottom: 10px;
         }
         
-        .status-badge {
-            background: #2a9d8f;
+        .status {
+            background: #28a745;
             color: white;
-            padding: 5px 15px;
+            padding: 8px 20px;
             border-radius: 20px;
-            font-size: 0.9rem;
             display: inline-block;
+            font-size: 14px;
         }
         
         /* LAYOUT PRINCIPAL */
         .dashboard {
-            display: grid;
-            grid-template-columns: 1fr 350px;
-            gap: 15px;
-            min-height: 500px;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
         }
         
-        @media (max-width: 768px) {
-            .dashboard {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        /* SEÇÃO DO AVIÃO */
-        .airplane-section {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-            padding: 15px;
+        .airplane-section, .reservation-section {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 10px;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
-        .section-title {
-            color: #00a8e8;
-            margin-bottom: 15px;
-            text-align: center;
-            font-size: 1.2rem;
+        /* MAPA DE POLTRONAS */
+        .seat-map {
+            margin: 15px 0;
         }
         
-        .cockpit {
-            width: 80px;
-            height: 40px;
-            background: #333;
-            border-radius: 40px 40px 0 0;
-            margin: 0 auto 10px;
-        }
-        
-        .cabin {
-            background: #222;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 15px;
-        }
-        
-        /* FILEIRAS DE POLTRONAS */
-        .row {
+        .seat-row {
             display: flex;
             justify-content: center;
             gap: 8px;
@@ -107,27 +79,27 @@
         }
         
         .row-label {
-            width: 25px;
-            text-align: right;
-            color: #8d99ae;
-            font-size: 0.9rem;
-            margin-right: 5px;
+            width: 30px;
+            text-align: center;
+            color: #aaa;
+            font-size: 14px;
         }
         
         /* POLTRONAS */
         .seat {
-            width: 32px;
-            height: 32px;
-            background: #2a9d8f;
-            border-radius: 4px;
+            width: 35px;
+            height: 35px;
+            background: #4CAF50;
+            border-radius: 5px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 0.8rem;
+            font-weight: bold;
             cursor: pointer;
             transition: all 0.2s;
             border: none;
+            font-size: 14px;
         }
         
         .seat:hover {
@@ -135,57 +107,56 @@
         }
         
         .seat.selected {
-            background: #118ab2;
+            background: #2196F3;
             transform: scale(1.1);
-            box-shadow: 0 0 8px #118ab2;
+            box-shadow: 0 0 10px #2196F3;
         }
         
         .seat.occupied {
-            background: #6c757d;
+            background: #757575;
             cursor: not-allowed;
         }
         
         .seat.business {
-            background: #f4a261;
+            background: #FF9800;
         }
         
-        /* PAINEL LATERAL */
-        .panel {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-            padding: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
+        /* PAINEL DE RESERVA */
         .reservation-card {
-            background: rgba(0, 168, 232, 0.1);
-            border-radius: 8px;
-            padding: 15px;
+            background: rgba(33, 150, 243, 0.1);
+            padding: 20px;
+            border-radius: 10px;
             margin-bottom: 20px;
-            border: 1px solid rgba(0, 168, 232, 0.3);
+            border: 1px solid rgba(33, 150, 243, 0.3);
         }
         
         .reservation-item {
             display: flex;
             justify-content: space-between;
-            padding: 8px 0;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .item-label {
-            color: #8d99ae;
+            color: #aaa;
         }
         
         .item-value {
-            font-weight: 600;
+            font-weight: bold;
         }
         
         .item-value.seat {
-            color: #118ab2;
+            color: #2196F3;
         }
         
         .item-value.email {
-            color: #2a9d8f;
+            color: #4CAF50;
+        }
+        
+        .item-value.empty {
+            color: #888;
+            font-style: italic;
         }
         
         /* FORMULÁRIO */
@@ -193,71 +164,64 @@
             margin-bottom: 20px;
         }
         
-        .form-label {
-            display: block;
-            margin-bottom: 5px;
-            color: #8d99ae;
-        }
-        
         .form-input {
             width: 100%;
-            padding: 10px 12px;
+            padding: 12px;
             border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 6px;
+            border-radius: 5px;
             background: rgba(255, 255, 255, 0.1);
             color: white;
-            font-size: 1rem;
+            font-size: 16px;
         }
         
         .form-input:focus {
             outline: none;
-            border-color: #00a8e8;
+            border-color: #00a8ff;
         }
         
         /* BOTÕES */
-        .buttons {
+        .action-buttons {
             display: flex;
             flex-direction: column;
             gap: 10px;
-            margin: 20px 0;
         }
         
         .btn {
-            padding: 12px;
+            padding: 15px;
             border: none;
-            border-radius: 6px;
-            font-size: 1rem;
-            font-weight: 600;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
             cursor: pointer;
+            transition: all 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            transition: all 0.2s;
         }
         
         .btn-primary {
-            background: #2a9d8f;
+            background: #4CAF50;
             color: white;
         }
         
         .btn-primary:hover:not(:disabled) {
-            background: #21867a;
+            background: #3d8b40;
         }
         
         .btn-primary:disabled {
-            background: #495057;
+            background: #666;
             cursor: not-allowed;
             opacity: 0.6;
         }
         
         .btn-secondary {
-            background: #6c757d;
+            background: #757575;
             color: white;
         }
         
         .btn-secondary:hover {
-            background: #5a6268;
+            background: #616161;
         }
         
         /* LEGENDAS */
@@ -265,33 +229,62 @@
             display: flex;
             justify-content: center;
             gap: 15px;
-            flex-wrap: wrap;
             margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            flex-wrap: wrap;
         }
         
         .legend-item {
             display: flex;
             align-items: center;
             gap: 5px;
-            font-size: 0.85rem;
+            font-size: 14px;
         }
         
         .legend-color {
-            width: 16px;
-            height: 16px;
+            width: 15px;
+            height: 15px;
             border-radius: 3px;
+        }
+        
+        /* MENSAGENS */
+        .message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            z-index: 1000;
+            display: none;
+            animation: slideIn 0.3s;
+        }
+        
+        .message.success {
+            background: #4CAF50;
+        }
+        
+        .message.error {
+            background: #f44336;
+        }
+        
+        .message.info {
+            background: #2196F3;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
         
         /* INSTRUÇÕES */
         .instructions {
             margin-top: 20px;
             padding: 15px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-            font-size: 0.9rem;
-            color: #8d99ae;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            font-size: 14px;
+            color: #aaa;
         }
         
         .instructions ol {
@@ -303,53 +296,26 @@
             margin-bottom: 5px;
         }
         
-        /* ALERTAS */
-        .alert {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 20px;
-            border-radius: 6px;
-            color: white;
-            font-weight: 500;
-            z-index: 1000;
-            animation: slideIn 0.3s ease;
-            display: none;
-            max-width: 350px;
-        }
-        
-        .alert.success {
-            background: #2a9d8f;
-        }
-        
-        .alert.error {
-            background: #e63946;
-        }
-        
-        .alert.info {
-            background: #118ab2;
-        }
-        
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-        
-        /* LOADING */
-        .loading {
-            text-align: center;
-            padding: 20px;
-            color: #8d99ae;
-        }
-        
         /* FOOTER */
         .footer {
             text-align: center;
-            margin-top: 30px;
             padding-top: 20px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: #8d99ae;
-            font-size: 0.9rem;
+            color: #aaa;
+            font-size: 14px;
+        }
+        
+        /* RESPONSIVO */
+        @media (max-width: 768px) {
+            .dashboard {
+                flex-direction: column;
+            }
+            
+            .seat {
+                width: 30px;
+                height: 30px;
+                font-size: 12px;
+            }
         }
     </style>
 </head>
@@ -358,157 +324,185 @@
         <!-- HEADER -->
         <header class="header">
             <h1>✈️ Sistema de Reservas A350</h1>
-            <p>GitHub Pages Edition - Compatível e Funcional</p>
-            <div class="status-badge">✅ Sistema 100% Funcional</div>
+            <p>Reserva automática com envio de código por email</p>
+            <div class="status">✅ Sistema Integrado com Google Apps Script</div>
         </header>
         
         <!-- DASHBOARD -->
         <div class="dashboard">
-            <!-- SEÇÃO DO AVIÃO -->
+            <!-- MAPA DE POLTRONAS -->
             <section class="airplane-section">
-                <h2 class="section-title">Mapa de Poltronas A350</h2>
-                <div class="cockpit"></div>
-                <div class="cabin" id="cabin">
+                <h2>Mapa de Poltronas A350</h2>
+                <p style="color: #aaa; margin-bottom: 15px;">Clique em uma poltrona disponível</p>
+                
+                <div class="seat-map" id="seat-map">
                     <!-- Poltronas serão geradas aqui -->
                 </div>
                 
                 <!-- LEGENDAS -->
                 <div class="legends">
                     <div class="legend-item">
-                        <div class="legend-color" style="background: #2a9d8f;"></div>
+                        <div class="legend-color" style="background: #4CAF50;"></div>
                         <span>Disponível</span>
                     </div>
                     <div class="legend-item">
-                        <div class="legend-color" style="background: #f4a261;"></div>
+                        <div class="legend-color" style="background: #FF9800;"></div>
                         <span>Business</span>
                     </div>
                     <div class="legend-item">
-                        <div class="legend-color" style="background: #118ab2;"></div>
+                        <div class="legend-color" style="background: #2196F3;"></div>
                         <span>Selecionada</span>
                     </div>
                     <div class="legend-item">
-                        <div class="legend-color" style="background: #6c757d;"></div>
+                        <div class="legend-color" style="background: #757575;"></div>
                         <span>Ocupada</span>
                     </div>
                 </div>
             </section>
             
             <!-- PAINEL DE RESERVA -->
-            <aside class="panel">
-                <h2 class="section-title">Sua Reserva</h2>
+            <section class="reservation-section">
+                <h2>Sua Reserva</h2>
                 
                 <!-- CARD DE RESUMO -->
                 <div class="reservation-card">
                     <div class="reservation-item">
                         <span class="item-label">Poltrona:</span>
-                        <span class="item-value seat" id="display-seat">---</span>
+                        <span class="item-value seat" id="display-seat">
+                            <span class="empty">Não selecionada</span>
+                        </span>
                     </div>
+                    
                     <div class="reservation-item">
                         <span class="item-label">Email:</span>
-                        <span class="item-value email" id="display-email">---</span>
+                        <span class="item-value email" id="display-email">
+                            <span class="empty">Não informado</span>
+                        </span>
                     </div>
+                    
                     <div class="reservation-item">
                         <span class="item-label">Status:</span>
-                        <span class="item-value" id="display-status">Aguardando</span>
+                        <span class="item-value" id="display-status">
+                            <span style="color: #aaa;">Aguardando dados</span>
+                        </span>
+                    </div>
+                    
+                    <div class="reservation-item">
+                        <span class="item-label">Código:</span>
+                        <span class="item-value" id="display-code">
+                            <span style="color: #aaa;">---</span>
+                        </span>
                     </div>
                 </div>
                 
                 <!-- FORMULÁRIO -->
                 <div class="form-group">
-                    <label class="form-label" for="email">Seu Email *</label>
-                    <input type="email" id="email" class="form-input" placeholder="exemplo@gmail.com">
+                    <label for="email-input" style="display: block; margin-bottom: 8px; color: #aaa;">
+                        Seu Email *
+                    </label>
+                    <input type="email" id="email-input" class="form-input" 
+                           placeholder="exemplo@gmail.com" required>
                 </div>
                 
                 <!-- BOTÕES -->
-                <div class="buttons">
+                <div class="action-buttons">
                     <button class="btn btn-primary" id="reserve-btn" disabled>
-                        📋 Gerar Reserva
+                        📋 Gerar Reserva Automática
                     </button>
                     <button class="btn btn-secondary" id="clear-btn">
-                        🔄 Limpar Tudo
+                        🔄 Limpar Seleção
                     </button>
                 </div>
                 
                 <!-- INSTRUÇÕES -->
                 <div class="instructions">
-                    <strong>Instruções:</strong>
+                    <strong>Como funciona:</strong>
                     <ol>
                         <li>Digite seu email acima</li>
-                        <li>Clique em uma poltrona disponível</li>
-                        <li>Clique em "Gerar Reserva"</li>
-                        <li>O Google Forms abrirá com sua poltrona já preenchida</li>
+                        <li>Selecione uma poltrona no mapa</li>
+                        <li>Clique em "Gerar Reserva Automática"</li>
+                        <li>O Google Forms abrirá com sua poltrona pré-preenchida</li>
                         <li>Digite seu email no Forms e clique em ENVIAR</li>
-                        <li>Receba seu código de check-in por email</li>
+                        <li>Receba o código de check-in por email automaticamente</li>
                     </ol>
                 </div>
-            </aside>
+            </section>
         </div>
         
         <!-- FOOTER -->
         <footer class="footer">
-            <p>Sistema Otimizado para GitHub Pages | Airbus A350 Simulation</p>
+            <p>Sistema Integrado com Google Apps Script | API Funcional: ✅</p>
+            <p style="margin-top: 5px; font-size: 12px;">
+                Atualização automática de poltronas ocupadas
+            </p>
         </footer>
     </div>
     
-    <!-- ALERTAS -->
-    <div class="alert" id="alert"></div>
+    <!-- MENSAGENS FLUTUANTES -->
+    <div class="message" id="message"></div>
 
     <script>
         // ============================================
-        // CONFIGURAÇÃO SIMPLES
+        // CONFIGURAÇÃO DO SISTEMA
         // ============================================
-        const FORM_BASE = "https://docs.google.com/forms/d/e/1FAIpQLSf0wYXE6i7JPQCBkKR5LqyRdwxRscpSmclDMQJXTs_llonIbA/viewform";
-        const SEAT_PARAM = "entry.1796450485";
+        
+        // SEU SCRIPT DO GOOGLE APPS SCRIPT
+        const API_URL = "https://script.google.com/macros/s/AKfycbw2XObl2eLSm3wup4eiWcPqcn-ilGst-JuixsYe2flLCDZAcWtkenZJzOTQQCjOgJ4/exec";
+        
+        // LINK DO SEU GOOGLE FORMS
+        const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSf0wYXE6i7JPQCBkKR5LqyRdwxRscpSmclDMQJXTs_llonIbA/viewform";
         
         // ============================================
-        // ESTADO DO SISTEMA
+        // VARIÁVEIS DO SISTEMA
         // ============================================
         let selectedSeat = null;
         let userEmail = "";
-        let occupiedSeats = ["1A", "2D", "5H", "7B", "12C", "15F", "18J", "22A", "25E"];
+        let occupiedSeats = [];
         
         // ============================================
         // INICIALIZAÇÃO
         // ============================================
         document.addEventListener('DOMContentLoaded', function() {
-            createCabinLayout();
+            createSeatMap();
+            loadOccupiedSeats();
             setupEventListeners();
             updateDisplay();
         });
         
         // ============================================
-        // CRIA LAYOUT DA CABINE
+        // CRIA MAPA DE POLTRONAS
         // ============================================
-        function createCabinLayout() {
-            const cabin = document.getElementById('cabin');
+        function createSeatMap() {
+            const seatMap = document.getElementById('seat-map');
+            seatMap.innerHTML = '';
             
             // Business Class (Linhas 1-5)
-            createSection(cabin, "BUSINESS", 1, 5, ['A', 'D', 'E', 'H'], 'business');
+            createSection(seatMap, "Business Class", 1, 5, ['A', 'D', 'E', 'H'], 'business');
             
             // Premium Economy (Linhas 6-10)
-            createSection(cabin, "PREMIUM", 6, 10, ['A','B','D','E','F','G','J','K'], 'available');
+            createSection(seatMap, "Premium Economy", 6, 10, ['A','B','D','E','F','G','J','K'], 'available');
             
-            // Economy (Linhas 11-20)
-            createSection(cabin, "ECONOMY", 11, 20, ['A','B','C','D','E','F','G','H','J'], 'available');
+            // Economy Class (Linhas 11-20)
+            createSection(seatMap, "Economy Class", 11, 20, ['A','B','C','D','E','F','G','H','J'], 'available');
         }
         
-        function createSection(container, label, startRow, endRow, letters, seatType) {
-            // Adiciona label da seção
-            const sectionTitle = document.createElement('div');
-            sectionTitle.textContent = label;
-            sectionTitle.style.cssText = `
-                color: #00a8e8;
+        function createSection(container, title, startRow, endRow, letters, seatType) {
+            // Título da seção
+            const titleDiv = document.createElement('div');
+            titleDiv.textContent = title;
+            titleDiv.style.cssText = `
+                color: #00a8ff;
                 font-weight: bold;
                 margin: 15px 0 10px 0;
                 text-align: center;
-                font-size: 0.9rem;
+                font-size: 14px;
             `;
-            container.appendChild(sectionTitle);
+            container.appendChild(titleDiv);
             
             // Cria cada fileira
             for (let row = startRow; row <= endRow; row++) {
                 const rowDiv = document.createElement('div');
-                rowDiv.className = 'row';
+                rowDiv.className = 'seat-row';
                 
                 // Número da fileira
                 const rowLabel = document.createElement('div');
@@ -526,7 +520,7 @@
                     
                     // Evento de clique
                     seat.addEventListener('click', function() {
-                        handleSeatClick(seatId);
+                        selectSeat(seatId);
                     });
                     
                     rowDiv.appendChild(seat);
@@ -537,12 +531,57 @@
         }
         
         // ============================================
-        // MANIPULAÇÃO DE EVENTOS
+        // CARREGA POLTRONAS OCUPADAS DA API
         // ============================================
-        function handleSeatClick(seatId) {
-            // Verifica se está ocupada
+        function loadOccupiedSeats() {
+            showMessage('Carregando poltronas ocupadas...', 'info');
+            
+            fetch(API_URL + '?t=' + new Date().getTime())
+                .then(response => {
+                    if (!response.ok) throw new Error('Erro na API');
+                    return response.json();
+                })
+                .then(data => {
+                    if (Array.isArray(data)) {
+                        occupiedSeats = data;
+                        updateSeatStatus();
+                        showMessage(`Sistema carregado: ${data.length} poltronas ocupadas`, 'success');
+                    } else {
+                        throw new Error('Resposta inválida da API');
+                    }
+                })
+                .catch(error => {
+                    console.log('Usando dados locais:', error);
+                    occupiedSeats = ["1A", "12C", "22F", "7B", "15D"];
+                    updateSeatStatus();
+                    showMessage('Modo offline ativado', 'info');
+                });
+        }
+        
+        function updateSeatStatus() {
+            document.querySelectorAll('.seat').forEach(seat => {
+                const seatId = seat.dataset.seat;
+                
+                if (occupiedSeats.includes(seatId)) {
+                    seat.classList.remove('available', 'business', 'selected');
+                    seat.classList.add('occupied');
+                    
+                    if (selectedSeat === seatId) {
+                        selectedSeat = null;
+                        updateDisplay();
+                        checkReservationReady();
+                        showMessage('Sua poltrona foi ocupada! Escolha outra.', 'error');
+                    }
+                }
+            });
+        }
+        
+        // ============================================
+        // SELEÇÃO DE POLTRONA
+        // ============================================
+        function selectSeat(seatId) {
             if (occupiedSeats.includes(seatId)) {
-                showAlert('Esta poltrona já está ocupada!', 'error');
+                showMessage('Esta poltrona já está ocupada!', 'error');
                 return;
             }
             
@@ -551,17 +590,17 @@
                 const prevSeat = document.querySelector(`[data-seat="${selectedSeat}"]`);
                 if (prevSeat) {
                     prevSeat.classList.remove('selected');
-                    const originalClass = prevSeat.classList.contains('business') ? 'business' : 'available';
-                    prevSeat.classList.add(originalClass);
+                    const originalType = prevSeat.classList.contains('business') ? 'business' : 'available';
+                    prevSeat.classList.add(originalType);
                 }
             }
             
             // Seleciona nova poltrona
             selectedSeat = seatId;
-            const currentSeat = document.querySelector(`[data-seat="${seatId}"]`);
-            if (currentSeat) {
-                currentSeat.classList.remove('available', 'business');
-                currentSeat.classList.add('selected');
+            const seatElement = document.querySelector(`[data-seat="${seatId}"]`);
+            if (seatElement) {
+                seatElement.classList.remove('available', 'business');
+                seatElement.classList.add('selected');
             }
             
             updateDisplay();
@@ -574,786 +613,30 @@
         function updateDisplay() {
             // Atualiza poltrona
             const seatDisplay = document.getElementById('display-seat');
-            seatDisplay.textContent = selectedSeat || '---';
-            seatDisplay.style.color = selectedSeat ? '#118ab2' : '#8d99ae';
-            
-            // Atualiza email
-            const emailDisplay = document.getElementById('display-email');
-            emailDisplay.textContent = userEmail || '---';
-            emailDisplay.style.color = userEmail ? '#2a9d8f' : '#8d99ae';
-            
-            // Atualiza status
-            const statusDisplay = document.getElementById('display-status');
-            if (selectedSeat && userEmail) {
-                statusDisplay.textContent = 'Pronto para reservar!';
-                statusDisplay.style.color = '#2a9d8f';
-            } else if (selectedSeat) {
-                statusDisplay.textContent = 'Digite seu email';
-                statusDisplay.style.color = '#f4a261';
-            } else if (userEmail) {
-                statusDisplay.textContent = 'Selecione uma poltrona';
-                statusDisplay.style.color = '#f4a261';
-            } else {
-                statusDisplay.textContent = 'Aguardando';
-                statusDisplay.style.color = '#8d99ae';
-            }
-        }
-        
-        // ============================================
-        // VERIFICA SE PODE RESERVAR
-        // ============================================
-        function checkReservationReady() {
-            const isReady = selectedSeat !== null && 
-                          userEmail !== '' && 
-                          userEmail.includes('@') &&
-                          !occupiedSeats.includes(selectedSeat);
-            
-            const reserveBtn = document.getElementById('reserve-btn');
-            reserveBtn.disabled = !isReady;
-        }
-        
-        // ============================================
-        // CONFIGURA EVENT LISTENERS
-        // ============================================
-        function setupEventListeners() {
-            // Email input
-            const emailInput = document.getElementById('email');
-            emailInput.addEventListener('input', function() {
-                userEmail = this.value.trim();
-                updateDisplay();
-                checkReservationReady();
-            });
-            
-            // Botão de reserva
-            const reserveBtn = document.getElementById('reserve-btn');
-            reserveBtn.addEventListener('click', function() {
-                createReservation();
-            });
-            
-            // Botão de limpar
-            const clearBtn = document.getElementById('clear-btn');
-            clearBtn.addEventListener('click', function() {
-                // Limpa seleção de poltrona
-                if (selectedSeat) {
-                    const seatElement = document.querySelector(`[data-seat="${selectedSeat}"]`);
-                    if (seatElement) {
-                        seatElement.classList.remove('selected');
-                        const originalClass = seatElement.classList.contains('business') ? 'business' : 'available';
-                        seatElement.classList.add(originalClass);
-                    }
-                    selectedSeat = null;
-                }
-                
-                // Limpa email
-                emailInput.value = '';
-                userEmail = '';
-                
-                updateDisplay();
-                checkReservationReady();
-                
-                showAlert('Seleção limpa!', 'info');
-            });
-            
-            // Corrige cores iniciais
-            setTimeout(updateSeatColors, 100);
-        }
-        
-        // ============================================
-        // ATUALIZA CORES DAS POLTRONAS
-        // ============================================
-        function updateSeatColors() {
-            document.querySelectorAll('.seat').forEach(seat => {
-                const seatId = seat.dataset.seat;
-                
-                if (occupiedSeats.includes(seatId)) {
-                    seat.classList.remove('available', 'business', 'selected');
-                    seat.classList.add('occupied');
-                }
-            });
-        }
-        
-        // ============================================
-        // CRIA RESERVA
-        // ============================================
-        function createReservation() {
-            if (!selectedSeat || !userEmail) return;
-            
-            // Verifica se a poltrona ainda está disponível
-            if (occupiedSeats.includes(selectedSeat)) {
-                showAlert('Esta poltrona foi ocupada! Escolha outra.', 'error');
-                updateSeatColors();
-                return;
-            }
-            
-            // Gera a URL do Google Forms
-            const formUrl = `${FORM_BASE}?usp=pp_url&${SEAT_PARAM}=${encodeURIComponent(selectedSeat)}`;
-            
-            // Mostra confirmação
-            showAlert(`Reserva gerada para poltrona ${selectedSeat}!\nAbrindo formulário...`, 'success');
-            
-            // Abre o Google Forms em nova aba
-            setTimeout(() => {
-                window.open(formUrl, '_blank');
-                
-                // Pergunta se enviou o formulário
-                setTimeout(() => {
-                    const confirmed = window.confirm(
-                        'O formulário foi aberto!\n\n' +
-                        '1. Digite seu email: ' + userEmail + '\n' +
-                        '2. Clique em ENVIAR\n' +
-                        '3. Você receberá o código por email\n\n' +
-                        'Você já enviou o formulário?'
-                    );
-                    
-                    if (confirmed) {
-                        // Marca a poltrona como ocupada localmente
-                        occupiedSeats.push(selectedSeat);
-                        updateSeatColors();
-                        
-                        showAlert('Reserva confirmada! Verifique seu email.', 'success');
-                        
-                        // Limpa para nova reserva
-                        setTimeout(() => {
-                            document.getElementById('clear-btn').click();
-                        }, 2000);
-                    }
-                }, 2000);
-            }, 500);
-        }
-        
-        // ============================================
-        // MOSTRA ALERTAS
-        // ============================================
-        function showAlert(message, type) {
-            const alert = document.getElementById('alert');
-            alert.textContent = message;
-            alert.className = `alert ${type}`;
-            alert.style.display = 'block';
-            
-            // Esconde após 4 segundos
-            setTimeout(() => {
-                alert.style.display = 'none';
-            }, 4000);
-        }
-        
-        // ============================================
-        // FUNÇÃO PARA TESTE RÁPIDO
-        // ============================================
-        window.quickTest = function() {
-            // Preenche email de teste
-            document.getElementById('email').value = 'teste@exemplo.com';
-            document.getElementById('email').dispatchEvent(new Event('input'));
-            
-            // Seleciona uma poltrona disponível
-            const availableSeats = Array.from(document.querySelectorAll('.seat.available, .seat.business'))
-                .filter(seat => !seat.classList.contains('occupied'));
-            
-            if (availableSeats.length > 0) {
-                const testSeat = availableSeats[0].dataset.seat;
-                handleSeatClick(testSeat);
-                showAlert(`Teste: Poltrona ${testSeat} selecionada`, 'info');
-            }
-        };
-    </script>
-</body>
-</html><!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema A350 - GitHub Pages</title>
-    <style>
-        /* RESET BÁSICO */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: linear-gradient(135deg, #0d1b2a 0%, #1b263b 100%);
-            color: white;
-            line-height: 1.6;
-            min-height: 100vh;
-            padding: 10px;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        /* HEADER */
-        .header {
-            text-align: center;
-            padding: 15px 0;
-            margin-bottom: 20px;
-        }
-        
-        .header h1 {
-            color: #00a8e8;
-            font-size: 1.8rem;
-            margin-bottom: 5px;
-        }
-        
-        .header p {
-            color: #8d99ae;
-            margin-bottom: 10px;
-        }
-        
-        .status-badge {
-            background: #2a9d8f;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            display: inline-block;
-        }
-        
-        /* LAYOUT PRINCIPAL */
-        .dashboard {
-            display: grid;
-            grid-template-columns: 1fr 350px;
-            gap: 15px;
-            min-height: 500px;
-        }
-        
-        @media (max-width: 768px) {
-            .dashboard {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        /* SEÇÃO DO AVIÃO */
-        .airplane-section {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-            padding: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .section-title {
-            color: #00a8e8;
-            margin-bottom: 15px;
-            text-align: center;
-            font-size: 1.2rem;
-        }
-        
-        .cockpit {
-            width: 80px;
-            height: 40px;
-            background: #333;
-            border-radius: 40px 40px 0 0;
-            margin: 0 auto 10px;
-        }
-        
-        .cabin {
-            background: #222;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 15px;
-        }
-        
-        /* FILEIRAS DE POLTRONAS */
-        .row {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 8px;
-            align-items: center;
-        }
-        
-        .row-label {
-            width: 25px;
-            text-align: right;
-            color: #8d99ae;
-            font-size: 0.9rem;
-            margin-right: 5px;
-        }
-        
-        /* POLTRONAS */
-        .seat {
-            width: 32px;
-            height: 32px;
-            background: #2a9d8f;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: none;
-        }
-        
-        .seat:hover {
-            transform: scale(1.1);
-        }
-        
-        .seat.selected {
-            background: #118ab2;
-            transform: scale(1.1);
-            box-shadow: 0 0 8px #118ab2;
-        }
-        
-        .seat.occupied {
-            background: #6c757d;
-            cursor: not-allowed;
-        }
-        
-        .seat.business {
-            background: #f4a261;
-        }
-        
-        /* PAINEL LATERAL */
-        .panel {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-            padding: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .reservation-card {
-            background: rgba(0, 168, 232, 0.1);
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(0, 168, 232, 0.3);
-        }
-        
-        .reservation-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .item-label {
-            color: #8d99ae;
-        }
-        
-        .item-value {
-            font-weight: 600;
-        }
-        
-        .item-value.seat {
-            color: #118ab2;
-        }
-        
-        .item-value.email {
-            color: #2a9d8f;
-        }
-        
-        /* FORMULÁRIO */
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-label {
-            display: block;
-            margin-bottom: 5px;
-            color: #8d99ae;
-        }
-        
-        .form-input {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 6px;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            font-size: 1rem;
-        }
-        
-        .form-input:focus {
-            outline: none;
-            border-color: #00a8e8;
-        }
-        
-        /* BOTÕES */
-        .buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin: 20px 0;
-        }
-        
-        .btn {
-            padding: 12px;
-            border: none;
-            border-radius: 6px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: all 0.2s;
-        }
-        
-        .btn-primary {
-            background: #2a9d8f;
-            color: white;
-        }
-        
-        .btn-primary:hover:not(:disabled) {
-            background: #21867a;
-        }
-        
-        .btn-primary:disabled {
-            background: #495057;
-            cursor: not-allowed;
-            opacity: 0.6;
-        }
-        
-        .btn-secondary {
-            background: #6c757d;
-            color: white;
-        }
-        
-        .btn-secondary:hover {
-            background: #5a6268;
-        }
-        
-        /* LEGENDAS */
-        .legends {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 0.85rem;
-        }
-        
-        .legend-color {
-            width: 16px;
-            height: 16px;
-            border-radius: 3px;
-        }
-        
-        /* INSTRUÇÕES */
-        .instructions {
-            margin-top: 20px;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-            font-size: 0.9rem;
-            color: #8d99ae;
-        }
-        
-        .instructions ol {
-            padding-left: 20px;
-            margin-top: 10px;
-        }
-        
-        .instructions li {
-            margin-bottom: 5px;
-        }
-        
-        /* ALERTAS */
-        .alert {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 20px;
-            border-radius: 6px;
-            color: white;
-            font-weight: 500;
-            z-index: 1000;
-            animation: slideIn 0.3s ease;
-            display: none;
-            max-width: 350px;
-        }
-        
-        .alert.success {
-            background: #2a9d8f;
-        }
-        
-        .alert.error {
-            background: #e63946;
-        }
-        
-        .alert.info {
-            background: #118ab2;
-        }
-        
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-        
-        /* LOADING */
-        .loading {
-            text-align: center;
-            padding: 20px;
-            color: #8d99ae;
-        }
-        
-        /* FOOTER */
-        .footer {
-            text-align: center;
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: #8d99ae;
-            font-size: 0.9rem;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <!-- HEADER -->
-        <header class="header">
-            <h1>✈️ Sistema de Reservas A350</h1>
-            <p>GitHub Pages Edition - Compatível e Funcional</p>
-            <div class="status-badge">✅ Sistema 100% Funcional</div>
-        </header>
-        
-        <!-- DASHBOARD -->
-        <div class="dashboard">
-            <!-- SEÇÃO DO AVIÃO -->
-            <section class="airplane-section">
-                <h2 class="section-title">Mapa de Poltronas A350</h2>
-                <div class="cockpit"></div>
-                <div class="cabin" id="cabin">
-                    <!-- Poltronas serão geradas aqui -->
-                </div>
-                
-                <!-- LEGENDAS -->
-                <div class="legends">
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: #2a9d8f;"></div>
-                        <span>Disponível</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: #f4a261;"></div>
-                        <span>Business</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: #118ab2;"></div>
-                        <span>Selecionada</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: #6c757d;"></div>
-                        <span>Ocupada</span>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- PAINEL DE RESERVA -->
-            <aside class="panel">
-                <h2 class="section-title">Sua Reserva</h2>
-                
-                <!-- CARD DE RESUMO -->
-                <div class="reservation-card">
-                    <div class="reservation-item">
-                        <span class="item-label">Poltrona:</span>
-                        <span class="item-value seat" id="display-seat">---</span>
-                    </div>
-                    <div class="reservation-item">
-                        <span class="item-label">Email:</span>
-                        <span class="item-value email" id="display-email">---</span>
-                    </div>
-                    <div class="reservation-item">
-                        <span class="item-label">Status:</span>
-                        <span class="item-value" id="display-status">Aguardando</span>
-                    </div>
-                </div>
-                
-                <!-- FORMULÁRIO -->
-                <div class="form-group">
-                    <label class="form-label" for="email">Seu Email *</label>
-                    <input type="email" id="email" class="form-input" placeholder="exemplo@gmail.com">
-                </div>
-                
-                <!-- BOTÕES -->
-                <div class="buttons">
-                    <button class="btn btn-primary" id="reserve-btn" disabled>
-                        📋 Gerar Reserva
-                    </button>
-                    <button class="btn btn-secondary" id="clear-btn">
-                        🔄 Limpar Tudo
-                    </button>
-                </div>
-                
-                <!-- INSTRUÇÕES -->
-                <div class="instructions">
-                    <strong>Instruções:</strong>
-                    <ol>
-                        <li>Digite seu email acima</li>
-                        <li>Clique em uma poltrona disponível</li>
-                        <li>Clique em "Gerar Reserva"</li>
-                        <li>O Google Forms abrirá com sua poltrona já preenchida</li>
-                        <li>Digite seu email no Forms e clique em ENVIAR</li>
-                        <li>Receba seu código de check-in por email</li>
-                    </ol>
-                </div>
-            </aside>
-        </div>
-        
-        <!-- FOOTER -->
-        <footer class="footer">
-            <p>Sistema Otimizado para GitHub Pages | Airbus A350 Simulation</p>
-        </footer>
-    </div>
-    
-    <!-- ALERTAS -->
-    <div class="alert" id="alert"></div>
-
-    <script>
-        // ============================================
-        // CONFIGURAÇÃO SIMPLES
-        // ============================================
-        const FORM_BASE = "https://docs.google.com/forms/d/e/1FAIpQLSf0wYXE6i7JPQCBkKR5LqyRdwxRscpSmclDMQJXTs_llonIbA/viewform";
-        const SEAT_PARAM = "entry.1796450485";
-        
-        // ============================================
-        // ESTADO DO SISTEMA
-        // ============================================
-        let selectedSeat = null;
-        let userEmail = "";
-        let occupiedSeats = ["1A", "2D", "5H", "7B", "12C", "15F", "18J", "22A", "25E"];
-        
-        // ============================================
-        // INICIALIZAÇÃO
-        // ============================================
-        document.addEventListener('DOMContentLoaded', function() {
-            createCabinLayout();
-            setupEventListeners();
-            updateDisplay();
-        });
-        
-        // ============================================
-        // CRIA LAYOUT DA CABINE
-        // ============================================
-        function createCabinLayout() {
-            const cabin = document.getElementById('cabin');
-            
-            // Business Class (Linhas 1-5)
-            createSection(cabin, "BUSINESS", 1, 5, ['A', 'D', 'E', 'H'], 'business');
-            
-            // Premium Economy (Linhas 6-10)
-            createSection(cabin, "PREMIUM", 6, 10, ['A','B','D','E','F','G','J','K'], 'available');
-            
-            // Economy (Linhas 11-20)
-            createSection(cabin, "ECONOMY", 11, 20, ['A','B','C','D','E','F','G','H','J'], 'available');
-        }
-        
-        function createSection(container, label, startRow, endRow, letters, seatType) {
-            // Adiciona label da seção
-            const sectionTitle = document.createElement('div');
-            sectionTitle.textContent = label;
-            sectionTitle.style.cssText = `
-                color: #00a8e8;
-                font-weight: bold;
-                margin: 15px 0 10px 0;
-                text-align: center;
-                font-size: 0.9rem;
-            `;
-            container.appendChild(sectionTitle);
-            
-            // Cria cada fileira
-            for (let row = startRow; row <= endRow; row++) {
-                const rowDiv = document.createElement('div');
-                rowDiv.className = 'row';
-                
-                // Número da fileira
-                const rowLabel = document.createElement('div');
-                rowLabel.className = 'row-label';
-                rowLabel.textContent = row;
-                rowDiv.appendChild(rowLabel);
-                
-                // Cria poltronas
-                letters.forEach(letter => {
-                    const seatId = `${row}${letter}`;
-                    const seat = document.createElement('button');
-                    seat.className = `seat ${seatType}`;
-                    seat.textContent = letter;
-                    seat.dataset.seat = seatId;
-                    
-                    // Evento de clique
-                    seat.addEventListener('click', function() {
-                        handleSeatClick(seatId);
-                    });
-                    
-                    rowDiv.appendChild(seat);
-                });
-                
-                container.appendChild(rowDiv);
-            }
-        }
-        
-        // ============================================
-        // MANIPULAÇÃO DE EVENTOS
-        // ============================================
-        function handleSeatClick(seatId) {
-            // Verifica se está ocupada
-            if (occupiedSeats.includes(seatId)) {
-                showAlert('Esta poltrona já está ocupada!', 'error');
-                return;
-            }
-            
-            // Remove seleção anterior
             if (selectedSeat) {
-                const prevSeat = document.querySelector(`[data-seat="${selectedSeat}"]`);
-                if (prevSeat) {
-                    prevSeat.classList.remove('selected');
-                    const originalClass = prevSeat.classList.contains('business') ? 'business' : 'available';
-                    prevSeat.classList.add(originalClass);
-                }
+                seatDisplay.innerHTML = `<span style="color: #2196F3;">${selectedSeat}</span>`;
+            } else {
+                seatDisplay.innerHTML = '<span class="empty">Não selecionada</span>';
             }
-            
-            // Seleciona nova poltrona
-            selectedSeat = seatId;
-            const currentSeat = document.querySelector(`[data-seat="${seatId}"]`);
-            if (currentSeat) {
-                currentSeat.classList.remove('available', 'business');
-                currentSeat.classList.add('selected');
-            }
-            
-            updateDisplay();
-            checkReservationReady();
-        }
-        
-        // ============================================
-        // ATUALIZA DISPLAY
-        // ============================================
-        function updateDisplay() {
-            // Atualiza poltrona
-            const seatDisplay = document.getElementById('display-seat');
-            seatDisplay.textContent = selectedSeat || '---';
-            seatDisplay.style.color = selectedSeat ? '#118ab2' : '#8d99ae';
             
             // Atualiza email
             const emailDisplay = document.getElementById('display-email');
-            emailDisplay.textContent = userEmail || '---';
-            emailDisplay.style.color = userEmail ? '#2a9d8f' : '#8d99ae';
+            if (userEmail) {
+                emailDisplay.innerHTML = `<span style="color: #4CAF50;">${userEmail}</span>`;
+            } else {
+                emailDisplay.innerHTML = '<span class="empty">Não informado</span>';
+            }
             
             // Atualiza status
             const statusDisplay = document.getElementById('display-status');
             if (selectedSeat && userEmail) {
-                statusDisplay.textContent = 'Pronto para reservar!';
-                statusDisplay.style.color = '#2a9d8f';
+                statusDisplay.innerHTML = '<span style="color: #4CAF50;">Pronto para reservar!</span>';
             } else if (selectedSeat) {
-                statusDisplay.textContent = 'Digite seu email';
-                statusDisplay.style.color = '#f4a261';
+                statusDisplay.innerHTML = '<span style="color: #FF9800;">Digite seu email</span>';
             } else if (userEmail) {
-                statusDisplay.textContent = 'Selecione uma poltrona';
-                statusDisplay.style.color = '#f4a261';
+                statusDisplay.innerHTML = '<span style="color: #FF9800;">Selecione uma poltrona</span>';
             } else {
-                statusDisplay.textContent = 'Aguardando';
-                statusDisplay.style.color = '#8d99ae';
+                statusDisplay.innerHTML = '<span style="color: #aaa;">Aguardando dados</span>';
             }
         }
         
@@ -1363,11 +646,15 @@
         function checkReservationReady() {
             const isReady = selectedSeat !== null && 
                           userEmail !== '' && 
-                          userEmail.includes('@') &&
+                          isValidEmail(userEmail) &&
                           !occupiedSeats.includes(selectedSeat);
             
-            const reserveBtn = document.getElementById('reserve-btn');
-            reserveBtn.disabled = !isReady;
+            document.getElementById('reserve-btn').disabled = !isReady;
+        }
+        
+        function isValidEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
         }
         
         // ============================================
@@ -1375,141 +662,156 @@
         // ============================================
         function setupEventListeners() {
             // Email input
-            const emailInput = document.getElementById('email');
-            emailInput.addEventListener('input', function() {
+            document.getElementById('email-input').addEventListener('input', function() {
                 userEmail = this.value.trim();
                 updateDisplay();
                 checkReservationReady();
             });
             
             // Botão de reserva
-            const reserveBtn = document.getElementById('reserve-btn');
-            reserveBtn.addEventListener('click', function() {
+            document.getElementById('reserve-btn').addEventListener('click', function() {
                 createReservation();
             });
             
             // Botão de limpar
-            const clearBtn = document.getElementById('clear-btn');
-            clearBtn.addEventListener('click', function() {
+            document.getElementById('clear-btn').addEventListener('click', function() {
                 // Limpa seleção de poltrona
                 if (selectedSeat) {
-                    const seatElement = document.querySelector(`[data-seat="${selectedSeat}"]`);
-                    if (seatElement) {
-                        seatElement.classList.remove('selected');
-                        const originalClass = seatElement.classList.contains('business') ? 'business' : 'available';
-                        seatElement.classList.add(originalClass);
+                    const seat = document.querySelector(`[data-seat="${selectedSeat}"]`);
+                    if (seat) {
+                        seat.classList.remove('selected');
+                        const originalType = seat.classList.contains('business') ? 'business' : 'available';
+                        seat.classList.add(originalType);
                     }
                     selectedSeat = null;
                 }
                 
                 // Limpa email
-                emailInput.value = '';
+                document.getElementById('email-input').value = '';
                 userEmail = '';
                 
                 updateDisplay();
                 checkReservationReady();
                 
-                showAlert('Seleção limpa!', 'info');
+                showMessage('Seleção limpa!', 'info');
             });
             
-            // Corrige cores iniciais
-            setTimeout(updateSeatColors, 100);
+            // Atualização automática a cada 30 segundos
+            setInterval(loadOccupiedSeats, 30000);
         }
         
         // ============================================
-        // ATUALIZA CORES DAS POLTRONAS
-        // ============================================
-        function updateSeatColors() {
-            document.querySelectorAll('.seat').forEach(seat => {
-                const seatId = seat.dataset.seat;
-                
-                if (occupiedSeats.includes(seatId)) {
-                    seat.classList.remove('available', 'business', 'selected');
-                    seat.classList.add('occupied');
-                }
-            });
-        }
-        
-        // ============================================
-        // CRIA RESERVA
+        // CRIAR RESERVA AUTOMÁTICA
         // ============================================
         function createReservation() {
             if (!selectedSeat || !userEmail) return;
             
             // Verifica se a poltrona ainda está disponível
             if (occupiedSeats.includes(selectedSeat)) {
-                showAlert('Esta poltrona foi ocupada! Escolha outra.', 'error');
-                updateSeatColors();
+                showMessage('Esta poltrona acabou de ser ocupada!', 'error');
+                loadOccupiedSeats();
                 return;
             }
             
-            // Gera a URL do Google Forms
-            const formUrl = `${FORM_BASE}?usp=pp_url&${SEAT_PARAM}=${encodeURIComponent(selectedSeat)}`;
+            // Verifica conexão com a API
+            showMessage('Verificando sistema...', 'info');
             
-            // Mostra confirmação
-            showAlert(`Reserva gerada para poltrona ${selectedSeat}!\nAbrindo formulário...`, 'success');
-            
-            // Abre o Google Forms em nova aba
-            setTimeout(() => {
-                window.open(formUrl, '_blank');
-                
-                // Pergunta se enviou o formulário
-                setTimeout(() => {
-                    const confirmed = window.confirm(
-                        'O formulário foi aberto!\n\n' +
-                        '1. Digite seu email: ' + userEmail + '\n' +
-                        '2. Clique em ENVIAR\n' +
-                        '3. Você receberá o código por email\n\n' +
-                        'Você já enviou o formulário?'
-                    );
-                    
-                    if (confirmed) {
-                        // Marca a poltrona como ocupada localmente
-                        occupiedSeats.push(selectedSeat);
-                        updateSeatColors();
-                        
-                        showAlert('Reserva confirmada! Verifique seu email.', 'success');
-                        
-                        // Limpa para nova reserva
-                        setTimeout(() => {
-                            document.getElementById('clear-btn').click();
-                        }, 2000);
+            fetch(API_URL)
+                .then(response => {
+                    if (!response.ok) throw new Error('API offline');
+                    return response.json();
+                })
+                .then(data => {
+                    if (Array.isArray(data) && data.includes(selectedSeat)) {
+                        showMessage('Poltrona ocupada! Atualizando...', 'error');
+                        loadOccupiedSeats();
+                        return;
                     }
-                }, 2000);
-            }, 500);
+                    
+                    // Tudo OK, gera a URL do Forms
+                    generateFormLink();
+                })
+                .catch(error => {
+                    // API offline, continua mesmo assim
+                    generateFormLink();
+                });
+        }
+        
+        function generateFormLink() {
+            // Gera URL do Google Forms com a poltrona pré-preenchida
+            const formUrl = `${FORM_URL}?usp=pp_url&entry.1796450485=${encodeURIComponent(selectedSeat)}`;
+            
+            showMessage(`Gerando reserva para poltrona ${selectedSeat}...`, 'success');
+            
+            // Mostra instruções
+            setTimeout(() => {
+                const confirmed = confirm(
+                    `RESERVA PRONTA!\n\n` +
+                    `Poltrona: ${selectedSeat}\n` +
+                    `Email: ${userEmail}\n\n` +
+                    `O Google Forms será aberto com sua poltrona já preenchida.\n\n` +
+                    `1. Digite seu email: ${userEmail}\n` +
+                    `2. Clique em ENVIAR\n` +
+                    `3. Você receberá o código por email\n\n` +
+                    `Abrir formulário agora?`
+                );
+                
+                if (confirmed) {
+                    // Abre o Google Forms
+                    window.open(formUrl, '_blank');
+                    
+                    showMessage('Formulário aberto! Complete e envie.', 'success');
+                    
+                    // Pergunta após alguns segundos se enviou
+                    setTimeout(() => {
+                        const didSubmit = confirm(
+                            'Você já enviou o formulário?\n\n' +
+                            'Se SIM, sua reserva será processada automaticamente!\n' +
+                            'Se NÃO, ainda pode completar o envio.'
+                        );
+                        
+                        if (didSubmit) {
+                            showMessage('Reserva enviada! Verifique seu email.', 'success');
+                            
+                            // Limpa para nova reserva
+                            setTimeout(() => {
+                                document.getElementById('clear-btn').click();
+                            }, 3000);
+                        }
+                    }, 5000);
+                }
+            }, 1000);
         }
         
         // ============================================
-        // MOSTRA ALERTAS
+        // FUNÇÃO PARA MOSTRAR MENSAGENS
         // ============================================
-        function showAlert(message, type) {
-            const alert = document.getElementById('alert');
-            alert.textContent = message;
-            alert.className = `alert ${type}`;
-            alert.style.display = 'block';
+        function showMessage(text, type) {
+            const message = document.getElementById('message');
+            message.textContent = text;
+            message.className = `message ${type}`;
+            message.style.display = 'block';
             
             // Esconde após 4 segundos
             setTimeout(() => {
-                alert.style.display = 'none';
+                message.style.display = 'none';
             }, 4000);
         }
         
         // ============================================
-        // FUNÇÃO PARA TESTE RÁPIDO
+        // TESTE RÁPIDO DO SISTEMA
         // ============================================
-        window.quickTest = function() {
+        window.testSystem = function() {
             // Preenche email de teste
-            document.getElementById('email').value = 'teste@exemplo.com';
-            document.getElementById('email').dispatchEvent(new Event('input'));
+            document.getElementById('email-input').value = 'teste@exemplo.com';
+            document.getElementById('email-input').dispatchEvent(new Event('input'));
             
-            // Seleciona uma poltrona disponível
-            const availableSeats = Array.from(document.querySelectorAll('.seat.available, .seat.business'))
-                .filter(seat => !seat.classList.contains('occupied'));
-            
+            // Seleciona primeira poltrona disponível
+            const availableSeats = document.querySelectorAll('.seat.available, .seat.business');
             if (availableSeats.length > 0) {
                 const testSeat = availableSeats[0].dataset.seat;
-                handleSeatClick(testSeat);
-                showAlert(`Teste: Poltrona ${testSeat} selecionada`, 'info');
+                selectSeat(testSeat);
+                showMessage(`Teste: Poltrona ${testSeat} selecionada`, 'info');
             }
         };
     </script>
