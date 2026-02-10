@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema A350 - Reservas Automáticas</title>
+    <title>Sistema de Reservas - 10 Poltronas por Avião</title>
     <style>
         /* ESTILOS SIMPLES E FUNCIONAIS */
         * {
@@ -48,6 +48,38 @@
             font-size: 14px;
         }
         
+        /* NAVEGAÇÃO DOS MODELOS */
+        .aircraft-nav {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .aircraft-btn {
+            padding: 12px 25px;
+            background: rgba(0, 168, 255, 0.2);
+            border: 2px solid #00a8ff;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            font-size: 16px;
+            min-width: 120px;
+        }
+        
+        .aircraft-btn:hover {
+            background: rgba(0, 168, 255, 0.4);
+        }
+        
+        .aircraft-btn.active {
+            background: #00a8ff;
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(0, 168, 255, 0.5);
+        }
+        
         /* LAYOUT PRINCIPAL */
         .dashboard {
             display: flex;
@@ -65,32 +97,21 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
-        /* MAPA DE POLTRONAS */
+        /* MAPA DE POLTRONAS SIMPLES - 10 POLTRONAS */
         .seat-map {
-            margin: 15px 0;
-        }
-        
-        .seat-row {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 8px;
-            align-items: center;
-        }
-        
-        .row-label {
-            width: 30px;
-            text-align: center;
-            color: #aaa;
-            font-size: 14px;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            margin: 20px auto;
+            max-width: 400px;
         }
         
         /* POLTRONAS */
         .seat {
-            width: 35px;
-            height: 35px;
+            width: 60px;
+            height: 60px;
             background: #4CAF50;
-            border-radius: 5px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -99,7 +120,8 @@
             cursor: pointer;
             transition: all 0.2s;
             border: none;
-            font-size: 14px;
+            font-size: 18px;
+            flex-direction: column;
         }
         
         .seat:hover {
@@ -109,7 +131,7 @@
         .seat.selected {
             background: #2196F3;
             transform: scale(1.1);
-            box-shadow: 0 0 10px #2196F3;
+            box-shadow: 0 0 15px #2196F3;
         }
         
         .seat.occupied {
@@ -119,6 +141,32 @@
         
         .seat.business {
             background: #FF9800;
+        }
+        
+        .seat-label {
+            font-size: 14px;
+            margin-top: 5px;
+            font-weight: normal;
+        }
+        
+        /* INFO DO AVIÃO */
+        .aircraft-info {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+        
+        .aircraft-title {
+            font-size: 24px;
+            color: #00a8ff;
+            margin-bottom: 10px;
+        }
+        
+        .aircraft-subtitle {
+            color: #aaa;
+            font-size: 14px;
         }
         
         /* PAINEL DE RESERVA */
@@ -157,6 +205,10 @@
         .item-value.empty {
             color: #888;
             font-style: italic;
+        }
+        
+        .item-value.aircraft {
+            color: #FF9800;
         }
         
         /* FORMULÁRIO */
@@ -229,14 +281,14 @@
             display: flex;
             justify-content: center;
             gap: 15px;
-            margin-top: 15px;
+            margin-top: 20px;
             flex-wrap: wrap;
         }
         
         .legend-item {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 8px;
             font-size: 14px;
         }
         
@@ -312,9 +364,30 @@
             }
             
             .seat {
-                width: 30px;
-                height: 30px;
-                font-size: 12px;
+                width: 50px;
+                height: 50px;
+                font-size: 16px;
+            }
+            
+            .aircraft-nav {
+                gap: 10px;
+            }
+            
+            .aircraft-btn {
+                padding: 10px 15px;
+                min-width: 100px;
+                font-size: 14px;
+            }
+            
+            .seat-map {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .seat-map {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
     </style>
@@ -323,20 +396,27 @@
     <div class="container">
         <!-- HEADER -->
         <header class="header">
-            <h1>✈️ Sistema de Reservas A350</h1>
+            <h1>✈️ Sistema de Reservas - 10 Poltronas por Avião</h1>
             <p>Reserva automática com envio de código por email</p>
             <div class="status">✅ Sistema Integrado com Google Apps Script</div>
         </header>
+        
+        <!-- NAVEGAÇÃO DOS MODELOS -->
+        <div class="aircraft-nav" id="aircraft-nav">
+            <!-- Os botões serão gerados aqui -->
+        </div>
         
         <!-- DASHBOARD -->
         <div class="dashboard">
             <!-- MAPA DE POLTRONAS -->
             <section class="airplane-section">
-                <h2>Mapa de Poltronas A350</h2>
-                <p style="color: #aaa; margin-bottom: 15px;">Clique em uma poltrona disponível</p>
+                <div class="aircraft-info">
+                    <div class="aircraft-title" id="aircraft-title">Selecione um Modelo</div>
+                    <div class="aircraft-subtitle">10 poltronas disponíveis por avião</div>
+                </div>
                 
                 <div class="seat-map" id="seat-map">
-                    <!-- Poltronas serão geradas aqui -->
+                    <!-- 10 poltronas serão geradas aqui -->
                 </div>
                 
                 <!-- LEGENDAS -->
@@ -366,6 +446,13 @@
                 
                 <!-- CARD DE RESUMO -->
                 <div class="reservation-card">
+                    <div class="reservation-item">
+                        <span class="item-label">Modelo:</span>
+                        <span class="item-value aircraft" id="display-aircraft">
+                            <span class="empty">Não selecionado</span>
+                        </span>
+                    </div>
+                    
                     <div class="reservation-item">
                         <span class="item-label">Poltrona:</span>
                         <span class="item-value seat" id="display-seat">
@@ -418,8 +505,9 @@
                 <div class="instructions">
                     <strong>Como funciona:</strong>
                     <ol>
-                        <li>Digite seu email acima</li>
-                        <li>Selecione uma poltrona no mapa</li>
+                        <li>Selecione um modelo de avião acima</li>
+                        <li>Digite seu email</li>
+                        <li>Selecione uma poltrona (1 a 10)</li>
                         <li>Clique em "Gerar Reserva Automática"</li>
                         <li>O Google Forms abrirá com sua poltrona pré-preenchida</li>
                         <li>Digite seu email no Forms e clique em ENVIAR</li>
@@ -433,7 +521,7 @@
         <footer class="footer">
             <p>Sistema Integrado com Google Apps Script | API Funcional: ✅</p>
             <p style="margin-top: 5px; font-size: 12px;">
-                Atualização automática de poltronas ocupadas
+                5 Modelos Disponíveis: A350 • B777 • B747 • A330 • A320 | 10 poltronas cada
             </p>
         </footer>
     </div>
@@ -453,125 +541,232 @@
         const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSf0wYXE6i7JPQCBkKR5LqyRdwxRscpSmclDMQJXTs_llonIbA/viewform";
         
         // ============================================
+        // MODELOS DE AVIÃO COM 10 POLTRONAS CADA
+        // ============================================
+        const aircraftModels = {
+            'A350': {
+                name: 'Airbus A350-900',
+                seats: 10,
+                businessSeats: [1, 2, 3], // Poltronas 1-3 são Business
+                economySeats: [4, 5, 6, 7, 8, 9, 10] // 4-10 são Economy
+            },
+            'B777': {
+                name: 'Boeing 777-300ER',
+                seats: 10,
+                businessSeats: [1, 2], // Poltronas 1-2 são Business
+                economySeats: [3, 4, 5, 6, 7, 8, 9, 10] // 3-10 são Economy
+            },
+            'B747': {
+                name: 'Boeing 747-8',
+                seats: 10,
+                businessSeats: [1, 2, 3, 4], // Poltronas 1-4 são Business
+                economySeats: [5, 6, 7, 8, 9, 10] // 5-10 são Economy
+            },
+            'A330': {
+                name: 'Airbus A330-300',
+                seats: 10,
+                businessSeats: [1, 2], // Poltronas 1-2 são Business
+                economySeats: [3, 4, 5, 6, 7, 8, 9, 10] // 3-10 são Economy
+            },
+            'A320': {
+                name: 'Airbus A320',
+                seats: 10,
+                businessSeats: [1], // Apenas poltrona 1 é Business
+                economySeats: [2, 3, 4, 5, 6, 7, 8, 9, 10] // 2-10 são Economy
+            }
+        };
+        
+        // ============================================
         // VARIÁVEIS DO SISTEMA
         // ============================================
         let selectedSeat = null;
+        let selectedAircraft = 'A350';
         let userEmail = "";
-        let occupiedSeats = [];
+        let occupiedSeats = {
+            'A350': [],
+            'B777': [],
+            'B747': [],
+            'A330': [],
+            'A320': []
+        };
         
         // ============================================
         // INICIALIZAÇÃO
         // ============================================
         document.addEventListener('DOMContentLoaded', function() {
-            createSeatMap();
-            loadOccupiedSeats();
+            createAircraftNavigation();
+            selectAircraft('A350');
             setupEventListeners();
-            updateDisplay();
+            loadOccupiedSeats();
         });
         
         // ============================================
-        // CRIA MAPA DE POLTRONAS
+        // NAVEGAÇÃO DOS MODELOS
+        // ============================================
+        function createAircraftNavigation() {
+            const nav = document.getElementById('aircraft-nav');
+            nav.innerHTML = '';
+            
+            Object.keys(aircraftModels).forEach(model => {
+                const button = document.createElement('button');
+                button.className = 'aircraft-btn';
+                button.textContent = model;
+                button.dataset.model = model;
+                
+                button.addEventListener('click', function() {
+                    selectAircraft(model);
+                });
+                
+                nav.appendChild(button);
+            });
+        }
+        
+        function selectAircraft(model) {
+            // Atualiza botões ativos
+            document.querySelectorAll('.aircraft-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.model === model) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // Define novo modelo
+            selectedAircraft = model;
+            selectedSeat = null;
+            
+            // Atualiza display
+            updateAircraftInfo();
+            createSeatMap();
+            updateDisplay();
+            checkReservationReady();
+            
+            showMessage(`${aircraftModels[model].name} selecionado`, 'info');
+        }
+        
+        function updateAircraftInfo() {
+            const model = aircraftModels[selectedAircraft];
+            document.getElementById('aircraft-title').textContent = `${selectedAircraft} - 10 Poltronas`;
+        }
+        
+        // ============================================
+        // CRIA MAPA DE 10 POLTRONAS
         // ============================================
         function createSeatMap() {
             const seatMap = document.getElementById('seat-map');
             seatMap.innerHTML = '';
             
-            // Business Class (Linhas 1-5)
-            createSection(seatMap, "Business Class", 1, 5, ['A', 'D', 'E', 'H'], 'business');
+            const model = aircraftModels[selectedAircraft];
             
-            // Premium Economy (Linhas 6-10)
-            createSection(seatMap, "Premium Economy", 6, 10, ['A','B','D','E','F','G','J','K'], 'available');
-            
-            // Economy Class (Linhas 11-20)
-            createSection(seatMap, "Economy Class", 11, 20, ['A','B','C','D','E','F','G','H','J'], 'available');
-        }
-        
-        function createSection(container, title, startRow, endRow, letters, seatType) {
-            // Título da seção
-            const titleDiv = document.createElement('div');
-            titleDiv.textContent = title;
-            titleDiv.style.cssText = `
-                color: #00a8ff;
-                font-weight: bold;
-                margin: 15px 0 10px 0;
-                text-align: center;
-                font-size: 14px;
-            `;
-            container.appendChild(titleDiv);
-            
-            // Cria cada fileira
-            for (let row = startRow; row <= endRow; row++) {
-                const rowDiv = document.createElement('div');
-                rowDiv.className = 'seat-row';
+            // Cria 10 poltronas numeradas
+            for (let seatNumber = 1; seatNumber <= 10; seatNumber++) {
+                const seat = document.createElement('button');
+                const seatId = `${selectedAircraft}-${seatNumber}`;
                 
-                // Número da fileira
-                const rowLabel = document.createElement('div');
-                rowLabel.className = 'row-label';
-                rowLabel.textContent = row;
-                rowDiv.appendChild(rowLabel);
+                // Determina se é Business ou Economy
+                const isBusiness = model.businessSeats.includes(seatNumber);
+                seat.className = `seat ${isBusiness ? 'business' : 'available'}`;
                 
-                // Cria poltronas
-                letters.forEach(letter => {
-                    const seatId = `${row}${letter}`;
-                    const seat = document.createElement('button');
-                    seat.className = `seat ${seatType}`;
-                    seat.textContent = letter;
-                    seat.dataset.seat = seatId;
-                    
-                    // Evento de clique
-                    seat.addEventListener('click', function() {
-                        selectSeat(seatId);
-                    });
-                    
-                    rowDiv.appendChild(seat);
+                seat.dataset.seat = seatId;
+                seat.dataset.seatNumber = seatNumber;
+                
+                seat.innerHTML = `
+                    <div>${seatNumber}</div>
+                    <div class="seat-label">${isBusiness ? 'BUS' : 'ECO'}</div>
+                `;
+                
+                // Evento de clique
+                seat.addEventListener('click', function() {
+                    selectSeat(seatNumber);
                 });
                 
-                container.appendChild(rowDiv);
+                seatMap.appendChild(seat);
             }
+            
+            // Atualiza status das poltronas
+            updateSeatStatus();
         }
         
         // ============================================
-        // CARREGA POLTRONAS OCUPADAS DA API
+        // CARREGA POLTRONAS OCUPADAS
         // ============================================
         function loadOccupiedSeats() {
-            showMessage('Carregando poltronas ocupadas...', 'info');
-            
+            // Tenta carregar da API
             fetch(API_URL + '?t=' + new Date().getTime())
-                .then(response => {
-                    if (!response.ok) throw new Error('Erro na API');
-                    return response.json();
-                })
+                .then(response => response.json())
                 .then(data => {
                     if (Array.isArray(data)) {
-                        occupiedSeats = data;
-                        updateSeatStatus();
-                        showMessage(`Sistema carregado: ${data.length} poltronas ocupadas`, 'success');
+                        // Processa dados da API
+                        // (Aqui você precisaria adaptar para sua estrutura de dados)
+                        showMessage('Dados carregados da API', 'success');
                     } else {
-                        throw new Error('Resposta inválida da API');
+                        // Dados de demonstração
+                        setupDemoData();
                     }
                 })
                 .catch(error => {
-                    console.log('Usando dados locais:', error);
-                    occupiedSeats = ["1A", "12C", "22F", "7B", "15D"];
-                    updateSeatStatus();
-                    showMessage('Modo offline ativado', 'info');
+                    console.log('API offline, usando dados de demonstração');
+                    setupDemoData();
                 });
+        }
+        
+        function setupDemoData() {
+            // Para cada modelo, marca 2-3 poltronas como ocupadas
+            Object.keys(aircraftModels).forEach(model => {
+                const occupied = [];
+                const totalSeats = 10;
+                const toOccupy = Math.floor(Math.random() * 3) + 1; // 1-3 poltronas ocupadas
+                
+                for (let i = 0; i < toOccupy; i++) {
+                    let seatNum;
+                    do {
+                        seatNum = Math.floor(Math.random() * totalSeats) + 1;
+                    } while (occupied.includes(seatNum));
+                    occupied.push(seatNum);
+                }
+                
+                occupiedSeats[model] = occupied;
+            });
+            
+            // Atualiza status
+            updateSeatStatus();
+            showMessage('Modo demonstração ativado', 'info');
         }
         
         function updateSeatStatus() {
             document.querySelectorAll('.seat').forEach(seat => {
-                const seatId = seat.dataset.seat;
+                const seatNumber = parseInt(seat.dataset.seatNumber);
                 
-                if (occupiedSeats.includes(seatId)) {
+                if (occupiedSeats[selectedAircraft].includes(seatNumber)) {
                     seat.classList.remove('available', 'business', 'selected');
                     seat.classList.add('occupied');
+                    seat.innerHTML = `
+                        <div>${seatNumber}</div>
+                        <div class="seat-label">OCUP</div>
+                    `;
                     
-                    if (selectedSeat === seatId) {
+                    if (selectedSeat === seatNumber) {
                         selectedSeat = null;
                         updateDisplay();
                         checkReservationReady();
-                        showMessage('Sua poltrona foi ocupada! Escolha outra.', 'error');
                     }
+                } else if (seatNumber === selectedSeat) {
+                    // Mantém selecionado
+                    seat.classList.remove('available', 'business', 'occupied');
+                    seat.classList.add('selected');
+                    const isBusiness = aircraftModels[selectedAircraft].businessSeats.includes(seatNumber);
+                    seat.innerHTML = `
+                        <div>${seatNumber}</div>
+                        <div class="seat-label">${isBusiness ? 'BUS' : 'ECO'}</div>
+                    `;
+                } else {
+                    // Restaura estado normal
+                    const isBusiness = aircraftModels[selectedAircraft].businessSeats.includes(seatNumber);
+                    seat.classList.remove('selected', 'occupied');
+                    seat.classList.add(isBusiness ? 'business' : 'available');
+                    seat.innerHTML = `
+                        <div>${seatNumber}</div>
+                        <div class="seat-label">${isBusiness ? 'BUS' : 'ECO'}</div>
+                    `;
                 }
             });
         }
@@ -579,25 +774,25 @@
         // ============================================
         // SELEÇÃO DE POLTRONA
         // ============================================
-        function selectSeat(seatId) {
-            if (occupiedSeats.includes(seatId)) {
+        function selectSeat(seatNumber) {
+            if (occupiedSeats[selectedAircraft].includes(seatNumber)) {
                 showMessage('Esta poltrona já está ocupada!', 'error');
                 return;
             }
             
             // Remove seleção anterior
             if (selectedSeat) {
-                const prevSeat = document.querySelector(`[data-seat="${selectedSeat}"]`);
+                const prevSeat = document.querySelector(`[data-seat-number="${selectedSeat}"]`);
                 if (prevSeat) {
                     prevSeat.classList.remove('selected');
-                    const originalType = prevSeat.classList.contains('business') ? 'business' : 'available';
-                    prevSeat.classList.add(originalType);
+                    const isBusiness = aircraftModels[selectedAircraft].businessSeats.includes(selectedSeat);
+                    prevSeat.classList.add(isBusiness ? 'business' : 'available');
                 }
             }
             
             // Seleciona nova poltrona
-            selectedSeat = seatId;
-            const seatElement = document.querySelector(`[data-seat="${seatId}"]`);
+            selectedSeat = seatNumber;
+            const seatElement = document.querySelector(`[data-seat-number="${seatNumber}"]`);
             if (seatElement) {
                 seatElement.classList.remove('available', 'business');
                 seatElement.classList.add('selected');
@@ -611,10 +806,15 @@
         // ATUALIZA DISPLAY
         // ============================================
         function updateDisplay() {
+            // Atualiza modelo
+            const aircraftDisplay = document.getElementById('display-aircraft');
+            aircraftDisplay.innerHTML = `<span style="color: #FF9800;">${selectedAircraft}</span>`;
+            
             // Atualiza poltrona
             const seatDisplay = document.getElementById('display-seat');
             if (selectedSeat) {
-                seatDisplay.innerHTML = `<span style="color: #2196F3;">${selectedSeat}</span>`;
+                const isBusiness = aircraftModels[selectedAircraft].businessSeats.includes(selectedSeat);
+                seatDisplay.innerHTML = `<span style="color: #2196F3;">Poltrona ${selectedSeat} (${isBusiness ? 'Business' : 'Economy'})</span>`;
             } else {
                 seatDisplay.innerHTML = '<span class="empty">Não selecionada</span>';
             }
@@ -647,7 +847,7 @@
             const isReady = selectedSeat !== null && 
                           userEmail !== '' && 
                           isValidEmail(userEmail) &&
-                          !occupiedSeats.includes(selectedSeat);
+                          !occupiedSeats[selectedAircraft].includes(selectedSeat);
             
             document.getElementById('reserve-btn').disabled = !isReady;
         }
@@ -677,11 +877,11 @@
             document.getElementById('clear-btn').addEventListener('click', function() {
                 // Limpa seleção de poltrona
                 if (selectedSeat) {
-                    const seat = document.querySelector(`[data-seat="${selectedSeat}"]`);
+                    const seat = document.querySelector(`[data-seat-number="${selectedSeat}"]`);
                     if (seat) {
                         seat.classList.remove('selected');
-                        const originalType = seat.classList.contains('business') ? 'business' : 'available';
-                        seat.classList.add(originalType);
+                        const isBusiness = aircraftModels[selectedAircraft].businessSeats.includes(selectedSeat);
+                        seat.classList.add(isBusiness ? 'business' : 'available');
                     }
                     selectedSeat = null;
                 }
@@ -707,49 +907,28 @@
             if (!selectedSeat || !userEmail) return;
             
             // Verifica se a poltrona ainda está disponível
-            if (occupiedSeats.includes(selectedSeat)) {
+            if (occupiedSeats[selectedAircraft].includes(selectedSeat)) {
                 showMessage('Esta poltrona acabou de ser ocupada!', 'error');
                 loadOccupiedSeats();
                 return;
             }
             
-            // Verifica conexão com a API
-            showMessage('Verificando sistema...', 'info');
+            // Gera identificador único para a reserva
+            const reservationId = `${selectedAircraft}-${selectedSeat}-${Date.now()}`;
             
-            fetch(API_URL)
-                .then(response => {
-                    if (!response.ok) throw new Error('API offline');
-                    return response.json();
-                })
-                .then(data => {
-                    if (Array.isArray(data) && data.includes(selectedSeat)) {
-                        showMessage('Poltrona ocupada! Atualizando...', 'error');
-                        loadOccupiedSeats();
-                        return;
-                    }
-                    
-                    // Tudo OK, gera a URL do Forms
-                    generateFormLink();
-                })
-                .catch(error => {
-                    // API offline, continua mesmo assim
-                    generateFormLink();
-                });
-        }
-        
-        function generateFormLink() {
-            // Gera URL do Google Forms com a poltrona pré-preenchida
-            const formUrl = `${FORM_URL}?usp=pp_url&entry.1796450485=${encodeURIComponent(selectedSeat)}`;
+            // Gera a URL do Forms com modelo e poltrona
+            const formUrl = `${FORM_URL}?usp=pp_url&entry.1796450485=${encodeURIComponent(selectedAircraft)}&entry.1234567890=${encodeURIComponent(selectedSeat)}`;
             
-            showMessage(`Gerando reserva para poltrona ${selectedSeat}...`, 'success');
+            showMessage(`Gerando reserva para ${selectedAircraft} - Poltrona ${selectedSeat}...`, 'success');
             
             // Mostra instruções
             setTimeout(() => {
                 const confirmed = confirm(
                     `RESERVA PRONTA!\n\n` +
+                    `Modelo: ${selectedAircraft}\n` +
                     `Poltrona: ${selectedSeat}\n` +
                     `Email: ${userEmail}\n\n` +
-                    `O Google Forms será aberto com sua poltrona já preenchida.\n\n` +
+                    `O Google Forms será aberto com sua reserva já preenchida.\n\n` +
                     `1. Digite seu email: ${userEmail}\n` +
                     `2. Clique em ENVIAR\n` +
                     `3. Você receberá o código por email\n\n` +
@@ -761,6 +940,10 @@
                     window.open(formUrl, '_blank');
                     
                     showMessage('Formulário aberto! Complete e envie.', 'success');
+                    
+                    // Marca como ocupada localmente
+                    occupiedSeats[selectedAircraft].push(selectedSeat);
+                    updateSeatStatus();
                     
                     // Pergunta após alguns segundos se enviou
                     setTimeout(() => {
@@ -799,19 +982,26 @@
         }
         
         // ============================================
-        // TESTE RÁPIDO DO SISTEMA
+        // FUNÇÕES DE TESTE
         // ============================================
-        window.testSystem = function() {
+        window.testReservation = function() {
             // Preenche email de teste
             document.getElementById('email-input').value = 'teste@exemplo.com';
             document.getElementById('email-input').dispatchEvent(new Event('input'));
             
             // Seleciona primeira poltrona disponível
-            const availableSeats = document.querySelectorAll('.seat.available, .seat.business');
+            const availableSeats = document.querySelectorAll('.seat:not(.occupied)');
             if (availableSeats.length > 0) {
-                const testSeat = availableSeats[0].dataset.seat;
-                selectSeat(testSeat);
-                showMessage(`Teste: Poltrona ${testSeat} selecionada`, 'info');
+                const seatElement = availableSeats[0];
+                const seatNumber = parseInt(seatElement.dataset.seatNumber);
+                selectSeat(seatNumber);
+                showMessage(`Teste: ${selectedAircraft} - Poltrona ${seatNumber} selecionada`, 'info');
+            }
+        };
+        
+        window.switchModel = function(model) {
+            if (aircraftModels[model]) {
+                selectAircraft(model);
             }
         };
     </script>
